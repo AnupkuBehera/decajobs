@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/dashboard", "/profile", "/settings", "/employer/dashboard", "/employer/post", "/employer/jobs"],
       },
     ],
-    sitemap: "https://decajobs.com/sitemap.xml",
+    sitemap: "https://decajob.com/sitemap.xml",
   };
 }

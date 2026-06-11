@@ -55,7 +55,7 @@ export function buildUnsubscribeUrl(
   const appUrl =
     baseUrl ||
     process.env.NEXT_PUBLIC_APP_URL ||
-    "https://decajobs.com";
+    "https://decajob.com";
   const token = generateUnsubscribeToken(candidateId);
   return `${appUrl}/api/unsubscribe/${token}`;
 }

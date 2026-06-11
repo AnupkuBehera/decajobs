@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "DecaJobs - AI Powered Online Job Portal | 10 Perfect Jobs Every Morning",
     description:
       "The smartest job search engine that delivers exactly 10 AI-matched jobs to your inbox daily. Aggregates from LinkedIn, Indeed, Glassdoor & 20+ job boards. Free to start.",
-    url: "https://decajobs.com",
+    url: "https://decajob.com",
     siteName: "DecaJobs",
     type: "website",
     locale: "en_US",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://decajobs.com",
+    canonical: "https://decajob.com",
   },
   icons: {
     icon: [

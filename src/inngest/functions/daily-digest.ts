@@ -85,7 +85,7 @@ function formatDigestEmail(
     day: "numeric",
   });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajobs.com";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajob.com";
   const unsubscribeUrl = buildUnsubscribeUrl(candidateId, appUrl);
   const preferencesUrl = `${appUrl}/settings`;
 

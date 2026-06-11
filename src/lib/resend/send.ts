@@ -77,7 +77,7 @@ export async function sendDigestEmail(to: string, jobs: JobDigestItem[], candida
     applicationLink: job.applicationLink,
   }));
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajobs.com";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajob.com";
 
   await sendWithRetry({
     from: FROM_EMAIL,

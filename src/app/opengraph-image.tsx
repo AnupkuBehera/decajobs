@@ -146,7 +146,7 @@ export default async function OGImage() {
             color: "#9ca3af",
           }}
         >
-          decajobs.com
+          decajob.com
         </p>
       </div>
     ),
