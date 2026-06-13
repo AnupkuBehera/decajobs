@@ -31,23 +31,32 @@ export async function POST() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Fetch candidate profile
+  // Fetch candidate profile - try with service role (bypasses RLS)
   const { data: profile, error: profileError } = await supabase
     .from("candidate_profiles")
     .select("target_titles, skills, location, designation, expected_salary")
     .eq("candidate_id", user.id)
-    .single();
+    .maybeSingle();
 
-  if (profileError || !profile) {
+  if (profileError) {
+    console.error("[Trigger Digest] Profile query error:", profileError);
     return NextResponse.json(
-      { error: "Profile not found. Please complete your profile first." },
+      { error: `Database error: ${profileError.message}` },
+      { status: 500 }
+    );
+  }
+
+  if (!profile) {
+    // Profile doesn't exist - try to create one from scratch
+    return NextResponse.json(
+      { error: "Profile not found. Please go to your Profile page and save your skills, titles, and location first." },
       { status: 404 }
     );
   }
 
   if (!profile.target_titles?.length || !profile.skills?.length || !profile.location) {
     return NextResponse.json(
-      { error: "Profile incomplete. Please add target titles, skills, and location." },
+      { error: "Profile incomplete. Please add target titles, skills, and location on your Profile page." },
       { status: 400 }
     );
   }
