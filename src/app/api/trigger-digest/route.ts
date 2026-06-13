@@ -25,14 +25,8 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Use service role to read profile
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
-  // Fetch candidate profile - try with service role (bypasses RLS)
-  const { data: profile, error: profileError } = await supabase
+  // Read profile using the authenticated user's session (same RLS context that saved it)
+  const { data: profile, error: profileError } = await authClient
     .from("candidate_profiles")
     .select("target_titles, skills, location, designation, expected_salary")
     .eq("candidate_id", user.id)
@@ -47,7 +41,6 @@ export async function POST() {
   }
 
   if (!profile) {
-    // Profile doesn't exist - try to create one from scratch
     return NextResponse.json(
       { error: "Profile not found. Please go to your Profile page and save your skills, titles, and location first." },
       { status: 404 }
@@ -71,6 +64,12 @@ export async function POST() {
     searchTitles,
     profile.skills,
     profile.location
+  );
+
+  // Service role client for job listings (bypasses RLS)
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
   // Also fetch any internal database jobs
