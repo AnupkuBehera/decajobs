@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useCallback, type DragEvent, type ChangeEvent } from "react";
-import { uploadResume, type UploadResult } from "@/app/(candidate)/profile/upload-action";
 import { Button } from "@/components/ui";
+import { createClient } from "@/lib/supabase/client";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_EXTENSIONS = [".pdf", ".docx"];
@@ -16,10 +16,9 @@ type UploadStatus = "idle" | "validating" | "uploading" | "success" | "error";
 interface ResumeUploadProps {
   currentResumeUrl?: string | null;
   onUploadComplete?: (url: string) => void;
-  onSkillsExtracted?: (skills: string[], titles: string[]) => void;
 }
 
-export function ResumeUpload({ currentResumeUrl, onUploadComplete, onSkillsExtracted }: ResumeUploadProps) {
+export function ResumeUpload({ currentResumeUrl, onUploadComplete }: ResumeUploadProps) {
   const [status, setStatus] = useState<UploadStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [fileName, setFileName] = useState("");
@@ -63,23 +62,55 @@ export function ResumeUpload({ currentResumeUrl, onUploadComplete, onSkillsExtra
 
       setStatus("uploading");
 
-      // Create FormData and call server action
-      const formData = new FormData();
-      formData.append("resume", file);
+      try {
+        // Upload directly from browser to Supabase Storage (no server hop)
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-      const result: UploadResult = await uploadResume(formData);
-
-      if (result.success && result.url) {
-        setStatus("success");
-        setUploadedUrl(result.url);
-        onUploadComplete?.(result.url);
-        // Notify parent of extracted skills/titles from resume
-        if (result.parsedSkills?.length || result.parsedTitles?.length) {
-          onSkillsExtracted?.(result.parsedSkills || [], result.parsedTitles || []);
+        if (!user) {
+          setStatus("error");
+          setErrorMessage("You must be logged in to upload a resume.");
+          return;
         }
-      } else {
+
+        const filePath = `${user.id}/${file.name}`;
+
+        // Direct upload to Supabase Storage
+        const { error: uploadError } = await supabase.storage
+          .from("resumes")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: true,
+            contentType: file.type,
+          });
+
+        if (uploadError) {
+          setStatus("error");
+          setErrorMessage(`Upload failed: ${uploadError.message}`);
+          return;
+        }
+
+        // Get public/signed URL
+        const { data: urlData } = await supabase.storage
+          .from("resumes")
+          .createSignedUrl(filePath, 60 * 60 * 24 * 365); // 1 year
+
+        const resumeUrl = urlData?.signedUrl || "";
+
+        // Save URL to profile
+        await supabase
+          .from("candidate_profiles")
+          .upsert(
+            { candidate_id: user.id, resume_url: resumeUrl },
+            { onConflict: "candidate_id" }
+          );
+
+        setStatus("success");
+        setUploadedUrl(resumeUrl);
+        onUploadComplete?.(resumeUrl);
+      } catch (err) {
         setStatus("error");
-        setErrorMessage(result.error || "Upload failed. Please try again.");
+        setErrorMessage(err instanceof Error ? err.message : "Upload failed. Please try again.");
       }
     },
     [validateFile, onUploadComplete]
