@@ -10,6 +10,7 @@ const protectedRoutes = [
   "/dashboard",
   "/profile",
   "/settings",
+  "/resume-tools",
   "/employer/dashboard",
   "/employer/post",
   "/employer/jobs",

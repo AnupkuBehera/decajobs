@@ -28,6 +28,12 @@ export async function SiteHeader() {
               >
                 Dashboard
               </Link>
+              <Link
+                href="/resume-tools"
+                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+              >
+                Resume AI
+              </Link>
               <form action="/api/auth/signout" method="POST">
                 <button
                   type="submit"
