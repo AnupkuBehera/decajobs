@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact Us - DecaJobs",
@@ -35,8 +36,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-neutral-900">Email</p>
-                    <a href="mailto:support@decajobs.com" className="text-sm text-primary-600 hover:underline">
-                      support@decajobs.com
+                    <a href="mailto:support@decajob.com" className="text-sm text-primary-600 hover:underline">
+                      support@decajob.com
                     </a>
                   </div>
                 </div>
@@ -62,90 +63,22 @@ export default function ContactPage() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <strong>General inquiries:</strong>{" "}
-                  <a href="mailto:hello@decajobs.com" className="text-primary-600 hover:underline">hello@decajobs.com</a>
+                  <a href="mailto:hello@decajob.com" className="text-primary-600 hover:underline">hello@decajob.com</a>
                 </li>
                 <li>
                   <strong>Employer support:</strong>{" "}
-                  <a href="mailto:employers@decajobs.com" className="text-primary-600 hover:underline">employers@decajobs.com</a>
+                  <a href="mailto:employers@decajob.com" className="text-primary-600 hover:underline">employers@decajob.com</a>
                 </li>
                 <li>
                   <strong>Privacy concerns:</strong>{" "}
-                  <a href="mailto:privacy@decajobs.com" className="text-primary-600 hover:underline">privacy@decajobs.com</a>
-                </li>
-                <li>
-                  <strong>Partnerships:</strong>{" "}
-                  <a href="mailto:partners@decajobs.com" className="text-primary-600 hover:underline">partners@decajobs.com</a>
+                  <a href="mailto:privacy@decajob.com" className="text-primary-600 hover:underline">privacy@decajob.com</a>
                 </li>
               </ul>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="rounded-xl border border-neutral-200 bg-white p-6">
-            <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-              Send a Message
-            </h2>
-            <form className="space-y-4" action="mailto:support@decajobs.com" method="POST" encType="text/plain">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-1">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
-                  placeholder="you@example.com"
-                />
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-neutral-700 mb-1">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  required
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
-                  placeholder="How can we help?"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-neutral-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-y"
-                  placeholder="Tell us more..."
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-base font-medium text-white hover:bg-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[44px]"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
+          <ContactForm />
         </div>
       </div>
     </div>
