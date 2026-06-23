@@ -86,10 +86,6 @@ export function SiteFooter() {
               </li>
             </ul>
           </div>
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           {/* Company */}
           <div>
