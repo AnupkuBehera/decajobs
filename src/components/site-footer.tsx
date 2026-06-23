@@ -58,6 +58,39 @@ export function SiteFooter() {
             </ul>
           </div>
 
+          {/* Resources */}
+          <div>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
+              Resources
+            </h3>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <Link href="/blog" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  Career Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  Free Tools
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools/resume-checker" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  Resume Checker
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools/salary-calculator" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  Salary Calculator
+                </Link>
+              </li>
+            </ul>
+          </div>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Company */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
