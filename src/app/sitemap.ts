@@ -25,5 +25,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/blog/salary-negotiation-tips`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/freshers-job-search-guide`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/linkedin-profile-optimization`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    // Additional tools
+    { url: `${baseUrl}/tools/job-scam-detector`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools/linkedin-headline`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    // Legal
+    { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
   ];
 }

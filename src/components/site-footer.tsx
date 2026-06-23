@@ -117,6 +117,11 @@ export function SiteFooter() {
                   Terms &amp; Conditions
                 </Link>
               </li>
+              <li>
+                <Link href="/disclaimer" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  Disclaimer
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
