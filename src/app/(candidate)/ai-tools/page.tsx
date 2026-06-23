@@ -22,11 +22,13 @@ export default function AIToolsPage() {
   const [jobTitle, setJobTitle] = useState("");
   const [postedDate, setPostedDate] = useState("");
   const [cultureAnswers, setCultureAnswers] = useState<Record<string, string>>({});
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   async function callAI(action: string, params: Record<string, any>) {
     setIsLoading(true);
     setError("");
     setResult(null);
+    setShowUpgrade(false);
     try {
       const res = await fetch("/api/ai-tools", {
         method: "POST",
@@ -34,7 +36,12 @@ export default function AIToolsPage() {
         body: JSON.stringify({ action, ...params }),
       });
       const data = await res.json();
-      if (!res.ok) { setError(data.error); return; }
+      if (res.status === 403 && data.error === "trial_expired") {
+        setShowUpgrade(true);
+        setError(data.message);
+        return;
+      }
+      if (!res.ok) { setError(data.error || "Something went wrong"); return; }
       setResult(data);
     } catch { setError("Network error. Try again."); }
     finally { setIsLoading(false); }
@@ -176,6 +183,15 @@ export default function AIToolsPage() {
 
               {/* ERROR */}
               {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+              {showUpgrade && (
+                <div className="mt-4 rounded-lg bg-primary-50 border border-primary-200 p-4 text-center">
+                  <p className="font-semibold text-neutral-900">Upgrade to DecaJobs Pro</p>
+                  <p className="text-sm text-neutral-600 mt-1">Unlimited AI tools + 10 daily job matches for ₹299/month</p>
+                  <a href="/subscribe" className="mt-3 inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]">
+                    Subscribe Now — ₹299/month
+                  </a>
+                </div>
+              )}
 
               {/* RESULTS */}
               {result && (

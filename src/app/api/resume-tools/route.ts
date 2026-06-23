@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { scoreResume, optimizeResume, generateCoverLetter } from "@/lib/gemini/client";
+import { checkSubscription } from "@/lib/subscription/check";
 
 export async function POST(request: Request) {
   const authClient = await createClient();
@@ -8,6 +9,16 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Check subscription/trial status
+  const sub = await checkSubscription(authClient, user.id);
+  if (!sub.hasAccess) {
+    return NextResponse.json({
+      error: "trial_expired",
+      message: sub.message,
+      subscribeUrl: "/subscribe",
+    }, { status: 403 });
   }
 
   const body = await request.json();
