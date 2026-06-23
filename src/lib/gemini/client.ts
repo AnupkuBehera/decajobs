@@ -3,7 +3,9 @@
  * Used for resume scoring, optimization, and cover letter generation.
  */
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
+const PRIMARY_MODEL = "gemini-1.5-flash";
+const FALLBACK_MODEL = "gemini-2.0-flash-lite";
 
 interface GeminiResponse {
   candidates?: Array<{
@@ -20,36 +22,34 @@ export async function callGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY not configured");
 
-  // Retry up to 2 times with 30s delay for rate limits
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+  const models = [PRIMARY_MODEL, FALLBACK_MODEL];
+
+  for (const model of models) {
+    const url = `${GEMINI_API_BASE}/${model}:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 4096,
-        },
+        generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
       }),
     });
 
     if (response.status === 429) {
-      if (attempt < 2) {
-        // Wait 30 seconds and retry
-        await new Promise((r) => setTimeout(r, 30000));
-        continue;
-      }
-      throw new Error("AI is currently busy. Please try again in a minute.");
+      // Rate limited on this model, try next
+      console.warn(`[Gemini] ${model} rate limited, trying fallback...`);
+      continue;
     }
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`AI processing failed. Please try again.`);
+      console.error(`[Gemini] ${model} error: ${response.status}`);
+      continue;
     }
 
     const data: GeminiResponse = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (text) return text;
   }
 
   throw new Error("AI is currently busy. Please try again in a minute.");
