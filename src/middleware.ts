@@ -11,6 +11,7 @@ const protectedRoutes = [
   "/profile",
   "/settings",
   "/resume-tools",
+  "/subscribe",
   "/employer/dashboard",
   "/employer/post",
   "/employer/jobs",
