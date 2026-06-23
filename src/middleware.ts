@@ -15,6 +15,8 @@ const protectedRoutes = [
   "/applications",
   "/referral",
   "/ai-tools",
+  "/career-path",
+  "/cold-email",
   "/employer/dashboard",
   "/employer/post",
   "/employer/jobs",

@@ -36,6 +36,20 @@ const tools = [
     emoji: "✉️",
     badge: null,
   },
+  {
+    href: "/tools/job-scam-detector",
+    title: "Job Scam Detector",
+    description: "Check if a job listing is real or a scam. Protect yourself from fake postings.",
+    emoji: "🚨",
+    badge: "New",
+  },
+  {
+    href: "/tools/linkedin-headline",
+    title: "LinkedIn Headline Generator",
+    description: "Get 5 optimized LinkedIn headlines that make recruiters click on your profile.",
+    emoji: "💼",
+    badge: "New",
+  },
 ];
 
 export default function ToolsPage() {
