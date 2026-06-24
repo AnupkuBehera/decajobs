@@ -7,19 +7,16 @@ export async function POST(request: Request) {
     const { resumeText } = await request.json();
 
     if (!resumeText || resumeText.trim().length < 50) {
-      return NextResponse.json({ error: "Resume text too short" }, { status: 400 });
+      return NextResponse.json({ error: "Resume text too short. Please paste at least 50 characters." }, { status: 400 });
     }
 
-    // Limit text to prevent abuse (max 5000 chars for free tier)
     const truncated = resumeText.slice(0, 5000);
     const result = await scoreResume(truncated);
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("[Resume Check] Error:", error);
-    return NextResponse.json(
-      { error: "AI is currently busy. Please try again in a minute." },
-      { status: 503 }
-    );
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("[Resume Check] Error:", message);
+    return NextResponse.json({ error: message }, { status: 503 });
   }
 }
