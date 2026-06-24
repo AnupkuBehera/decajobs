@@ -20,39 +20,48 @@ interface GeminiResponse {
  */
 export async function callGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error("GEMINI_API_KEY not configured");
+  if (!apiKey) throw new Error("GEMINI_API_KEY environment variable is not set. Please add it in Vercel.");
 
   const models = [PRIMARY_MODEL, FALLBACK_MODEL];
+  let lastError = "";
 
   for (const model of models) {
     const url = `${GEMINI_API_BASE}/${model}:generateContent?key=${apiKey}`;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
-      }),
-    });
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
+        }),
+      });
 
-    if (response.status === 429) {
-      // Rate limited on this model, try next
-      console.warn(`[Gemini] ${model} rate limited, trying fallback...`);
-      continue;
+      if (response.status === 429) {
+        lastError = `${model} rate limited`;
+        console.warn(`[Gemini] ${model} rate limited, trying fallback...`);
+        continue;
+      }
+
+      if (!response.ok) {
+        const errText = await response.text();
+        lastError = `${model} returned ${response.status}: ${errText.slice(0, 200)}`;
+        console.error(`[Gemini] ${lastError}`);
+        continue;
+      }
+
+      const data: GeminiResponse = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) return text;
+      lastError = `${model} returned empty response`;
+    } catch (err) {
+      lastError = `${model} fetch failed: ${err instanceof Error ? err.message : "unknown"}`;
+      console.error(`[Gemini] ${lastError}`);
     }
-
-    if (!response.ok) {
-      console.error(`[Gemini] ${model} error: ${response.status}`);
-      continue;
-    }
-
-    const data: GeminiResponse = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (text) return text;
   }
 
-  throw new Error("AI is currently busy. Please try again in a minute.");
+  throw new Error(`AI unavailable: ${lastError}`);
 }
 
 /**
