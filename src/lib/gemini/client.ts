@@ -4,8 +4,9 @@
  */
 
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
-const PRIMARY_MODEL = "gemini-2.0-flash";
-const FALLBACK_MODEL = "gemini-2.0-flash-lite";
+const PRIMARY_MODEL = "gemini-2.5-flash";
+const FALLBACK_MODEL = "gemini-2.0-flash";
+const LAST_RESORT_MODEL = "gemini-2.0-flash-lite";
 
 interface GeminiResponse {
   candidates?: Array<{
@@ -22,7 +23,7 @@ export async function callGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY environment variable is not set. Please add it in Vercel.");
 
-  const models = [PRIMARY_MODEL, FALLBACK_MODEL];
+  const models = [PRIMARY_MODEL, FALLBACK_MODEL, LAST_RESORT_MODEL];
   let lastError = "";
 
   for (const model of models) {
