@@ -46,6 +46,12 @@ export async function SiteHeader() {
               >
                 AI Tools
               </Link>
+              <Link
+                href="/subscribe"
+                className="rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-700 transition-colors min-h-[44px] flex items-center"
+              >
+                Upgrade ⚡
+              </Link>
               <form action="/api/auth/signout" method="POST">
                 <button
                   type="submit"
