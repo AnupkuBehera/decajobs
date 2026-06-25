@@ -19,8 +19,20 @@ The cover letter should:
 Return ONLY the cover letter text. No JSON, no markdown formatting.`;
 
     const result = await callGemini(prompt);
-    return NextResponse.json({ coverLetter: result });
-  } catch {
-    return NextResponse.json({ error: "AI is busy. Please try again in a minute." }, { status: 503 });
+
+    // Free tier: show only first 150 words, blur the rest
+    const words = result.split(" ");
+    const preview = words.slice(0, 150).join(" ");
+    const isTruncated = words.length > 150;
+
+    return NextResponse.json({
+      coverLetter: isTruncated ? preview + "..." : result,
+      isLimited: isTruncated,
+      fullLength: words.length,
+      upgradeMessage: isTruncated ? "Sign up free to see the full cover letter and download as PDF." : undefined,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "AI busy";
+    return NextResponse.json({ error: message }, { status: 503 });
   }
 }
