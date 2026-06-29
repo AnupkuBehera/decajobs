@@ -70,6 +70,12 @@ export async function SiteHeader() {
                 Free Tools
               </Link>
               <Link
+                href="/blog"
+                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+              >
+                Blog
+              </Link>
+              <Link
                 href="/login"
                 className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
               >

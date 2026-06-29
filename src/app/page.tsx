@@ -84,92 +84,68 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEO Content Section */}
+      {/* Value Proposition Section */}
       <section className="border-t border-neutral-200 bg-neutral-50 py-12 sm:py-16 lg:py-20 px-4">
-        <div className="mx-auto max-w-4xl prose prose-neutral prose-sm sm:prose-base">
+        <div className="mx-auto max-w-4xl">
           <h2 className="text-2xl font-bold text-neutral-900 sm:text-3xl text-center mb-8">
-            The Smartest AI-Powered Online Job Portal for 2026
+            Why Thousands of Professionals Choose DecaJobs
           </h2>
 
-          <p>
-            Finding the right job in today&apos;s crowded market shouldn&apos;t feel like searching for a needle in a haystack. 
-            <strong>DecaJobs</strong> is a next-generation <strong>AI-powered job portal</strong> that cuts through the noise 
-            and delivers exactly 10 perfectly matched job opportunities to your inbox every single morning. Unlike traditional 
-            <strong>job search websites</strong> that overwhelm you with thousands of irrelevant listings, DecaJobs uses 
-            intelligent matching algorithms to find roles that genuinely fit your skills, experience, and career goals.
-          </p>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-12">
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">⏱️</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">Save 2+ Hours Daily</h3>
+              <p className="mt-2 text-sm text-neutral-600">No more scrolling through thousands of irrelevant listings. We deliver only 10 jobs that actually match your skills.</p>
+            </div>
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">🎯</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">AI-Powered Precision</h3>
+              <p className="mt-2 text-sm text-neutral-600">Our scoring algorithm weighs title relevance, skill match, location, and job description to find truly relevant opportunities.</p>
+            </div>
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">🌐</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">20+ Job Sources</h3>
+              <p className="mt-2 text-sm text-neutral-600">We aggregate from LinkedIn, Indeed, Glassdoor, Remotive, RemoteOK, and Arbeitnow — so you never miss an opportunity.</p>
+            </div>
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">🤖</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">12+ AI Career Tools</h3>
+              <p className="mt-2 text-sm text-neutral-600">Resume optimizer, interview prep, salary calculator, cover letter generator, career coaching, and more — all included.</p>
+            </div>
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">💼</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">Remote & Local Jobs</h3>
+              <p className="mt-2 text-sm text-neutral-600">Whether you want remote work or roles in Bangalore, Mumbai, Delhi, or any city — our engine adapts to your preference.</p>
+            </div>
+            <div className="rounded-xl bg-white border border-neutral-200 p-6">
+              <span className="text-2xl">💰</span>
+              <h3 className="mt-3 text-base font-semibold text-neutral-900">Free for Employers</h3>
+              <p className="mt-2 text-sm text-neutral-600">Companies post jobs at no cost. More listings means better matches for job seekers. Everyone wins.</p>
+            </div>
+          </div>
 
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            Why DecaJobs Is the Best Job Search Site
-          </h3>
+          <div className="prose prose-neutral prose-sm sm:prose-base mx-auto">
+            <h3 className="text-xl font-semibold text-neutral-900">The Problem We Solve</h3>
+            <p>
+              The average job seeker spends 11 hours per week searching for work. They check multiple platforms daily, sift through hundreds of irrelevant listings, and often apply to jobs they&apos;re not even qualified for — simply because the sheer volume makes it impossible to evaluate each one carefully.
+            </p>
+            <p>
+              DecaJobs was built to eliminate that frustration. Set up your profile once with your target titles, skills, and location. Every morning at 7 AM, you receive exactly 10 hand-picked jobs, ranked by how well they fit your career goals. That&apos;s it — 5 minutes a day instead of 2 hours.
+            </p>
 
-          <p>
-            Most <strong>online job portals</strong> require you to spend hours scrolling, filtering, and applying. 
-            DecaJobs flips that model entirely. Simply set up your profile once — add your target job titles, key skills, 
-            preferred location, and expected salary — and our AI engine does the rest. Every morning at 7 AM, you receive a 
-            beautifully curated email with your top 10 job matches, complete with one-click apply links. Whether you&apos;re 
-            a fresher looking for your first role or a senior professional seeking <strong>remote job opportunities</strong>, 
-            DecaJobs adapts to your unique career profile.
-          </p>
+            <h3 className="text-xl font-semibold text-neutral-900 mt-8">Who Is DecaJobs For?</h3>
+            <ul>
+              <li><strong>Freshers</strong> looking for their first job without drowning in irrelevant senior-level listings</li>
+              <li><strong>Experienced professionals</strong> exploring new opportunities without publicly announcing their job search</li>
+              <li><strong>Remote workers</strong> who want curated remote-only positions from global companies</li>
+              <li><strong>Career changers</strong> who need AI to identify transferable-skill matches they might miss</li>
+              <li><strong>Passive candidates</strong> who want to stay informed about opportunities without actively searching</li>
+            </ul>
 
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            Aggregating Jobs from the Best Job Search Engines
-          </h3>
-
-          <p>
-            DecaJobs doesn&apos;t limit you to a single source. Our platform aggregates listings from the 
-            <strong>best job search engines</strong> and <strong>remote job boards</strong> including LinkedIn, Indeed, 
-            Glassdoor, Remotive, RemoteOK, and Arbeitnow. This means whether you&apos;re searching for roles on the 
-            <strong>Indeed job portal</strong>, exploring opportunities on <strong>remote job sites</strong>, or browsing 
-            positions on the <strong>Fresherslive job portal</strong>, DecaJobs brings them all together in one 
-            personalized daily digest. No more jumping between multiple <strong>job search apps</strong> and websites.
-          </p>
-
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            Built for Remote Job Seekers and Local Opportunities
-          </h3>
-
-          <p>
-            The rise of remote work has transformed how we search for jobs. DecaJobs is built as a powerful 
-            <strong>remote job finder</strong> that prioritizes remote-friendly positions when that&apos;s what you want. 
-            Set your location to &quot;Remote&quot; and our engine will surface the best <strong>remote job opportunities</strong> 
-            from across the globe. Prefer local roles? DecaJobs also supports <strong>job search near me</strong> functionality, 
-            matching you with positions in your city, state, or country. Our <strong>online job portal India</strong> coverage 
-            includes major metros like Bangalore, Mumbai, Delhi, Hyderabad, and Chennai, as well as emerging tech hubs.
-          </p>
-
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            How Our AI Matching Works
-          </h3>
-
-          <p>
-            Unlike basic keyword search on other <strong>job search sites</strong>, DecaJobs employs a weighted scoring 
-            algorithm that considers multiple factors: how well your target titles match the job title (40% weight), 
-            skill overlap between your profile and the job requirements (35% weight), location compatibility (15% weight), 
-            and description keyword relevance (10% weight). Jobs are scored on a 0-100 scale, and only the top 10 
-            highest-scoring matches make it into your daily email. This ensures every job you see is genuinely relevant — 
-            no spam, no irrelevant listings, just opportunities that matter.
-          </p>
-
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            Free for Employers, Powerful for Candidates
-          </h3>
-
-          <p>
-            Employers can post jobs on DecaJobs completely free — no hidden fees, no per-listing charges. Simply verify 
-            your email, fill in the job details, and your listing immediately enters our matching pool. For candidates, 
-            DecaJobs offers a generous free trial followed by affordable premium access. We believe the 
-            <strong>best online job portal</strong> should make job searching effortless, not expensive. With our daily 
-            digest model, you spend less than 5 minutes a day reviewing perfectly matched opportunities instead of hours 
-            scrolling through endless <strong>job search websites</strong>.
-          </p>
-
-          <p>
-            Join thousands of professionals who have already discovered the smarter way to find their next role. 
-            Whether you&apos;re exploring the <strong>best job search sites 2025</strong> and 2026, looking for 
-            <strong>remote job boards</strong>, or simply want an AI that understands your career goals — DecaJobs 
-            is the <strong>job portal</strong> built for how you actually want to search for jobs: effortlessly.
-          </p>
+            <p>
+              <Link href="/how-it-works" className="text-primary-600 font-medium hover:underline">Learn how our AI matching works →</Link>
+            </p>
+          </div>
         </div>
       </section>
 
