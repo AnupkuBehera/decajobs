@@ -3,13 +3,22 @@ import Link from "next/link";
 
 export async function SiteHeader() {
   let user = null;
+  let isPro = false;
 
   try {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
     user = data?.user ?? null;
+
+    if (user) {
+      const { data: candidate } = await supabase
+        .from("candidates")
+        .select("subscription_status")
+        .eq("id", user.id)
+        .maybeSingle();
+      isPro = candidate?.subscription_status === "active";
+    }
   } catch {
-    // If auth check fails, treat as unauthenticated
     user = null;
   }
 
@@ -46,12 +55,18 @@ export async function SiteHeader() {
               >
                 AI Tools
               </Link>
-              <Link
-                href="/subscribe"
-                className="rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-700 transition-colors min-h-[44px] flex items-center"
-              >
-                Upgrade ⚡
-              </Link>
+              {isPro ? (
+                <span className="rounded-md bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700 min-h-[44px] flex items-center">
+                  Pro ✓
+                </span>
+              ) : (
+                <Link
+                  href="/subscribe"
+                  className="rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-700 transition-colors min-h-[44px] flex items-center"
+                >
+                  Upgrade ⚡
+                </Link>
+              )}
               <form action="/api/auth/signout" method="POST">
                 <button
                   type="submit"
