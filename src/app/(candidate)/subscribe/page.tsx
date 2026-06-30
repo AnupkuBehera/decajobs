@@ -38,7 +38,17 @@ export default function SubscribePage() {
         name: "DecaJobs",
         description: "DecaJobs Pro - ₹299/month",
         theme: { color: "#2563eb" },
-        handler: function () {
+        handler: async function () {
+          // Immediately activate Pro status (fallback for webhook delay)
+          try {
+            await fetch("/api/subscription/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ subscriptionId: data.subscriptionId }),
+            });
+          } catch {
+            // Webhook will eventually handle it even if this fails
+          }
           setStatus("success");
           // Redirect to dashboard after success
           setTimeout(() => {

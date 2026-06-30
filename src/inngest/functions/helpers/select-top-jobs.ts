@@ -94,8 +94,9 @@ export function selectTopJobs(
     }
   }
 
-  // Step 4: If still fewer than 10, return null (skip candidate)
-  if (selectedIds.length < DIGEST_SIZE) {
+  // Step 4: If no jobs at all, return null (skip candidate).
+  // Otherwise, send whatever we have (relaxed from strict 10 requirement).
+  if (selectedIds.length === 0) {
     return null;
   }
 

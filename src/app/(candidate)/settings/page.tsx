@@ -12,6 +12,8 @@ export default function SettingsPage() {
   const [isFetching, setIsFetching] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>("trial");
+  const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -28,13 +30,14 @@ export default function SettingsPage() {
 
         const { data: candidate } = await supabase
           .from("candidates")
-          .select("is_active, preferred_delivery_time")
+          .select("is_active, preferred_delivery_time, subscription_status")
           .eq("id", user.id)
           .single();
 
         if (candidate) {
           setIsActive(candidate.is_active ?? true);
           setDeliveryTime(candidate.preferred_delivery_time ?? "07:00");
+          setSubscriptionStatus(candidate.subscription_status ?? "trial");
         }
       } catch {
         // Candidate record may not exist yet
@@ -45,6 +48,28 @@ export default function SettingsPage() {
 
     fetchSettings();
   }, []);
+
+  const handleVerifySubscription = async () => {
+    setIsVerifying(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/subscription/verify", { method: "POST" });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSubscriptionStatus("active");
+        setSuccessMessage("Subscription verified! You now have Pro access.");
+      } else {
+        setErrorMessage(data.error || "Failed to verify subscription.");
+      }
+    } catch {
+      setErrorMessage("Network error. Please try again.");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -184,6 +209,42 @@ export default function SettingsPage() {
                 </label>
               </div>
             </fieldset>
+          </Card>
+
+          {/* Subscription Status */}
+          <Card>
+            <CardTitle className="mb-4">Subscription</CardTitle>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-neutral-900">
+                  Plan:{" "}
+                  <span
+                    className={
+                      subscriptionStatus === "active"
+                        ? "text-green-600"
+                        : "text-neutral-600"
+                    }
+                  >
+                    {subscriptionStatus === "active" ? "Pro ✓" : "Free / Trial"}
+                  </span>
+                </p>
+                <p className="text-sm text-neutral-500">
+                  {subscriptionStatus === "active"
+                    ? "You have full access to all Pro features."
+                    : "Already paid? Click verify to activate your Pro subscription."}
+                </p>
+              </div>
+              {subscriptionStatus !== "active" && (
+                <Button
+                  onClick={handleVerifySubscription}
+                  isLoading={isVerifying}
+                  variant="secondary"
+                  size="sm"
+                >
+                  {isVerifying ? "Verifying..." : "Verify Payment"}
+                </Button>
+              )}
+            </div>
           </Card>
 
           {/* Success/Error Messages */}

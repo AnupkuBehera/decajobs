@@ -13,8 +13,7 @@ import {
   selectTopJobs,
   type JobListingWithDate,
 } from "@/inngest/functions/helpers/select-top-jobs";
-import { resend, FROM_EMAIL } from "@/lib/resend/client";
-import { buildUnsubscribeUrl } from "@/lib/unsubscribe/token";
+import { sendDigestEmail, type JobDigestItem } from "@/lib/resend/send";
 import { fetchAllExternalJobs, type ExternalJob } from "@/lib/external-jobs";
 import type { CandidateProfile } from "@/lib/matching/types";
 
@@ -67,68 +66,6 @@ async function fetchEligibleJobs(
     application_link: row.application_link as string,
     createdAt: row.created_at as string,
   }));
-}
-
-/**
- * Formats a simple HTML email for the daily digest.
- * This is a placeholder template — the real React Email template
- * will be wired in task 10.1.
- */
-function formatDigestEmail(
-  jobs: { id: string; title: string; description: string; location: string; application_link: string }[],
-  candidateId: string
-): { subject: string; html: string; text: string } {
-  const date = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajob.com";
-  const unsubscribeUrl = buildUnsubscribeUrl(candidateId, appUrl);
-  const preferencesUrl = `${appUrl}/settings`;
-
-  const jobCardsHtml = jobs
-    .map(
-      (job, index) => `
-      <div style="margin-bottom: 16px; padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px;">
-        <h3 style="margin: 0 0 4px 0; font-size: 16px;">
-          ${index + 1}. <a href="${job.application_link}" style="color: #2563eb; text-decoration: none;">${job.title}</a>
-        </h3>
-        <p style="margin: 0 0 8px 0; font-size: 13px; color: #6b7280;">📍 ${job.location}</p>
-        <p style="margin: 0 0 8px 0; font-size: 14px; color: #374151;">${job.description.slice(0, 150)}${job.description.length > 150 ? "..." : ""}</p>
-        <a href="${job.application_link}" style="display: inline-block; padding: 8px 16px; background-color: #2563eb; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 14px;">Apply Now</a>
-      </div>`
-    )
-    .join("\n");
-
-  const html = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
-      <h1 style="font-size: 24px; color: #111827;">Your DecaJobs Daily 10</h1>
-      <p style="color: #6b7280; font-size: 14px;">${date}</p>
-      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;" />
-      ${jobCardsHtml}
-      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-      <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-        You're receiving this because you signed up for DecaJobs.
-        <a href="${unsubscribeUrl}" style="color: #6b7280;">Unsubscribe</a> | <a href="${preferencesUrl}" style="color: #6b7280;">Preferences</a>
-      </p>
-    </div>
-  `;
-
-  const text = jobs
-    .map(
-      (job, index) =>
-        `${index + 1}. ${job.title} (${job.location})\n   ${job.description.slice(0, 150)}\n   Apply: ${job.application_link}`
-    )
-    .join("\n\n");
-
-  return {
-    subject: `Your DecaJobs Daily 10 — ${date}`,
-    html,
-    text,
-  };
 }
 
 /**
@@ -291,16 +228,15 @@ export const dailyDigestFunction = inngest.createFunction(
                   );
                 }
 
-                // 2g. Format and send email via Resend
-                const { subject, html, text } = formatDigestEmail(orderedJobs, candidate.id);
+                // 2g. Send email via Resend with retry logic
+                const digestItems: JobDigestItem[] = orderedJobs.map((job) => ({
+                  title: job.title,
+                  description: job.description,
+                  location: job.location,
+                  applicationLink: job.application_link,
+                }));
 
-                await resend.emails.send({
-                  from: FROM_EMAIL,
-                  to: candidate.email,
-                  subject,
-                  html,
-                  text,
-                });
+                await sendDigestEmail(candidate.email, digestItems, candidate.id);
 
                 emailsSent++;
                 processed++;
