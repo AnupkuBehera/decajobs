@@ -16,6 +16,7 @@ export function SiteFooter() {
             <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
             <Link href="/tools" className="hover:text-white transition-colors">Free Tools</Link>
             <Link href="/employer/register" className="hover:text-white transition-colors">Post Jobs</Link>
+            <a href="https://www.effectivecpmnetwork.com/ehhdnwuubj?key=2ba883c1cad07ea1cfddf2771dce7e03" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Sponsored</a>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
             <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
