@@ -1,22 +1,36 @@
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export async function SiteHeader() {
   let user = null;
   let isPro = false;
 
   try {
+    await cookies();
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
     user = data?.user ?? null;
 
     if (user) {
-      const { data: candidate } = await supabase
+      // Use service role to reliably read subscription_status (bypasses RLS issues)
+      const serviceClient = createServiceClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+      const { data: candidate } = await serviceClient
         .from("candidates")
-        .select("subscription_status")
+        .select("subscription_status, subscription_ends_at")
         .eq("id", user.id)
         .maybeSingle();
-      isPro = candidate?.subscription_status === "active";
+
+      if (candidate?.subscription_status === "active") {
+        const endDate = candidate.subscription_ends_at
+          ? new Date(candidate.subscription_ends_at)
+          : null;
+        isPro = !endDate || endDate > new Date();
+      }
     }
   } catch {
     user = null;
