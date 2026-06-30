@@ -240,15 +240,23 @@ export default function MyDaily10Page() {
                     </div>
                   </details>
 
-                  {/* Apply Button */}
-                  <a
-                    href={job.applicationLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]"
-                  >
-                    Apply Now →
-                  </a>
+                  {/* Action Buttons */}
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <a
+                      href={job.applicationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]"
+                    >
+                      Apply Now →
+                    </a>
+                    <a
+                      href={`/job-prep?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}&location=${encodeURIComponent(job.location)}&company=`}
+                      className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                    >
+                      🎤 Prepare
+                    </a>
+                  </div>
                 </div>
               </div>
             </Card>
