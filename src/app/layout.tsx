@@ -119,6 +119,11 @@ export default function RootLayout({
           data-cfasync="false"
           strategy="afterInteractive"
         />
+        {/* Monetag Ad 3 */}
+        <Script
+          src="https://pl30138878.effectivecpmnetwork.com/07/cd/ec/07cdec4bfc87d5dd96a641e55d3a7320.js"
+          strategy="afterInteractive"
+        />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QM60V43CBZ"
