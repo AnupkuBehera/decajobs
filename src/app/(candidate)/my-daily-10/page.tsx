@@ -256,6 +256,12 @@ export default function MyDaily10Page() {
                     >
                       🎤 Prepare
                     </a>
+                    <a
+                      href={`/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                      className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                    >
+                      🤖 Practice
+                    </a>
                   </div>
                 </div>
               </div>
