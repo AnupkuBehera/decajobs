@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CookieConsent } from "@/components/cookie-consent";
+import { AdScripts, AdBanner } from "@/components/ad-scripts";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -102,28 +103,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col antialiased overflow-x-hidden">
-        {/* Google AdSense */}
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7950314044956492"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-        {/* Monetag Ad Network */}
-        <Script
-          src="https://pl30138876.effectivecpmnetwork.com/eb/65/4d/eb654d3ef5fd7f8105bb7277a3dee19a.js"
-          strategy="afterInteractive"
-        />
-        {/* Monetag Banner Ad */}
-        <Script
-          src="https://pl30138877.effectivecpmnetwork.com/71208afc22515d4d1e47d44012c8ffdd/invoke.js"
-          data-cfasync="false"
-          strategy="afterInteractive"
-        />
-        {/* Monetag Ad 3 */}
-        <Script
-          src="https://pl30138878.effectivecpmnetwork.com/07/cd/ec/07cdec4bfc87d5dd96a641e55d3a7320.js"
-          strategy="afterInteractive"
-        />
+        {/* Ad scripts — only shown to non-Pro users */}
+        <AdScripts />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QM60V43CBZ"
@@ -148,8 +129,8 @@ export default function RootLayout({
               {children}
             </div>
           </main>
-          {/* Monetag Banner Ad Container */}
-          <div id="container-71208afc22515d4d1e47d44012c8ffdd" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" />
+          {/* Banner ad — only shown to non-Pro users */}
+          <AdBanner />
           <SiteFooter />
           <CookieConsent />
         </ToastProvider>
