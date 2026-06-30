@@ -113,6 +113,12 @@ export default function RootLayout({
           src="https://pl30138876.effectivecpmnetwork.com/eb/65/4d/eb654d3ef5fd7f8105bb7277a3dee19a.js"
           strategy="afterInteractive"
         />
+        {/* Monetag Banner Ad */}
+        <Script
+          src="https://pl30138877.effectivecpmnetwork.com/71208afc22515d4d1e47d44012c8ffdd/invoke.js"
+          data-cfasync="false"
+          strategy="afterInteractive"
+        />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QM60V43CBZ"
@@ -137,6 +143,8 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          {/* Monetag Banner Ad Container */}
+          <div id="container-71208afc22515d4d1e47d44012c8ffdd" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" />
           <SiteFooter />
           <CookieConsent />
         </ToastProvider>
