@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "DecaJobs - AI Powered Online Job Portal | 10 Perfect Jobs Every Morning",
+  title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
   description:
     "DecaJobs is the best online job portal powered by AI. Get exactly 10 highly relevant job matches delivered to your inbox every morning. Search jobs from Indeed, LinkedIn, Glassdoor & more. Best job search site 2026 for remote jobs, fresher jobs, and experienced professionals in India & worldwide.",
   keywords: [
