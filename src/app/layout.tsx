@@ -108,6 +108,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        {/* Monetag Ad Network */}
+        <Script
+          src="https://pl30138876.effectivecpmnetwork.com/eb/65/4d/eb654d3ef5fd7f8105bb7277a3dee19a.js"
+          strategy="afterInteractive"
+        />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QM60V43CBZ"
