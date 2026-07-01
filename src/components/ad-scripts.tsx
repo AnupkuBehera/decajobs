@@ -40,22 +40,23 @@ export async function AdScripts() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      {/* Monetag Ad Network */}
-      <Script
+      {/* Adsterra / Monetag scripts — temporarily disabled */}
+      {/* Popunder */}
+      {/* <Script
         src="https://pl30138876.effectivecpmnetwork.com/eb/65/4d/eb654d3ef5fd7f8105bb7277a3dee19a.js"
         strategy="afterInteractive"
-      />
-      {/* Monetag Banner Ad */}
-      <Script
+      /> */}
+      {/* Native Banner */}
+      {/* <Script
         src="https://pl30138877.effectivecpmnetwork.com/71208afc22515d4d1e47d44012c8ffdd/invoke.js"
         data-cfasync="false"
         strategy="afterInteractive"
-      />
-      {/* Monetag Ad 3 */}
-      <Script
+      /> */}
+      {/* Social Bar / Smartlink */}
+      {/* <Script
         src="https://pl30138878.effectivecpmnetwork.com/07/cd/ec/07cdec4bfc87d5dd96a641e55d3a7320.js"
         strategy="afterInteractive"
-      />
+      /> */}
     </>
   );
 }
@@ -89,5 +90,7 @@ export async function AdBanner() {
 
   if (isPro) return null;
 
-  return <div id="container-71208afc22515d4d1e47d44012c8ffdd" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" />;
+  // Adsterra banner container — disabled
+  return null;
+  // return <div id="container-71208afc22515d4d1e47d44012c8ffdd" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" />;
 }
