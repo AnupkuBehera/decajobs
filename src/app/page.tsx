@@ -35,12 +35,12 @@ export default function Home() {
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link href="/login">
-              <Button variant="primary" size="lg" className="bg-white text-primary-900 hover:bg-neutral-100 font-semibold shadow-lg shadow-primary-900/30 px-8 min-h-[52px] text-base">
+              <Button variant="primary" size="lg" className="bg-white text-primary-700 hover:bg-neutral-100 font-semibold shadow-lg shadow-primary-900/30 px-8 min-h-[52px] text-base border-2 border-white">
                 Start Free Trial →
               </Button>
             </Link>
             <Link href="/employer/register">
-              <Button variant="secondary" size="lg" className="border-primary-400/40 text-primary-100 hover:bg-primary-800/80 px-8 min-h-[52px] text-base">
+              <Button variant="secondary" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-primary-800 px-8 min-h-[52px] text-base font-semibold">
                 Post Jobs Free
               </Button>
             </Link>
@@ -301,7 +301,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link href="/login">
-              <Button variant="primary" size="lg" className="bg-white text-primary-900 hover:bg-neutral-100 font-semibold shadow-lg px-8 min-h-[52px] text-base">
+              <Button variant="primary" size="lg" className="bg-white text-primary-700 hover:bg-neutral-100 font-semibold shadow-lg px-8 min-h-[52px] text-base border-2 border-white">
                 Get Started Free →
               </Button>
             </Link>
