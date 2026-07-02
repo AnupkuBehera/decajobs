@@ -35,7 +35,7 @@ export default function Home() {
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg shadow-primary-900/30 transition-colors hover:bg-neutral-100 min-h-[52px]"
+              className="inline-flex items-center justify-center rounded-lg bg-yellow-400 px-8 py-3.5 text-base font-semibold text-primary-900 shadow-lg transition-colors hover:bg-yellow-300 min-h-[52px]"
             >
               Start Free Trial →
             </Link>
@@ -303,7 +303,7 @@ export default function Home() {
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg transition-colors hover:bg-neutral-100 min-h-[52px]"
+              className="inline-flex items-center justify-center rounded-lg bg-yellow-400 px-8 py-3.5 text-base font-semibold text-primary-900 shadow-lg transition-colors hover:bg-yellow-300 min-h-[52px]"
             >
               Get Started Free →
             </Link>
