@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -34,15 +33,17 @@ export default function Home() {
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/login">
-              <Button variant="primary" size="lg" className="bg-white text-primary-700 hover:bg-neutral-100 font-semibold shadow-lg shadow-primary-900/30 px-8 min-h-[52px] text-base border-2 border-white">
-                Start Free Trial →
-              </Button>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg shadow-primary-900/30 transition-colors hover:bg-neutral-100 min-h-[52px]"
+            >
+              Start Free Trial →
             </Link>
-            <Link href="/employer/register">
-              <Button variant="secondary" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-primary-800 px-8 min-h-[52px] text-base font-semibold">
-                Post Jobs Free
-              </Button>
+            <Link
+              href="/employer/register"
+              className="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white hover:text-primary-800 min-h-[52px]"
+            >
+              Post Jobs Free
             </Link>
           </div>
 
@@ -300,10 +301,11 @@ export default function Home() {
             Join thousands of professionals who wake up to their perfect 10 jobs every morning.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/login">
-              <Button variant="primary" size="lg" className="bg-white text-primary-700 hover:bg-neutral-100 font-semibold shadow-lg px-8 min-h-[52px] text-base border-2 border-white">
-                Get Started Free →
-              </Button>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg transition-colors hover:bg-neutral-100 min-h-[52px]"
+            >
+              Get Started Free →
             </Link>
           </div>
           <p className="mt-4 text-sm text-primary-300">
