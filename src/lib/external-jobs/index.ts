@@ -13,6 +13,7 @@ import { fetchJobsForCandidate as fetchJSearchJobs } from "@/lib/jsearch/client"
 import { fetchRemotiveJobs } from "./remotive";
 import { fetchRemoteOKJobs } from "./remoteok";
 import { fetchArbeitnowJobs } from "./arbeitnow";
+import { fetchApifyLinkedInJobs } from "./apify";
 import type { ExternalJob } from "./types";
 
 export type { ExternalJob } from "./types";
@@ -35,12 +36,13 @@ export async function fetchAllExternalJobs(
   const searchQuery = `${primaryTitle} ${skills.slice(0, 2).join(" ")}`;
 
   // Run all APIs in parallel — each one handles its own errors gracefully
-  const [jsearchResults, remotiveResults, remoteokResults, arbeitnowResults] =
+  const [jsearchResults, remotiveResults, remoteokResults, arbeitnowResults, apifyResults] =
     await Promise.all([
       fetchJSearchJobs(targetTitles, skills, location),
       fetchRemotiveJobs(searchQuery),
       fetchRemoteOKJobs(skills.slice(0, 3)),
       fetchArbeitnowJobs(primaryTitle),
+      fetchApifyLinkedInJobs(primaryTitle, location),
     ]);
 
   // Convert JSearch results to common format
@@ -61,6 +63,7 @@ export async function fetchAllExternalJobs(
     ...remotiveResults,
     ...remoteokResults,
     ...arbeitnowResults,
+    ...apifyResults,
   ];
 
   // Deduplicate by normalized title + company
@@ -78,7 +81,8 @@ export async function fetchAllExternalJobs(
   console.log(
     `[External Jobs] Total: ${allJobs.length}, Unique: ${uniqueJobs.length} ` +
     `(JSearch: ${jsearchJobs.length}, Remotive: ${remotiveResults.length}, ` +
-    `RemoteOK: ${remoteokResults.length}, Arbeitnow: ${arbeitnowResults.length})`
+    `RemoteOK: ${remoteokResults.length}, Arbeitnow: ${arbeitnowResults.length}, ` +
+    `Apify: ${apifyResults.length})`
   );
 
   return uniqueJobs;
