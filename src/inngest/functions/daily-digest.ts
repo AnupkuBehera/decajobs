@@ -157,8 +157,8 @@ export const sendCandidateDigestFunction = inngest.createFunction(
     id: "send-candidate-digest",
     name: "Send Candidate Digest Email",
     retries: 3,
+    triggers: [{ event: "daily-digest/send-candidate-email" }],
   },
-  { event: "daily-digest/send-candidate-email" },
   async ({ event, step, logger }) => {
     const { candidate } = event.data;
     const supabase = createServiceRoleClient();
