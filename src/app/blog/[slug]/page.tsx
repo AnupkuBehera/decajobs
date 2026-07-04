@@ -291,6 +291,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   return {
     title: `${article.title} | DecaJobs Blog`,
     description: article.content.slice(0, 160),
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
   };
 }
 

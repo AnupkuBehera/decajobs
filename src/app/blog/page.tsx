@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Career Blog - Job Search Tips, Interview Guides & Resume Advice | DecaJobs",
   description: "Expert career advice, job search tips, interview preparation guides, resume writing tips, and salary negotiation strategies. Updated for 2026.",
+  alternates: {
+    canonical: "/blog",
+  },
 };
 
 const articles = [

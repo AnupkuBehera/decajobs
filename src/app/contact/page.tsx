@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Contact Us - DecaJobs",
   description:
     "Get in touch with the DecaJobs team. Contact us for support, partnership inquiries, feedback, or any questions about our AI-powered job portal.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

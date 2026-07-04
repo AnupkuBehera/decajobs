@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Privacy Policy - DecaJobs",
   description:
     "Read the DecaJobs privacy policy. Learn how we collect, use, and protect your personal data on our AI-powered job portal.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPolicyPage() {

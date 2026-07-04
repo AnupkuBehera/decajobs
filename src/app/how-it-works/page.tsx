@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "How DecaJobs Works - AI Job Matching Explained | DecaJobs",
   description: "Learn exactly how DecaJobs finds and delivers 10 perfect job matches to your inbox every morning. Step-by-step guide to our AI matching technology.",
+  alternates: {
+    canonical: "/how-it-works",
+  },
 };
 
 export default function HowItWorksPage() {

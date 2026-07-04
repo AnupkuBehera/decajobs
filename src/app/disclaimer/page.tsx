@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Disclaimer - DecaJobs",
   description: "Read the DecaJobs disclaimer regarding job listings, AI tools, and career advice provided on our platform.",
+  alternates: {
+    canonical: "/disclaimer",
+  },
 };
 
 export default function DisclaimerPage() {

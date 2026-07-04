@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Frequently Asked Questions - DecaJobs | AI Job Portal",
   description: "Get answers to common questions about DecaJobs. Learn how our AI job matching works, pricing, features, and how to get started finding your perfect job.",
+  alternates: {
+    canonical: "/faq",
+  },
 };
 
 const faqs = [

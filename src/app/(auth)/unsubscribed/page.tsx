@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Unsubscribed - DecaJobs",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 interface UnsubscribedPageProps {
   searchParams: Promise<{ error?: string }>;

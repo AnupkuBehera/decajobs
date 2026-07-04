@@ -1,4 +1,55 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
+  description:
+    "DecaJobs is the best online job portal powered by AI. Get exactly 10 highly relevant job matches delivered to your inbox every morning. Search jobs from Indeed, LinkedIn, Glassdoor & more. Best job search site 2026 for remote jobs, fresher jobs, and experienced professionals in India & worldwide.",
+  keywords: [
+    "online job portal",
+    "ai powered job portal",
+    "indeed job portal",
+    "fresherslive job portal",
+    "job portal",
+    "best online job portal",
+    "online job portal india",
+    "job search",
+    "job search websites",
+    "job search sites",
+    "best job search engines",
+    "best job search sites",
+    "best job search websites 2026",
+    "best job search sites 2025",
+    "job search near me",
+    "job search apps",
+    "remote job finder",
+    "remote job sites",
+    "remote job boards",
+    "remote job opportunities",
+  ],
+  openGraph: {
+    title: "DecaJobs - AI Powered Online Job Portal | 10 Perfect Jobs Every Morning",
+    description:
+      "The smartest job search engine that delivers exactly 10 AI-matched jobs to your inbox daily. Aggregates from LinkedIn, Indeed, Glassdoor & 20+ job boards. Free to start.",
+    url: "https://decajob.com",
+    siteName: "DecaJobs",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DecaJobs - AI Powered Online Job Portal",
+    description:
+      "Get 10 AI-matched jobs delivered to your inbox every morning. The best job search site for 2026.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (
@@ -35,7 +86,7 @@ export default function Home() {
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center rounded-lg bg-yellow-400 px-8 py-3.5 text-base font-semibold text-primary-900 shadow-lg transition-colors hover:bg-yellow-300 min-h-[52px]"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg shadow-primary-900/30 transition-colors hover:bg-neutral-100 min-h-[52px]"
             >
               Start Free Trial →
             </Link>
@@ -303,7 +354,7 @@ export default function Home() {
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center rounded-lg bg-yellow-400 px-8 py-3.5 text-base font-semibold text-primary-900 shadow-lg transition-colors hover:bg-yellow-300 min-h-[52px]"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg transition-colors hover:bg-neutral-100 min-h-[52px]"
             >
               Get Started Free →
             </Link>

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Free Career Tools - Resume Checker, Salary Calculator, Interview Prep | DecaJobs",
   description:
     "Free AI-powered career tools: check your resume score, calculate salary by role, prepare for interviews, and generate cover letters. No login required.",
+  alternates: {
+    canonical: "/tools",
+  },
 };
 
 const tools = [

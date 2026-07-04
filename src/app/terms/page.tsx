@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Terms & Conditions - DecaJobs",
   description:
     "Read the DecaJobs terms and conditions. Understand your rights and responsibilities when using our AI-powered job portal.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {

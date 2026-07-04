@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "About Us - DecaJobs | AI-Powered Online Job Portal",
   description:
     "Learn about DecaJobs, the AI-powered job portal that delivers 10 perfectly matched jobs to your inbox every morning. Our mission, team, and technology.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {
