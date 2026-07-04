@@ -61,6 +61,8 @@ export default function SettingsPage() {
       if (res.ok && data.success) {
         setSubscriptionStatus("active");
         setSuccessMessage("Subscription verified! You now have Pro access.");
+        // Reload page to update layout header Pro state immediately
+        window.location.reload();
       } else {
         setErrorMessage(data.error || "Failed to verify subscription.");
       }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Script from "next/script";
+import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
 declare global {
   interface Window {
@@ -15,6 +17,38 @@ export default function SubscribePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [checkingSub, setCheckingSub] = useState(true);
+  const [isAlreadyPro, setIsAlreadyPro] = useState(false);
+
+  useEffect(() => {
+    async function checkExistingSub() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: candidate } = await supabase
+            .from("candidates")
+            .select("subscription_status, subscription_ends_at")
+            .eq("id", user.id)
+            .maybeSingle();
+
+          if (candidate?.subscription_status === "active") {
+            const endDate = candidate.subscription_ends_at
+              ? new Date(candidate.subscription_ends_at)
+              : null;
+            if (!endDate || endDate > new Date()) {
+              setIsAlreadyPro(true);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error checking subscription:", err);
+      } finally {
+        setCheckingSub(false);
+      }
+    }
+    checkExistingSub();
+  }, []);
 
   async function handleSubscribe() {
     setIsLoading(true);
@@ -69,6 +103,38 @@ export default function SubscribePage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  if (checkingSub) {
+    return (
+      <div className="py-16 text-center">
+        <div className="text-neutral-500">Checking subscription status...</div>
+      </div>
+    );
+  }
+
+  if (isAlreadyPro) {
+    return (
+      <div className="py-16 text-center">
+        <div className="mx-auto max-w-md">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+            <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-neutral-900">You are already a Pro Member!</h1>
+          <p className="mt-2 text-neutral-600">You have full access to all DecaJobs Pro features.</p>
+          <div className="mt-6">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 min-h-[44px]"
+            >
+              Go to Dashboard →
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (status === "success") {

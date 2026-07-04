@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 export async function SiteHeader() {
   let user = null;
   let isPro = false;
+  let isEmployer = false;
 
   try {
     await cookies();
@@ -19,17 +20,32 @@ export async function SiteHeader() {
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!
       );
-      const { data: candidate } = await serviceClient
-        .from("candidates")
-        .select("subscription_status, subscription_ends_at")
-        .eq("id", user.id)
-        .maybeSingle();
 
-      if (candidate?.subscription_status === "active") {
-        const endDate = candidate.subscription_ends_at
-          ? new Date(candidate.subscription_ends_at)
-          : null;
-        isPro = !endDate || endDate > new Date();
+      // Check if user is a verified employer
+      if (user.email) {
+        const { data: employer } = await serviceClient
+          .from("employers")
+          .select("is_verified")
+          .eq("email", user.email)
+          .maybeSingle();
+        
+        isEmployer = employer?.is_verified ?? false;
+      }
+
+      // If not an employer, check candidate subscription
+      if (!isEmployer) {
+        const { data: candidate } = await serviceClient
+          .from("candidates")
+          .select("subscription_status, subscription_ends_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (candidate?.subscription_status === "active") {
+          const endDate = candidate.subscription_ends_at
+            ? new Date(candidate.subscription_ends_at)
+            : null;
+          isPro = !endDate || endDate > new Date();
+        }
       }
     }
   } catch {
@@ -45,64 +61,89 @@ export async function SiteHeader() {
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4">
           {user ? (
-            <>
-              <Link
-                href="/dashboard"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/my-daily-10"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                My Daily 10
-              </Link>
-              <Link
-                href="/resume-tools"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                Resume AI
-              </Link>
-              <Link
-                href="/career-coach"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                Coach
-              </Link>
-              <Link
-                href="/applications"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                Tracker
-              </Link>
-              <Link
-                href="/ai-tools"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-              >
-                AI Tools
-              </Link>
-              {isPro ? (
-                <span className="rounded-md bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700 min-h-[44px] flex items-center">
-                  Pro ✓
-                </span>
-              ) : (
+            isEmployer ? (
+              <>
                 <Link
-                  href="/subscribe"
-                  className="rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-700 transition-colors min-h-[44px] flex items-center"
+                  href="/employer/dashboard"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
                 >
-                  Upgrade ⚡
+                  Dashboard
                 </Link>
-              )}
-              <form action="/api/auth/signout" method="POST">
-                <button
-                  type="submit"
-                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-red-50 hover:text-error-600 transition-colors min-h-[44px] flex items-center"
+                <Link
+                  href="/employer/post"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
                 >
-                  Sign Out
-                </button>
-              </form>
-            </>
+                  Post Job
+                </Link>
+                <form action="/api/auth/signout" method="POST">
+                  <button
+                    type="submit"
+                    className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-red-50 hover:text-error-600 transition-colors min-h-[44px] flex items-center"
+                  >
+                    Sign Out
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/my-daily-10"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  My Daily 10
+                </Link>
+                <Link
+                  href="/resume-tools"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  Resume AI
+                </Link>
+                <Link
+                  href="/career-coach"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  Coach
+                </Link>
+                <Link
+                  href="/applications"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  Tracker
+                </Link>
+                <Link
+                  href="/ai-tools"
+                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                >
+                  AI Tools
+                </Link>
+                {isPro ? (
+                  <span className="rounded-md bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700 min-h-[44px] flex items-center">
+                    Pro ✓
+                  </span>
+                ) : (
+                  <Link
+                    href="/subscribe"
+                    className="rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-primary-700 transition-colors min-h-[44px] flex items-center"
+                  >
+                    Upgrade ⚡
+                  </Link>
+                )}
+                <form action="/api/auth/signout" method="POST">
+                  <button
+                    type="submit"
+                    className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-red-50 hover:text-error-600 transition-colors min-h-[44px] flex items-center"
+                  >
+                    Sign Out
+                  </button>
+                </form>
+              </>
+            )
           ) : (
             <>
               <Link
