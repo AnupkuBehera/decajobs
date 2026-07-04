@@ -97,7 +97,6 @@ export const dailyDigestFunction = inngest.createFunction(
   },
   async ({ step, logger }) => {
     const startTime = Date.now();
-
     logger.info("Daily digest cron started", {
       timestamp: new Date().toISOString(),
     });
@@ -117,187 +116,159 @@ export const dailyDigestFunction = inngest.createFunction(
       }
 
       logger.info(
-        `Found ${candidates.length} active candidates with complete profiles`
+        `Found ${candidates.length} active candidates with complete profiles. Fanning out...`
       );
 
-      // Step 2: Process candidates in batches of 50
-      let totalProcessed = 0;
-      let totalSkipped = 0;
-      let totalEmails = 0;
-      let batchNumber = 0;
+      // Step 2: Fan-out - send an individual email event for each candidate
+      const events = candidates.map((candidate) => ({
+        name: "daily-digest/send-candidate-email" as const,
+        data: { candidate },
+      }));
 
-      for (const batch of batchCandidates(candidates)) {
-        batchNumber++;
+      await step.sendEvent("fan-out-candidate-digests", events);
 
-        const batchResult = await step.run(
-          `process-batch-${batchNumber}`,
-          async () => {
-            const supabase = createServiceRoleClient();
-
-            // Fetch eligible jobs once per batch (active, non-expired)
-            const allJobs = await fetchEligibleJobs(supabase);
-
-            logger.info(
-              `Batch ${batchNumber}: ${batch.length} candidates, ${allJobs.length} eligible jobs`
-            );
-
-            let processed = 0;
-            let skipped = 0;
-            let emailsSent = 0;
-
-            for (const candidate of batch) {
-              try {
-                // 2a. Get recently sent job IDs for deduplication
-                const recentlySentIds = await getRecentlySentJobIds(
-                  supabase,
-                  candidate.id
-                );
-
-                // 2b. Build candidate profile for matching engine
-                const candidateProfile: CandidateProfile = {
-                  targetTitles: candidate.profile.target_titles,
-                  skills: candidate.profile.skills,
-                  location: candidate.profile.location,
-                };
-
-                // 2c. Filter out recently sent jobs
-                const recentSet = new Set(recentlySentIds);
-                const deduplicatedJobs = allJobs.filter(
-                  (job) => !recentSet.has(job.id)
-                );
-
-                // 2c-ext. Fetch external jobs from all sources
-                let externalJobs: ExternalJob[] = [];
-                try {
-                  externalJobs = await fetchAllExternalJobs(
-                    candidate.profile.target_titles,
-                    candidate.profile.skills,
-                    candidate.profile.location
-                  );
-                } catch (extErr) {
-                  logger.warn(`Failed to fetch external jobs for ${candidate.id}`, {
-                    error: extErr instanceof Error ? extErr.message : String(extErr),
-                  });
-                }
-
-                // 2c-ext. Convert external jobs to internal format for matching
-                const externalAsInternal: JobListingFull[] = externalJobs
-                  .filter((ej) => !recentSet.has(ej.id))
-                  .map((ej) => ({
-                    id: ej.id,
-                    title: ej.title,
-                    description: ej.description,
-                    location: ej.location,
-                    application_link: ej.applicationLink,
-                    createdAt: ej.postedAt || new Date().toISOString(),
-                  }));
-
-                // 2c-ext. Merge internal + external jobs
-                const allAvailableJobs = [...deduplicatedJobs, ...externalAsInternal];
-
-                // 2d. Select top 10 jobs (with fallback)
-                const selectedJobIds = selectTopJobs(
-                  candidateProfile,
-                  allAvailableJobs,
-                  allAvailableJobs
-                );
-
-                // 2e. If null (fewer than 10 available), skip candidate
-                if (!selectedJobIds) {
-                  logger.info(
-                    `Skipping candidate ${candidate.id}: insufficient eligible jobs after deduplication`
-                  );
-                  skipped++;
-                  continue;
-                }
-
-                // 2f. Get full job data for the selected IDs, preserving order
-                const orderedJobs = selectedJobIds
-                  .map((id) => allAvailableJobs.find((j) => j.id === id))
-                  .filter(
-                    (j): j is JobListingFull => j !== undefined
-                  );
-
-                // 2g. Record the selected jobs in digest_history (only internal DB jobs)
-                const internalJobIds = selectedJobIds.filter((id) => !id.startsWith("jsearch_"));
-                if (internalJobIds.length > 0) {
-                  await recordDigestHistory(
-                    supabase,
-                    candidate.id,
-                    internalJobIds
-                  );
-                }
-
-                // 2g. Send email via Resend with retry logic
-                const digestItems: JobDigestItem[] = orderedJobs.map((job) => ({
-                  title: job.title,
-                  description: job.description,
-                  location: job.location,
-                  applicationLink: job.application_link,
-                }));
-
-                await sendDigestEmail(candidate.email, digestItems, candidate.id);
-
-                emailsSent++;
-                processed++;
-
-                logger.info(`Digest sent to candidate ${candidate.id}`, {
-                  candidateId: candidate.id,
-                  jobCount: orderedJobs.length,
-                });
-              } catch (error) {
-                logger.error(
-                  `Failed to process candidate ${candidate.id}`,
-                  {
-                    error:
-                      error instanceof Error ? error.message : String(error),
-                  }
-                );
-                skipped++;
-              }
-            }
-
-            return { processed, skipped, emailsSent };
-          }
-        );
-
-        totalProcessed += batchResult.processed;
-        totalSkipped += batchResult.skipped;
-        totalEmails += batchResult.emailsSent;
-      }
-
-      // Step 3: Cleanup old digest_history records (older than 7 days)
-      await step.run("cleanup-old-history", async () => {
-        const supabase = createServiceRoleClient();
-        await cleanupOldHistory(supabase);
-        logger.info("Old digest history records cleaned up");
-      });
-
-      // Step 4: Track completion time
       const durationMs = Date.now() - startTime;
-
-      logger.info("Daily digest cron completed", {
-        totalProcessed,
-        totalSkipped,
-        totalEmails,
+      logger.info("Daily digest cron events fanned out successfully", {
+        candidateCount: candidates.length,
         durationMs,
-        timestamp: new Date().toISOString(),
       });
 
       return {
-        processed: totalProcessed,
-        skipped: totalSkipped,
-        emailsSent: totalEmails,
+        processed: candidates.length,
         durationMs,
       };
     } catch (error) {
       const durationMs = Date.now() - startTime;
-      logger.error("Daily digest cron failed", {
+      logger.error("Daily digest cron failed during fan-out", {
         error: error instanceof Error ? error.message : String(error),
         durationMs,
-        timestamp: new Date().toISOString(),
       });
-      throw error; // Re-throw to trigger Inngest retry
+      throw error;
     }
+  }
+);
+
+/**
+ * Individual candidate digest sender.
+ * Triggered in parallel for each candidate to avoid serverless execution timeouts.
+ */
+export const sendCandidateDigestFunction = inngest.createFunction(
+  {
+    id: "send-candidate-digest",
+    name: "Send Candidate Digest Email",
+    retries: 3,
+  },
+  { event: "daily-digest/send-candidate-email" },
+  async ({ event, step, logger }) => {
+    const { candidate } = event.data;
+    const supabase = createServiceRoleClient();
+
+    logger.info(`Starting digest generation for candidate ${candidate.id} (${candidate.email})`);
+
+    // 1. Fetch eligible jobs once per runner (active, non-expired)
+    const allJobs = await step.run("fetch-eligible-jobs", async () => {
+      return await fetchEligibleJobs(supabase);
+    });
+
+    // 2. Get recently sent job IDs for deduplication
+    const recentlySentIds = await step.run("get-recent-jobs", async () => {
+      return await getRecentlySentJobIds(supabase, candidate.id);
+    });
+
+    // 3. Build candidate profile for matching engine
+    const candidateProfile: CandidateProfile = {
+      targetTitles: candidate.profile.target_titles,
+      skills: candidate.profile.skills,
+      location: candidate.profile.location,
+    };
+
+    // 4. Filter out recently sent jobs
+    const recentSet = new Set(recentlySentIds);
+    const deduplicatedJobs = allJobs.filter(
+      (job) => !recentSet.has(job.id)
+    );
+
+    // 5. Fetch external jobs from all sources (remotely/parallel)
+    let externalJobs: ExternalJob[] = [];
+    try {
+      externalJobs = await step.run("fetch-external-jobs", async () => {
+        return await fetchAllExternalJobs(
+          candidate.profile.target_titles,
+          candidate.profile.skills,
+          candidate.profile.location
+        );
+      });
+    } catch (extErr) {
+      logger.warn(`Failed to fetch external jobs for candidate ${candidate.id}`, {
+        error: extErr instanceof Error ? extErr.message : String(extErr),
+      });
+    }
+
+    // 6. Convert external jobs to internal format
+    const externalAsInternal: JobListingFull[] = externalJobs
+      .filter((ej) => !recentSet.has(ej.id))
+      .map((ej) => ({
+        id: ej.id,
+        title: ej.title,
+        description: ej.description,
+        location: ej.location,
+        application_link: ej.applicationLink,
+        createdAt: ej.postedAt || new Date().toISOString(),
+      }));
+
+    // 7. Merge internal + external jobs
+    const allAvailableJobs = [...deduplicatedJobs, ...externalAsInternal];
+
+    // 8. Select top 10 jobs (with fallback)
+    const selectedJobIds = selectTopJobs(
+      candidateProfile,
+      allAvailableJobs,
+      allAvailableJobs
+    );
+
+    if (!selectedJobIds) {
+      logger.info(
+        `Skipping candidate ${candidate.id}: insufficient eligible jobs after deduplication`
+      );
+      return { success: false, reason: "insufficient_eligible_jobs" };
+    }
+
+    const orderedJobs = selectedJobIds
+      .map((id) => allAvailableJobs.find((j) => j.id === id))
+      .filter(
+        (j): j is JobListingFull => j !== undefined
+      );
+
+    // 9. Record selected jobs in digest_history (only internal DB jobs)
+    const internalJobIds = selectedJobIds.filter((id) => !id.startsWith("jsearch_"));
+    if (internalJobIds.length > 0) {
+      await step.run("record-digest-history", async () => {
+        await recordDigestHistory(
+          supabase,
+          candidate.id,
+          internalJobIds
+        );
+      });
+    }
+
+    // 10. Send email via Resend
+    const digestItems: JobDigestItem[] = orderedJobs.map((job) => ({
+      title: job.title,
+      description: job.description,
+      location: job.location,
+      applicationLink: job.application_link,
+    }));
+
+    await step.run("send-email", async () => {
+      await sendDigestEmail(candidate.email, digestItems, candidate.id);
+    });
+
+    // 11. Cleanup old history (older than 7 days)
+    await step.run("cleanup-old-history", async () => {
+      await cleanupOldHistory(supabase);
+    });
+
+    logger.info(`Digest email sent successfully to candidate ${candidate.id}`);
+    return { success: true };
   }
 );
