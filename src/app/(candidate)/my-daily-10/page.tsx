@@ -10,10 +10,12 @@ interface MatchedJob {
   rank: number;
   id: string;
   title: string;
+  company: string;
   description: string;
   location: string;
   applicationLink: string;
   matchScore: number;
+  isLocked?: boolean;
   breakdown: {
     titleScore: number;
     skillScore: number;
@@ -194,7 +196,7 @@ export default function MyDaily10Page() {
         {/* Job List */}
         <div className="space-y-4">
           {data?.jobs.map((job) => (
-            <Card key={job.id} className="relative overflow-hidden">
+            <Card key={job.id} className={`relative overflow-hidden ${job.isLocked ? "border-dashed border-neutral-300 bg-neutral-50/50" : ""}`}>
               <div className="flex items-start gap-4">
                 {/* Rank Badge */}
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
@@ -203,14 +205,23 @@ export default function MyDaily10Page() {
 
                 {/* Job Info */}
                 <div className="min-w-0 flex-1">
-                  <a
-                    href={job.applicationLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline sm:text-lg"
-                  >
-                    {job.title}
-                  </a>
+                  {job.isLocked ? (
+                    <div className="text-base font-semibold text-neutral-700 sm:text-lg flex items-center gap-2">
+                      <span>{job.title}</span>
+                      <span className="text-sm font-normal text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
+                        {job.company}
+                      </span>
+                    </div>
+                  ) : (
+                    <a
+                      href={job.applicationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline sm:text-lg"
+                    >
+                      {job.title} <span className="text-sm font-normal text-neutral-500">at {job.company}</span>
+                    </a>
+                  )}
 
                   <div className="mt-1 flex flex-wrap items-center gap-2">
                     <Badge variant="default">
@@ -221,47 +232,60 @@ export default function MyDaily10Page() {
                     </Badge>
                   </div>
 
-                  <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-                    {job.description.length > 200
+                  <p className={`mt-2 text-sm leading-relaxed ${job.isLocked ? "text-neutral-400 italic" : "text-neutral-600"}`}>
+                    {job.isLocked ? job.description : (job.description.length > 200
                       ? `${job.description.slice(0, 200)}...`
-                      : job.description}
+                      : job.description)}
                   </p>
 
                   {/* Score Breakdown (collapsed) */}
-                  <details className="mt-2">
-                    <summary className="cursor-pointer text-xs text-neutral-400 hover:text-neutral-600">
-                      Score breakdown
-                    </summary>
-                    <div className="mt-1 grid grid-cols-2 gap-1 text-xs text-neutral-500 sm:grid-cols-4">
-                      <span>Title: {Math.round(job.breakdown.titleScore)}/40</span>
-                      <span>Skills: {Math.round(job.breakdown.skillScore)}/35</span>
-                      <span>Location: {Math.round(job.breakdown.locationScore)}/15</span>
-                      <span>Desc: {Math.round(job.breakdown.descriptionScore)}/10</span>
-                    </div>
-                  </details>
+                  {!job.isLocked && (
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-xs text-neutral-400 hover:text-neutral-600">
+                        Score breakdown
+                      </summary>
+                      <div className="mt-1 grid grid-cols-2 gap-1 text-xs text-neutral-500 sm:grid-cols-4">
+                        <span>Title: {Math.round(job.breakdown.titleScore)}/40</span>
+                        <span>Skills: {Math.round(job.breakdown.skillScore)}/35</span>
+                        <span>Location: {Math.round(job.breakdown.locationScore)}/15</span>
+                        <span>Desc: {Math.round(job.breakdown.descriptionScore)}/10</span>
+                      </div>
+                    </details>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <a
-                      href={job.applicationLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]"
-                    >
-                      Apply Now →
-                    </a>
-                    <a
-                      href={`/job-prep?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}&location=${encodeURIComponent(job.location)}&company=`}
-                      className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
-                    >
-                      🎤 Prepare
-                    </a>
-                    <a
-                      href={`/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
-                      className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
-                    >
-                      🤖 Practice
-                    </a>
+                    {job.isLocked ? (
+                      <Link
+                        href="/subscribe"
+                        className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 min-h-[44px] gap-1"
+                      >
+                        🔓 Upgrade to Unlock Job Details
+                      </Link>
+                    ) : (
+                      <>
+                        <a
+                          href={job.applicationLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]"
+                        >
+                          Apply Now →
+                        </a>
+                        <a
+                          href={`/job-prep?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}&location=${encodeURIComponent(job.location)}&company=`}
+                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                        >
+                          🎤 Prepare
+                        </a>
+                        <a
+                          href={`/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                        >
+                          🤖 Practice
+                        </a>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

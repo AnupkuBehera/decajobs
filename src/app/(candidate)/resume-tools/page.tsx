@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 
@@ -181,7 +182,19 @@ export default function ResumeToolsPage() {
             )}
 
             {error && (
-              <p className="text-sm text-red-600" role="alert">{error}</p>
+              error === "trial_expired" ? (
+                <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 space-y-2" role="alert">
+                  <p className="font-semibold flex items-center gap-1">🔒 Pro Features Locked</p>
+                  <p>Your 7-day free trial has expired. Subscribe to DecaJobs Pro to get unlimited access to all AI tools (Resume Analyzer, Job Optimizer, Cover Letter Generator) and daily morning job matches.</p>
+                  <div>
+                    <Link href="/subscribe" className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-700 min-h-[36px]">
+                      Subscribe to Pro →
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-red-600" role="alert">{error}</p>
+              )
             )}
 
             <Button onClick={handleSubmit} isLoading={isLoading} size="lg" className="w-full sm:w-auto">

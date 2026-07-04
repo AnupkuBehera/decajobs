@@ -101,6 +101,9 @@ export async function GET() {
     );
   }
 
+  // Check subscription/trial status
+  const sub = await checkSubscription(authClient, user.id);
+
   // Score and rank
   const candidateProfile: CandidateProfile = {
     targetTitles: profile.target_titles,
@@ -112,19 +115,51 @@ export async function GET() {
   const top10 = ranked.slice(0, 10);
 
   // Map to response format
-  const jobs = top10.map((match, index) => {
+  let jobs = top10.map((match, index) => {
     const job = allJobs.find((j) => j.id === match.jobListingId);
+    
+    // Separate title and company
+    const rawTitle = job?.title ?? "Unknown";
+    let title = rawTitle;
+    let company = job?.company || "Unknown Company";
+    
+    if (rawTitle.includes(" at ")) {
+      const parts = rawTitle.split(" at ");
+      title = parts[0];
+      if (!job?.company) {
+        company = parts[1];
+      }
+    }
+
     return {
       rank: index + 1,
       id: match.jobListingId,
-      title: job?.title ?? "Unknown",
+      title,
+      company,
       description: job?.description ?? "",
       location: job?.location ?? "",
       applicationLink: job?.applicationLink ?? "#",
       matchScore: Math.round(match.score),
       breakdown: match.breakdown,
+      isLocked: false,
     };
   });
+
+  // Lock matches 4+ if candidate doesn't have active subscription or trial
+  if (!sub.hasAccess) {
+    jobs = jobs.map((job, index) => {
+      if (index >= 3) {
+        return {
+          ...job,
+          company: "🔒 Locked",
+          description: "This job listing is locked. Upgrade to DecaJobs Pro to see the company name, details, and apply.",
+          applicationLink: "/subscribe",
+          isLocked: true,
+        };
+      }
+      return job;
+    });
+  }
 
   return NextResponse.json({
     jobs,
@@ -132,6 +167,11 @@ export async function GET() {
       titles: profile.target_titles,
       skills: profile.skills,
       location: profile.location,
+    },
+    subscription: {
+      hasAccess: sub.hasAccess,
+      status: sub.status,
+      trialDaysLeft: sub.trialDaysLeft,
     },
     generatedAt: new Date().toISOString(),
   });

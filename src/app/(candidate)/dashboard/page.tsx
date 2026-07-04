@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TriggerDigestButton } from "./trigger-digest-button";
+import DashboardMatches from "./dashboard-matches";
 
 export const metadata = {
   title: "Dashboard - DecaJobs",
@@ -164,6 +165,9 @@ export default async function CandidateDashboardPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Real-time top matches preview */}
+          <DashboardMatches isProfileComplete={isProfileComplete} />
 
           {/* Quick Links */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
