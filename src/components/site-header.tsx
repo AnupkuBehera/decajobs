@@ -124,7 +124,7 @@ export async function SiteHeader() {
                 </Link>
                 {isPro ? (
                   <span className="rounded-md bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700 min-h-[44px] flex items-center">
-                    Pro ✓
+                    Pro
                   </span>
                 ) : (
                   <Link

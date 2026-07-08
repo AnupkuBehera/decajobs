@@ -227,7 +227,7 @@ export default function SettingsPage() {
                         : "text-neutral-600"
                     }
                   >
-                    {subscriptionStatus === "active" ? "Pro ✓" : "Free / Trial"}
+                    {subscriptionStatus === "active" ? "Pro" : "Free / Trial"}
                   </span>
                 </p>
                 <p className="text-sm text-neutral-500">

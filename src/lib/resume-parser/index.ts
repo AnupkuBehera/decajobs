@@ -6,6 +6,7 @@
  * skills database to identify relevant skills the candidate has.
  */
 
+// @ts-ignore
 import pdf from "pdf-parse";
 
 /**

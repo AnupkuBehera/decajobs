@@ -237,13 +237,13 @@ export default function ProfilePage() {
                 <ResumeUpload
                   currentResumeUrl={resumeUrl}
                   onUploadComplete={(url) => setResumeUrl(url)}
-                  onSkillsExtracted={(parsedSkills, parsedTitles) => {
+                  onSkillsExtracted={(parsedSkills: string[], parsedTitles: string[]) => {
                     // Add extracted skills that aren't already in the list
                     if (parsedSkills.length > 0) {
                       setSkills((prev) => {
-                        const existing = new Set(prev.map((s) => s.toLowerCase()));
+                        const existing = new Set(prev.map((s: string) => s.toLowerCase()));
                         const newSkills = parsedSkills.filter(
-                          (s) => !existing.has(s.toLowerCase())
+                          (s: string) => !existing.has(s.toLowerCase())
                         );
                         return [...prev, ...newSkills];
                       });
@@ -251,9 +251,9 @@ export default function ProfilePage() {
                     // Add extracted titles that aren't already in the list
                     if (parsedTitles.length > 0) {
                       setTargetTitles((prev) => {
-                        const existing = new Set(prev.map((t) => t.toLowerCase()));
+                        const existing = new Set(prev.map((t: string) => t.toLowerCase()));
                         const newTitles = parsedTitles.filter(
-                          (t) => !existing.has(t.toLowerCase())
+                          (t: string) => !existing.has(t.toLowerCase())
                         );
                         return [...prev, ...newTitles];
                       });

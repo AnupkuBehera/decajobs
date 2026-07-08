@@ -4,6 +4,7 @@ import { createClient as createAuthClient } from "@/lib/supabase/server";
 import { fetchAllExternalJobs } from "@/lib/external-jobs";
 import { rankJobs } from "@/lib/matching/engine";
 import type { CandidateProfile, JobListing } from "@/lib/matching/types";
+import { checkSubscription } from "@/lib/subscription/check";
 
 /**
  * GET /api/preview-digest
@@ -125,9 +126,9 @@ export async function GET() {
     
     if (rawTitle.includes(" at ")) {
       const parts = rawTitle.split(" at ");
-      title = parts[0];
+      title = parts[0] ?? rawTitle;
       if (!job?.company) {
-        company = parts[1];
+        company = parts[1] ?? "Unknown Company";
       }
     }
 

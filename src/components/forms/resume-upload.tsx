@@ -16,9 +16,14 @@ type UploadStatus = "idle" | "validating" | "uploading" | "success" | "error";
 interface ResumeUploadProps {
   currentResumeUrl?: string | null;
   onUploadComplete?: (url: string) => void;
+  onSkillsExtracted?: (parsedSkills: string[], parsedTitles: string[]) => void;
 }
 
-export function ResumeUpload({ currentResumeUrl, onUploadComplete }: ResumeUploadProps) {
+export function ResumeUpload({
+  currentResumeUrl,
+  onUploadComplete,
+  onSkillsExtracted,
+}: ResumeUploadProps) {
   const [status, setStatus] = useState<UploadStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [fileName, setFileName] = useState("");
