@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { checkSubscription } from "@/lib/subscription/check";
 
 export async function SiteHeader() {
   let user = null;
@@ -43,18 +44,8 @@ export async function SiteHeader() {
 
       // If not an employer, check candidate subscription
       if (!isEmployer) {
-        const { data: candidate } = await serviceClient
-          .from("candidates")
-          .select("subscription_status, subscription_ends_at")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (candidate?.subscription_status === "active") {
-          const endDate = candidate.subscription_ends_at
-            ? new Date(candidate.subscription_ends_at)
-            : null;
-          isPro = !endDate || endDate > new Date();
-        }
+        const sub = await checkSubscription(serviceClient, user.id);
+        isPro = sub.hasAccess;
       }
     }
   } catch {
