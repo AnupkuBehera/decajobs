@@ -7,6 +7,7 @@ export async function SiteHeader() {
   let user = null;
   let isPro = false;
   let isEmployer = false;
+  let isAdmin = false;
 
   try {
     await cookies();
@@ -15,6 +16,14 @@ export async function SiteHeader() {
     user = data?.user ?? null;
 
     if (user) {
+      // Check if user is admin
+      const adminEmails = (process.env.ADMIN_EMAILS || "")
+        .split(",")
+        .map((email) => email.trim().toLowerCase());
+      if (user.email && adminEmails.includes(user.email.toLowerCase())) {
+        isAdmin = true;
+      }
+
       // Use service role to reliably read subscription_status (bypasses RLS issues)
       const serviceClient = createServiceClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -63,6 +72,14 @@ export async function SiteHeader() {
           {user ? (
             isEmployer ? (
               <>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="rounded-md px-2.5 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors min-h-[44px] flex items-center"
+                  >
+                    Admin 🛠️
+                  </Link>
+                )}
                 <Link
                   href="/employer/dashboard"
                   className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
@@ -86,6 +103,14 @@ export async function SiteHeader() {
               </>
             ) : (
               <>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="rounded-md px-2.5 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors min-h-[44px] flex items-center"
+                  >
+                    Admin 🛠️
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
