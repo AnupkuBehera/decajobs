@@ -75,7 +75,7 @@ export default function LoginPage() {
           </Card>
         ) : (
           <Card padding="lg">
-            <form action={formAction} className="space-y-4" aria-label="Sign in with magic link">
+            <form action={formAction} className="space-y-4" aria-label="Sign in with email link">
               <Input
                 label="Email address"
                 name="email"
@@ -86,13 +86,17 @@ export default function LoginPage() {
                 error={state?.error}
               />
 
+              <p className="text-xs text-neutral-500 leading-relaxed">
+                If you already have an account, this will log you in. If you are new, this will create a free account. No password required.
+              </p>
+
               <Button
                 type="submit"
                 className="w-full"
                 size="lg"
                 isLoading={isPending}
               >
-                Send Magic Link
+                Send Sign-In Link
               </Button>
             </form>
 

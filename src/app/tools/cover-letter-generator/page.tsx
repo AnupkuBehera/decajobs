@@ -95,6 +95,79 @@ export default function CoverLetterGeneratorPage() {
             </button>
           </div>
         )}
+
+        <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Write a Professional Cover Letter</h2>
+          <p className="text-neutral-600 leading-relaxed">
+            While some believe cover letters are outdated, they remain one of the best ways to stand out in a competitive job market. A custom cover letter allows you to tell the story behind your resume, explain career transitions, and explicitly connect your skills to the employer&apos;s needs.
+          </p>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">The Anatomy of a High-Converting Cover Letter</h3>
+          <p className="text-neutral-600 leading-relaxed">
+            Every successful cover letter should follow a structured, easy-to-read format:
+          </p>
+          <ul className="list-disc pl-5 text-neutral-600 space-y-2">
+            <li><strong>Header & Salutation:</strong> Include professional contact information and address the hiring manager by name if possible (avoid &quot;To Whom It May Concern&quot;).</li>
+            <li><strong>The Hook (Opening Paragraph):</strong> State the position you are applying for and mention a notable achievement or a compelling reason why you love the company to grab attention immediately.</li>
+            <li><strong>Core Alignment (Body Paragraphs):</strong> Map 2 or 3 of your key achievements directly to the job requirements. Use numbers and metrics to back up your claims.</li>
+            <li><strong>Call to Action (Closing Paragraph):</strong> Reiterate your enthusiasm for the role and politely request an interview to discuss how you can help the company succeed.</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">5 Tips to Make Your Cover Letter Stand Out</h3>
+          <div className="space-y-4 my-6">
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">1. Tailor it for every single job</h4>
+              <p className="text-sm text-neutral-600 mt-1">Generic templates are easy to spot and often ignored. Use our generator to create a unique draft tailored to the exact role and company, then personalize it further.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">2. Keep it concise (under 400 words)</h4>
+              <p className="text-sm text-neutral-600 mt-1">Recruiters are busy. Your cover letter should be a single page, containing 3 to 4 paragraphs maximum. Get straight to the point.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">3. Focus on what you can do for the company</h4>
+              <p className="text-sm text-neutral-600 mt-1">Avoid talking too much about what the job would do for your career. Focus instead on how your skills will solve the employer&apos;s specific pain points.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">4. Match the company&apos;s brand tone</h4>
+              <p className="text-sm text-neutral-600 mt-1">If you are applying to a creative startup, use a friendly and enthusiastic tone. For a traditional corporate firm (like banking or law), use a more formal and professional tone.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">5. Proofread meticulously</h4>
+              <p className="text-sm text-neutral-600 mt-1">Spelling and grammatical mistakes in a cover letter are instant dealbreakers. Read it aloud or ask a colleague to review it before submitting.</p>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Frequently Asked Questions (FAQs)</h3>
+          <div className="space-y-4">
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                Do recruiters actually read cover letters?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                While some recruiters skip straight to the resume, over 50% of hiring managers consider cover letters an important factor in their decision. Furthermore, a well-written cover letter can be the deciding factor when choosing between two candidates with identical resumes.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                What if the application portal says &quot;Cover Letter (Optional)&quot;?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                In the job search, &quot;optional&quot; means &quot;required if you want to stand out.&quot; Writing a cover letter shows extra effort and genuine interest in the company, giving you an automatic advantage over candidates who skipped it.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                Can I submit the same cover letter to multiple companies?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                We strongly advise against this. A generic cover letter that just swaps out the company name is easily detected. Use our AI tool to quickly customize the letter based on the specific job requirements for each company.
+              </p>
+            </details>
+          </div>
+        </div>
       </div>
     </div>
   );

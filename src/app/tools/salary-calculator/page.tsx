@@ -106,6 +106,80 @@ export default function SalaryCalculatorPage() {
             Sign up for DecaJobs — get salary-matched jobs daily →
           </Link>
         </div>
+
+        <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-6">Understanding Salary Benchmarking & Negotiation</h2>
+          <p className="text-neutral-600 leading-relaxed">
+            Knowing your market value is the most powerful tool you have when negotiating a new job offer. Salary benchmarking allows you to compare compensation packages for similar roles, locations, and experience levels, ensuring you are paid fairly.
+          </p>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">How is CTC (Cost to Company) Structured?</h3>
+          <p className="text-neutral-600 leading-relaxed">
+            In many regions, especially India, compensation is discussed as CTC. It is important to look beyond the total number and understand the component breakdown:
+          </p>
+          <ul className="list-disc pl-5 text-neutral-600 space-y-2">
+            <li><strong>Basic Salary:</strong> The core taxable component, which typically forms 30% to 50% of your CTC.</li>
+            <li><strong>Allowances:</strong> House Rent Allowance (HRA), Leave Travel Allowance (LTA), and other special allowances designed to reduce tax liability.</li>
+            <li><strong>Variable Pay / Performance Bonus:</strong> A performance-linked component. Ensure you know what percentage is guaranteed vs. conditional.</li>
+            <li><strong>Retirements & Benefits:</strong> Provident Fund (PF) contributions, Gratuity, and health insurance premiums paid by the employer (often deducted from gross CTC).</li>
+            <li><strong>Stock Options / RSUs:</strong> Equity incentives (common in tech and startups) that vest over multiple years.</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">5 Steps to Negotiate a 20-40% Higher Salary</h3>
+          <div className="space-y-4 my-6">
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">1. Benchmarking early</h4>
+              <p className="text-sm text-neutral-600 mt-1">Research salaries before your first interview. Use this calculator, along with sources like Levels.fyi and Glassdoor, to find the 25th, 50th (median), and 75th percentiles for the role.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">2. Let the employer make the first offer</h4>
+              <p className="text-sm text-neutral-600 mt-1">Avoid disclosing your salary expectations too early. If forced, provide a range based on your research: &quot;Based on the market rate for this role, I expect a package between X and Y.&quot;</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">3. Emphasize value, not your personal expenses</h4>
+              <p className="text-sm text-neutral-600 mt-1">When asking for more, frame it around the value you bring to the team, your achievements, and the market benchmark — never mention rent, loans, or personal expenses.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">4. Leverage competing job offers</h4>
+              <p className="text-sm text-neutral-600 mt-1">Having another written offer is the strongest leverage. Employers are more willing to stretch their budget if they know you are in demand.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">5. Negotiate the entire package</h4>
+              <p className="text-sm text-neutral-600 mt-1">If the base salary is fixed, negotiate sign-on bonuses, relocation assistance, remote flexibility, or learning budgets which can offset a lower base pay.</p>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Frequently Asked Questions (FAQs)</h3>
+          <div className="space-y-4">
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                What is the difference between Take-Home Salary and CTC?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                CTC is the total cost an employer incurs to hire you. Take-home salary is the net cash amount deposited in your bank account after deducting taxes (TDS), Provident Fund contributions, professional tax, and other company benefits. Take-home pay is typically 70% to 85% of your gross CTC.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                Is it unprofessional to negotiate a salary offer?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                Absolutely not. Recruiter and HR teams expect candidates to negotiate and often leave a 10% to 20% buffer in their initial offers. Negotiating politely and professionally shows confidence and business acumen.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                How should I respond if they ask for my salary slips?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                While many companies in India ask for salary slips as standard verification, you can negotiate based on the market benchmark for the new role, rather than a percentage increase on your past salary. Focus the conversation on the scope of the new responsibilities.
+              </p>
+            </details>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -70,6 +70,68 @@ export default function LinkedInHeadlinePage() {
             </Card>
           </div>
         )}
+
+        <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-6">LinkedIn Profile Optimization & Headline Guide</h2>
+          <p className="text-neutral-600 leading-relaxed">
+            Your LinkedIn headline is one of the most critical sections of your profile. It is the first thing recruiters see next to your name and profile picture, and it is heavily weighted by the LinkedIn search algorithm (LinkedIn SEO). A generic headline means missing out on organic recruiter visits.
+          </p>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Why LinkedIn SEO and Keywords Matter</h3>
+          <p className="text-neutral-600 leading-relaxed">
+            Recruiters search LinkedIn using Boolean strings and specific keywords (e.g., &quot;React Developer Bangalore&quot;). If your headline, summary, and experience sections do not contain these target keywords, your profile will not show up in their search results.
+          </p>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">3 Proven LinkedIn Headline Formulas</h3>
+          <div className="space-y-4 my-6">
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">Formula 1: The Keyword-Centric Split (Best for Technical Roles)</h4>
+              <p className="text-sm text-neutral-600 mt-1">Format: <strong>Job Title | Core Skills & Tech Stack | Value Statement</strong></p>
+              <p className="text-xs text-neutral-500 mt-1">Example: <em>Data Analyst | SQL • Python • Tableau | Helping SaaS businesses turn customer data into revenue growth</em></p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">Formula 2: The Value-Driven Statement (Best for Sales/Growth Roles)</h4>
+              <p className="text-sm text-neutral-600 mt-1">Format: <strong>Job Title | Helping [Target Audience] achieve [Desired Outcome]</strong></p>
+              <p className="text-xs text-neutral-500 mt-1">Example: <em>Frontend Developer | Crafting beautiful, responsive user interfaces that double website conversion rates</em></p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">Formula 3: The Fresher / Career Starter Split (Best for Grads)</h4>
+              <p className="text-sm text-neutral-600 mt-1">Format: <strong>Aspiring [Target Role] | Top Skills | Project Highlight</strong></p>
+              <p className="text-xs text-neutral-500 mt-1">Example: <em>Computer Science Graduate & Aspiring DevOps Engineer | AWS, Docker, Kubernetes | Built automated CI/CD pipeline for 5+ projects</em></p>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Frequently Asked Questions (FAQs)</h3>
+          <div className="space-y-4">
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                How long can my LinkedIn headline be?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                As of 2026, LinkedIn allows headlines up to 220 characters on both desktop and mobile platforms. We recommend using at least 150 characters to fully optimize it with relevant keywords and your value proposition.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                Should I put &quot;Actively Looking for Opportunities&quot; in my headline?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                We advise against using valuable headline space for &quot;Looking for a job&quot; or &quot;Open to work.&quot; Recruiters do not search for the term &quot;unemployed&quot; or &quot;looking.&quot; They search for skills like &quot;React Developer&quot; or &quot;Project Manager.&quot; Instead, use the &quot;Open to Work&quot; badge settings which are visible to recruiters only.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                How often should I change my headline?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                You should update your headline whenever you learn a major new skill, transition roles, or notice that your current headline isn&apos;t driving profile views. Aim to review and refresh your profile keywords every 3 to 6 months.
+              </p>
+            </details>
+          </div>
+        </div>
       </div>
     </div>
   );

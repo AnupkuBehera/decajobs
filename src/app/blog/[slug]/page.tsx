@@ -277,6 +277,172 @@ LinkedIn search works like SEO. Include keywords that recruiters search:
 
 Optimize your LinkedIn, then let DecaJobs handle the rest — we scan LinkedIn jobs and deliver your top 10 matches daily.`,
   },
+
+  "ats-resume-secrets": {
+    title: "How to Beat the ATS (Applicant Tracking System): Secrets from Recruiters",
+    category: "Resume Tips",
+    date: "June 2026",
+    content: `More than 95% of major employers use Applicant Tracking Systems (ATS) to filter resumes before they reach human eyes. If your resume isn&apos;t optimized for these databases, you are applying into a black hole. Here are the secrets to beating the ATS:
+
+**1. Format for Scanners, Not Humans**
+Fancy templates, tables, graphics, progress bars, and dual-column layouts might look pretty, but they crash ATS parsers. Keep your resume in a clean, single-column layout using standard fonts like Arial, Calibri, or Helvetica.
+
+**2. Match the Job Title Exactly**
+If the job posting is for a &quot;Software Engineer II&quot; and your resume says &quot;Web Developer,&quot; the system might rank you lower. Align your job titles with the target role where reasonable, or put the target role title in your professional summary.
+
+**3. Optimize Your Skills Section**
+Copy the skills verbatim from the job description. If the posting mentions &quot;Project Management&quot; and you wrote &quot;Managing Projects,&quot; the ATS may miss the match. Use exact matches for both hard and soft skills.
+
+**4. Don&apos;t Hide Keywords in White Font**
+A common &quot;hack&quot; is to paste the job description in white font at the bottom of the resume. Modern ATS systems parse all text into a single plain-text string, which means recruiters will see your hidden block of keywords. Doing this gets you blacklisted immediately.
+
+**5. Keep It in PDF or Word Format**
+Unless specified otherwise, PDF is the safest format to preserve your layout. However, some legacy ATS platforms handle Microsoft Word (.docx) files better. If in doubt, upload a cleanly formatted PDF.
+
+**Pro tip:** Prioritize experience sections with bullet points starting with strong action verbs. Keep your resume clean and structured.`,
+  },
+
+  "artificial-intelligence-careers": {
+    title: "How AI is Changing the Job Market: Top Skills to Learn in 2026",
+    category: "Remote Work",
+    date: "June 2026",
+    content: `Artificial Intelligence is no longer a future trend — it is actively reshaping careers and job descriptions across every sector in 2026. To remain competitive, job seekers must pivot from fearing automation to leveraging AI tools. Here are the top skills you need:
+
+**1. AI Tool Literacy**
+Whether you are in marketing, engineering, or design, you must master role-specific AI tools. Software engineers need GitHub Copilot, marketers need ChatGPT and Midjourney, and analysts need AI-powered BI tools.
+
+**2. Prompt Engineering**
+Knowing how to write precise instructions (prompts) to get high-quality outputs from Large Language Models (LLMs) is a highly valued skill. Learn structuring techniques, system prompts, and how to programmatically interact with AI APIs.
+
+**3. Data Interpretation and Analytics**
+With AI generating massive volumes of automated reports, companies need professionals who can synthesize, audit, and interpret data to make strategic decisions. Understanding basic SQL, Python, and statistical modeling is critical.
+
+**4. Soft Skills are Your Moat**
+Skills that AI cannot replicate are in higher demand than ever: critical thinking, emotional intelligence, complex problem solving, leadership, and high-impact communication. Emphasize these on your profile.
+
+**5. Continuous Adaptability**
+The tech stack you use today will change in 12 months. The most important skill in 2026 is the ability to learn new tools and paradigms quickly. Highlight how you adapt and pick up new tools on your resume.
+
+**Pro tip:** Include a &quot;Technologies & Tools&quot; section on your resume and list the AI platforms you have integrated into your workflow.`,
+  },
+
+  "remote-job-interview-prep": {
+    title: "Remote Job Interviews: 10 Tips to Ace Your Video and Tech Rounds",
+    category: "Interview Prep",
+    date: "June 2026",
+    content: `Remote interviews require a different strategy than in-person meetings. Technical setups, communication cues, and body language all translate differently over a webcam. Follow this 10-step guide to ace your next video interview:
+
+**1. Test Your Tech Setup Early**
+Don&apos;t wait until 5 minutes before the call. Double-check your webcam, microphone, internet stability, and the video platform (Zoom, Teams, Google Meet) at least 30 minutes before the interview.
+
+**2. Set Up Professional Lighting**
+Position your main light source in front of you (behind your webcam) so your face is clearly illuminated. Avoid backlighting (like sitting in front of a window), which turns you into a dark silhouette.
+
+**3. Choose a Clean, Quiet Background**
+Conduct the interview in a quiet room with a neutral background. If your room is cluttered, use a clean virtual background or a subtle blur effect to avoid distracting the interviewer.
+
+**4. Maintain Virtual Eye Contact**
+Look directly into your camera, not at the interviewer&apos;s face on your screen, when speaking. This creates the visual effect of looking the interviewer in the eye, conveying confidence and engagement.
+
+**5. Dress Professionally**
+Dress fully in professional attire, even if you are interviewing from your bedroom. It shifts your mindset into work mode and prepares you for any unexpected situation where you might need to stand up.
+
+**6. Prepare Digital Cheat Sheets**
+Keep your resume, the job description, and your STAR response notes open on a split screen or printed in front of you. This allows you to reference key projects without looking away from the camera.
+
+**7. Minimize Background Noise**
+Turn off fans, close windows, mute notifications on your phone and computer, and notify family members or flatmates that you will be in an important meeting.
+
+**8. Practice Active Listening Cues**
+Because video calls have a slight latency, nod and smile to show you are engaged instead of using verbal filler words (like &quot;mm-hmm&quot;) which can interrupt the audio stream.
+
+**9. Have a Backup Plan**
+If your internet fails, have your phone hotspot ready. Keep the recruiter&apos;s phone number or email handy to notify them immediately of any technical emergencies.
+
+**10. Send a Follow-Up Note**
+Within a few hours of finishing the call, send a thank-you email highlighting a specific conversation point to show interest and promptness.`,
+  },
+
+  "career-gaps-explanation": {
+    title: "How to Explain Career Gaps in a Job Interview (With Examples)",
+    category: "Interview Prep",
+    date: "June 2026",
+    content: `A gap on your resume is not the dealbreaker it used to be. In 2026, recruiters recognize that career paths are rarely linear. Whether you took time off for family, health, travel, or upskilling, here is how to explain it with confidence:
+
+**1. Be Honest and Brief**
+Do not try to hide the gap or over-explain it. State the reason clearly, keep it to one or two sentences, and immediately pivot to what you did during that time or why you are ready to return.
+
+**2. Pivot to Upskilling & Freelancing**
+Highlight any productive activities you engaged in during your break. Did you take certification courses? Build open-source side projects? Work on freelance gigs? This shows you kept your skills sharp.
+
+**3. Use the Focus-Future Formula**
+Frame your response using this structure:
+1. Explain the gap briefly (Past)
+2. Share what you learned or how you grew (Present)
+3. Connect it to your readiness for this new role (Future)
+
+**Example for Family Caregiving:**
+&quot;I took a career break to care for an ailing family member. During this period, I also dedicated 10 hours a week to completing an advanced React certification. My family situation is now fully resolved, and I am excited to bring my updated frontend skills to this engineering team.&quot;
+
+**Example for Upskilling/Career Transition:**
+&quot;I stepped away from my previous marketing role to complete an intensive 6-month Data Analytics bootcamp. I wanted to focus fully on mastering Python, SQL, and Power BI so I could pivot into data-driven strategy roles, which brings me to this opportunity.&quot;
+
+**Pro tip:** Update your resume with a brief entry explaining the gap (e.g., &quot;Career Break - Professional Development&quot; or &quot;Freelance Consultant&quot;) so the ATS doesn&apos;t automatically filter you out for gaps.`,
+  },
+
+  "linkedin-networking-guide": {
+    title: "The Art of LinkedIn Cold Messaging: How to Get Referrals Without Being Annoying",
+    category: "LinkedIn",
+    date: "June 2026",
+    content: `Applying to jobs online has a conversion rate of just 2-5%. Networking and securing internal referrals, however, boosts your chance of getting an interview by over 10x. Here is how to message professionals on LinkedIn and get replies:
+
+**1. Don&apos;t Just Ask for a Job or Referral Immediately**
+Sending a connection request with &quot;Hi, please refer me to job ID 12345&quot; is spammy and rarely works. Build a connection first. People refer candidates they trust and like.
+
+**2. Target the Right People**
+Reach out to peers (e.g., Senior Developers if you are a Junior Developer) or alumni from your college. They are much more likely to reply and offer guidance than busy HR executives or high-level Directors.
+
+**3. Keep Your First Message Under 100 Words**
+A short, personalized message has a 3x higher response rate. Introduce yourself, state why you are reaching out, and ask for a quick 10-minute informational chat.
+
+**Example Template:**
+&quot;Hi [Name], I saw your posts on React rendering optimization and really enjoyed your insights. I&apos;m a frontend engineer looking to transition into SaaS development. I&apos;d love to ask you 2 quick questions about how your team structures its workflows. Do you have 5 minutes for a quick chat next week?&quot;
+
+**4. Ask for Advice, Not an Active Job**
+People love giving advice, but they are hesitant to give job referrals to strangers. Ask about their career journey, their team&apos;s stack, or advice for entering the field. At the end of a good conversation, the referral will naturally follow.
+
+**5. Follow Up Politely**
+If they don&apos;t reply, don&apos;t take it personally. People are busy. Send one polite follow-up message 5-7 days later, and if they still don&apos;t respond, move on to other connections.
+
+**Pro tip:** Make sure your LinkedIn profile is fully optimized before networking, as everyone you message will click on your profile first.`,
+  },
+
+  "negotiating-first-salary": {
+    title: "Fresher Salary Negotiation: Yes, You Can (And Should) Ask For More",
+    category: "Salary",
+    date: "June 2026",
+    content: `One of the biggest career mistakes fresh graduates make is accepting their first job offer without negotiating. Many freshers assume negotiation is only for experienced professionals or fear they will lose the offer. In reality, you can and should negotiate:
+
+**1. Employers Expect It**
+Hiring budgets always have some flexibility. Even for entry-level roles, companies leave a buffer of 10% to 15% in their initial offer, anticipating that candidates might ask for more.
+
+**2. Negotiation Won&apos;t Lose You the Offer**
+As long as you are polite, professional, and base your request on market data, a company will not retract a job offer just because you negotiated. The worst they will say is, &quot;This is our final budget.&quot;
+
+**3. Use Market Benchmarks**
+Do your research. Calculate the average entry-level salary for your role and location using our Salary Calculator, Glassdoor, and AmbitionBox. Frame your request around this data.
+
+**Negotiation Script:**
+&quot;Thank you for this offer — I am thrilled to join the team. Based on my research for similar entry-level roles in Bangalore and the advanced project portfolio I shared, I was hoping we could explore a compensation closer to ₹8 LPA. Is there any flexibility in the base salary?&quot;
+
+**4. Highlight Your Specific Skills**
+If you have completed relevant internships, won hackathons, or hold advanced certifications (e.g., AWS, Salesforce), use them as leverage. Explain how these skills allow you to contribute from day one without extensive training.
+
+**5. Look at the Total Package**
+If the base CTC is non-negotiable, ask about relocation allowances, joining bonuses, remote work stipends, or performance bonus guarantees. A one-time joining bonus is often easier for HR to approve.
+
+**Pro tip:** Keep your tone positive and collaborative. Negotiation is not a conflict; it is a conversation to find a mutually beneficial agreement.`,
+  },
 };
 
 interface BlogPostPageProps {

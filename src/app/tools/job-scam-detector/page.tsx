@@ -81,6 +81,78 @@ export default function JobScamDetectorPage() {
             <button onClick={() => setResult(null)} className="w-full text-center text-sm text-primary-600 hover:underline">Check another listing</button>
           </div>
         )}
+
+        <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Identify and Avoid Online Job Scams</h2>
+          <p className="text-neutral-600 leading-relaxed">
+            As the number of remote job opportunities has grown, so has the incidence of fraudulent job listings. Scammers use sophisticated tactics to trick job seekers into revealing personal information, transferring money, or performing unpaid work under the guise of a real job opening.
+          </p>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">5 Major Red Flags of a Fake Job Posting</h3>
+          <div className="space-y-4 my-6">
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">1. Asking for money or fees up front</h4>
+              <p className="text-sm text-neutral-600 mt-1">Legitimate employers will never charge you for applying, training, training materials, laptop fees, or system setup. If they ask you to send money via UPI, wire transfer, or crypto, it is 100% a scam.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">2. Communications via messaging apps only</h4>
+              <p className="text-sm text-neutral-600 mt-1">Be highly suspicious if the entire recruitment process (including interviews and offers) happens strictly over Telegram, WhatsApp, or Signal. Real companies schedule video interviews via Zoom, Teams, or Google Meet.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">3. Unprofessional email domains</h4>
+              <p className="text-sm text-neutral-600 mt-1">Real recruiters email from corporate domains (e.g., name@google.com). If you receive an offer from a public domain like Gmail (e.g., googlecareers99@gmail.com) or a misspelled lookalike domain, proceed with extreme caution.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">4. Too good to be true packages</h4>
+              <p className="text-sm text-neutral-600 mt-1">If a listing promises ₹50,000 per week for 2 hours of simple work (like data entry or liking YouTube videos) with zero experience required, it is a task-scam designed to steal your money after a few &quot;tasks.&quot;</p>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+              <h4 className="font-semibold text-neutral-900">5. Rushed hiring process</h4>
+              <p className="text-sm text-neutral-600 mt-1">If you receive a job offer within minutes of submitting your resume, without a proper live interview or tech assessment, it is likely a scam. Fraudsters rush the process to prevent you from researching the company.</p>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Steps to Verify a Job and Company</h3>
+          <p className="text-neutral-600 leading-relaxed">
+            Before applying or sharing sensitive documents like your Aadhaar card, PAN, or bank details, do this basic checklist:
+          </p>
+          <ul className="list-disc pl-5 text-neutral-600 space-y-2">
+            <li><strong>Check the official careers page:</strong> Go directly to the company website and search for the job ID or title. If it is not listed there, verify it with their HR team.</li>
+            <li><strong>Lookup the recruiter on LinkedIn:</strong> Search for the person emailing you. Verify they actually work at the company and have a real profile with connections.</li>
+            <li><strong>Google search search terms:</strong> Search for &quot;[Company Name] + job scam&quot; or &quot;[Company Name] + reviews&quot; to see if other job seekers have reported fraud.</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Frequently Asked Questions (FAQs)</h3>
+          <div className="space-y-4">
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                What should I do if I shared my Aadhaar or PAN card with a scammer?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                Monitor your bank accounts closely, check your credit report for unauthorized loans, and consider filing a report on the official Cyber Crime portal in India (cybercrime.gov.in) to document the identity theft.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                Are WhatsApp &quot;Like YouTube Videos&quot; jobs real?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                No. This is a very common task-based financial fraud. They will pay you small sums (e.g., ₹150) at first to build trust, then ask you to deposit larger amounts (pre-paid VIP tasks) to unlock higher earnings, after which they block your number and steal your money.
+              </p>
+            </details>
+            <details className="group border-b border-neutral-200 pb-4">
+              <summary className="flex cursor-pointer justify-between items-center font-medium text-neutral-900">
+                How does DecaJobs verify its job listings?
+                <span className="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-sm text-neutral-600 mt-2">
+                We aggregate jobs from reputable platforms and utilize AI filters to strip out listings with scam indicators (e.g., fee requirements, public emails, suspicious company names). Our premium matches only include verified employer listings.
+              </p>
+            </details>
+          </div>
+        </div>
       </div>
     </div>
   );

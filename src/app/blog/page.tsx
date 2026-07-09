@@ -52,6 +52,48 @@ const articles = [
     category: "LinkedIn",
     date: "June 2026",
   },
+  {
+    slug: "ats-resume-secrets",
+    title: "How to Beat the ATS (Applicant Tracking System): Secrets from Recruiters",
+    excerpt: "More than 95% of major employers use Applicant Tracking Systems (ATS) to filter resumes. Learn the formatting and keyword secrets to beat the scanners.",
+    category: "Resume Tips",
+    date: "June 2026",
+  },
+  {
+    slug: "artificial-intelligence-careers",
+    title: "How AI is Changing the Job Market: Top Skills to Learn in 2026",
+    excerpt: "Artificial Intelligence is reshaping careers. Learn the top AI literacy, prompt engineering, and soft skills needed to remain competitive in 2026.",
+    category: "Remote Work",
+    date: "June 2026",
+  },
+  {
+    slug: "remote-job-interview-prep",
+    title: "Remote Job Interviews: 10 Tips to Ace Your Video and Tech Rounds",
+    excerpt: "Remote interviews require different skills. Learn how to optimize your setup, background, lighting, and communication style to stand out.",
+    category: "Interview Prep",
+    date: "June 2026",
+  },
+  {
+    slug: "career-gaps-explanation",
+    title: "How to Explain Career Gaps in a Job Interview (With Examples)",
+    excerpt: "Career gaps are common. Learn how to explain career gaps for upskilling, family care, or health reasons with confidence and clear scripts.",
+    category: "Interview Prep",
+    date: "June 2026",
+  },
+  {
+    slug: "linkedin-networking-guide",
+    title: "The Art of LinkedIn Cold Messaging: How to Get Referrals Without Being Annoying",
+    excerpt: "Cold outreach on LinkedIn has high leverage. Learn the exact template, strategies, and etiquette to connect with peers and request referrals.",
+    category: "LinkedIn",
+    date: "June 2026",
+  },
+  {
+    slug: "negotiating-first-salary",
+    title: "Fresher Salary Negotiation: Yes, You Can (And Should) Ask For More",
+    excerpt: "Many freshers accept their first offer without negotiating. Learn the data, tactics, and scripts to politely ask for a 10-15% increase as a graduate.",
+    category: "Salary",
+    date: "June 2026",
+  },
 ];
 
 export default function BlogPage() {

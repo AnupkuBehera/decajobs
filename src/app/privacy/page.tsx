@@ -72,10 +72,18 @@ export default function PrivacyPolicyPage() {
           <li>Export your data</li>
         </ul>
 
-        <h2>7. Cookies</h2>
+        <h2>7. Cookies and Advertising</h2>
         <p>
-          We use essential cookies for authentication and session management. No third-party advertising or tracking cookies are used.
+          We use cookies to help analyze traffic, remember your preferences, and optimize your user experience. Essential cookies are required for authentication and session management.
         </p>
+        <p>
+          <strong>Google AdSense & Third-Party Cookies:</strong>
+        </p>
+        <ul>
+          <li>Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to DecaJobs or other websites.</li>
+          <li>Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to DecaJobs and/or other sites on the Internet.</li>
+          <li>Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer">www.aboutads.info</a>.</li>
+        </ul>
 
         <h2>8. Changes to This Policy</h2>
         <p>
