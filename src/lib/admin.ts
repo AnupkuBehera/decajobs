@@ -13,7 +13,7 @@ export async function verifyAdmin() {
     return null;
   }
 
-  const adminEmails = (process.env.ADMIN_EMAILS || "")
+  const adminEmails = (process.env.ADMIN_EMAILS || "anup4503@gmail.com,anupkist@gmail.com")
     .split(",")
     .map((e) => e.trim().toLowerCase());
 
