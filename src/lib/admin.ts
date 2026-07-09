@@ -13,9 +13,12 @@ export async function verifyAdmin() {
     return null;
   }
 
-  const adminEmails = (process.env.ADMIN_EMAILS || "anup4503@gmail.com,anupkist@gmail.com")
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
     .split(",")
     .map((e) => e.trim().toLowerCase());
+
+  if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
+  if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
 
   if (!adminEmails.includes(user.email.toLowerCase())) {
     return null;

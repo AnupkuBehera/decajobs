@@ -7,6 +7,7 @@ import { updateSession } from "@/lib/supabase/middleware";
  * Unauthenticated users accessing these paths are redirected to /login.
  */
 const protectedRoutes = [
+  "/admin",
   "/dashboard",
   "/profile",
   "/settings",
