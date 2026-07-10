@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { fetchActiveCandidates } from "@/inngest/functions/helpers/fetch-candidates";
+import { verifyAdmin } from "@/lib/admin";
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("Authorization");
   const cronSecret = process.env.CRON_SECRET;
 
-  // Verify auth header if CRON_SECRET is set
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  // Verify auth header if CRON_SECRET is set, OR verify if user is logged-in admin
+  const admin = await verifyAdmin();
+  if (!admin && cronSecret && authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
