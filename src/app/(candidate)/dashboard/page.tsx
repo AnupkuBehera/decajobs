@@ -4,12 +4,22 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TriggerDigestButton } from "./trigger-digest-button";
-import DashboardMatches from "./dashboard-matches";
+import DashboardTabs from "./dashboard-tabs";
 
 export const metadata = {
   title: "Dashboard - DecaJobs",
   description: "Your candidate dashboard showing matching status and profile overview.",
 };
+
+const CAREER_TIPS = [
+  "💡 ATS Hack: Tailor your resume key skills for every target role to bypass automatic screening filters.",
+  "💡 LinkedIn Booster: Keep your LinkedIn headline active and include keywords like 'Remote' or 'Java Engineer' so recruiters can find you easily.",
+  "💡 Interview Prep: When doing mock interviews, focus on the STAR method (Situation, Task, Action, Result) to format your answers.",
+  "💡 Pro Tip: Always research a company's recent announcements or funding before an interview to stand out.",
+  "💡 Referral Hack: Network with existing employees on LinkedIn before applying to increase your referral chance.",
+  "💡 Job CRM Tip: Keep your application notes updated daily to stay organized and follow up exactly 5 days after applying.",
+  "💡 Skill Mapping: Review your match scores daily to see which skills you should add next to land high-paying roles."
+];
 
 export default async function CandidateDashboardPage() {
   const supabase = await createClient();
@@ -29,10 +39,10 @@ export default async function CandidateDashboardPage() {
     user.email?.split("@")[0] ||
     "there";
 
-  // Fetch candidate record for matching status
+  // Fetch candidate record for matching status and referral code
   const { data: candidate } = await supabase
     .from("candidates")
-    .select("is_active")
+    .select("is_active, referral_code, referral_bonus_days")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -52,8 +62,29 @@ export default async function CandidateDashboardPage() {
     .limit(1)
     .maybeSingle();
 
+  // Fetch application counts
+  const { count: activeAppsCount } = await supabase
+    .from("job_applications")
+    .select("*", { count: "exact", head: true })
+    .eq("candidate_id", user.id)
+    .neq("status", "rejected");
+
+  const { count: interviewAppsCount } = await supabase
+    .from("job_applications")
+    .select("*", { count: "exact", head: true })
+    .eq("candidate_id", user.id)
+    .eq("status", "interview");
+
+  const { count: offerAppsCount } = await supabase
+    .from("job_applications")
+    .select("*", { count: "exact", head: true })
+    .eq("candidate_id", user.id)
+    .eq("status", "offer");
+
   // Determine matching status
   const isActive = candidate?.is_active ?? false;
+  const referralCode = candidate?.referral_code ?? "";
+  const referralBonusDays = candidate?.referral_bonus_days ?? 0;
 
   // Determine profile completeness
   const hasTitles = profile?.target_titles && profile.target_titles.length > 0;
@@ -76,169 +107,151 @@ export default async function CandidateDashboardPage() {
       })
     : null;
 
+  // Dynamic daily tip
+  const todayTip = CAREER_TIPS[new Date().getDay() % CAREER_TIPS.length];
+
   return (
     <div className="py-6 sm:py-10">
-      <div className="mx-auto max-w-2xl">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold text-neutral-900 sm:text-3xl">
-            Welcome, {displayName}
-          </h1>
-          <p className="mt-2 text-neutral-600">
-            Your job matching overview at a glance.
-          </p>
+      <div className="mx-auto max-w-6xl">
+        {/* Welcome Header */}
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-neutral-900 sm:text-3xl">
+              Welcome, {displayName}
+            </h1>
+            <p className="mt-1.5 text-neutral-600 text-sm">
+              Your personalized career matching hub and application tracker.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Badge variant={isActive ? "success" : "warning"} className="text-xs py-1 px-3">
+              Daily Matching: {isActive ? "Active" : "Paused"}
+            </Badge>
+            <Badge variant={isProfileComplete ? "success" : "warning"} className="text-xs py-1 px-3">
+              Profile: {isProfileComplete ? "Complete" : "Incomplete"}
+            </Badge>
+          </div>
         </div>
 
-        <div className="grid gap-4 sm:gap-6">
-          {/* Matching Status */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Matching Status</CardTitle>
-              <Badge variant={isActive ? "success" : "warning"}>
-                {isActive ? "Active" : "Paused"}
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">
-                {isActive
-                  ? "You're receiving daily job matches. We'll send your top 10 jobs every morning."
-                  : "Your daily matching is paused. Enable it in settings to start receiving job digests."}
-              </p>
+        {/* Top 3 Search Stats row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card className="bg-neutral-50/50">
+            <CardContent className="p-4 sm:p-5">
+              <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Active Tracked Jobs</span>
+              <p className="text-2xl font-extrabold text-neutral-900 mt-1">{activeAppsCount ?? 0}</p>
             </CardContent>
           </Card>
+          <Card className="bg-neutral-50/50">
+            <CardContent className="p-4 sm:p-5">
+              <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Interviews in Progress</span>
+              <p className="text-2xl font-extrabold text-amber-600 mt-1">{interviewAppsCount ?? 0}</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-neutral-50/50">
+            <CardContent className="p-4 sm:p-5">
+              <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Offers Received</span>
+              <p className="text-2xl font-extrabold text-green-600 mt-1">{offerAppsCount ?? 0}</p>
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Profile Completeness */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Profile Completeness</CardTitle>
-              <Badge variant={isProfileComplete ? "success" : "warning"}>
-                {isProfileComplete ? "Complete" : "Incomplete"}
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              {isProfileComplete ? (
-                <p className="text-sm">
-                  Your profile is complete. The matching engine is using your
-                  preferences to find the best jobs for you.
+        {/* Main 2-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Action Tabs area */}
+          <div className="lg:col-span-2 space-y-6">
+            <DashboardTabs
+              isProfileComplete={isProfileComplete}
+              referralCode={referralCode}
+              referralBonusDays={referralBonusDays}
+            />
+          </div>
+
+          {/* Sidebar Area */}
+          <div className="space-y-6">
+            {/* Daily AI Tip */}
+            <Card className="border border-primary-100 bg-primary-50/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs text-primary-700 font-bold uppercase tracking-wider">💡 Career Advice</CardTitle>
+              </CardHeader>
+              <CardContent className="text-xs text-neutral-600 leading-relaxed font-medium">
+                {todayTip}
+              </CardContent>
+            </Card>
+
+            {/* Matching Info */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold">Mail Delivery Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-xs text-neutral-600">
+                <p>
+                  {lastDigestDate ? (
+                    <>
+                      Last matching digest was sent on{" "}
+                      <span className="font-semibold text-neutral-900">
+                        {lastDigestDate}
+                      </span>
+                      .
+                    </>
+                  ) : (
+                    "No digests sent yet. Complete your profile and keep matching active to receive your first mail."
+                  )}
                 </p>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-sm">
-                    Complete your profile to start receiving matches. Missing:
-                  </p>
-                  <ul className="list-inside list-disc text-sm text-warning-600">
+                <div className="pt-2">
+                  <TriggerDigestButton />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Profile Check */}
+            {!isProfileComplete && (
+              <Card className="border-warning-200 bg-warning-50/10">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-warning-800">Action Required</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-xs text-neutral-600">
+                  <p>Complete your profile fields to qualify for daily matches. Missing details:</p>
+                  <ul className="list-inside list-disc text-warning-700">
                     {missingFields.map((field) => (
                       <li key={field}>{field}</li>
                     ))}
                   </ul>
                   <Link
                     href="/profile"
-                    className="inline-block text-sm font-medium text-primary-600 hover:text-primary-700 underline"
+                    className="inline-block font-semibold text-primary-600 hover:text-primary-700 underline"
                   >
-                    Complete your profile →
+                    Set details now →
                   </Link>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Last Digest Sent */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Last Digest Sent</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">
-                {lastDigestDate ? (
-                  <>
-                    Your last daily digest was sent on{" "}
-                    <span className="font-medium text-neutral-900">
-                      {lastDigestDate}
-                    </span>
-                    .
-                  </>
-                ) : (
-                  "No digests sent yet. Once your profile is complete and matching is active, you'll receive your first digest."
-                )}
-              </p>
-              <div className="mt-4">
-                <TriggerDigestButton />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Real-time top matches preview */}
-          <DashboardMatches isProfileComplete={isProfileComplete} />
-
-          {/* Quick Links */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Link href="/profile" className="block">
-              <Card hoverable className="h-full">
-                <CardContent className="flex items-center gap-3">
-                  <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-100 text-primary-700"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium text-neutral-900">Edit Profile</p>
-                    <p className="text-sm text-neutral-500">
-                      Update your titles, skills, and location
-                    </p>
-                  </div>
                 </CardContent>
               </Card>
-            </Link>
+            )}
 
-            <Link href="/settings" className="block">
-              <Card hoverable className="h-full">
-                <CardContent className="flex items-center gap-3">
-                  <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium text-neutral-900">Settings</p>
-                    <p className="text-sm text-neutral-500">
-                      Manage email preferences and delivery time
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+            {/* Quick Links */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold">Quick Shortcuts</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-primary-600 p-2 hover:bg-neutral-50 rounded transition-colors"
+                >
+                  👤 Edit Target Titles & Skills
+                </Link>
+                <Link
+                  href="/settings"
+                  className="flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-primary-600 p-2 hover:bg-neutral-50 rounded transition-colors"
+                >
+                  ⚙️ Email Settings & Pause Matching
+                </Link>
+                <Link
+                  href="/career-coach"
+                  className="flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-primary-600 p-2 hover:bg-neutral-50 rounded transition-colors"
+                >
+                  🤖 Chat with AI Career Coach
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

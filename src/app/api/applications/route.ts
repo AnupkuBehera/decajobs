@@ -3,87 +3,149 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { data, error } = await supabase
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { data: applications, error } = await supabase
     .from("job_applications")
     .select("*")
     .eq("candidate_id", user.id)
     .order("applied_at", { ascending: false });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data || []);
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(applications);
 }
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const body = await request.json();
-  const { job_title, company, job_url, status, notes } = body;
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
-  if (!job_title || !company) {
-    return NextResponse.json({ error: "Job title and company are required" }, { status: 400 });
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { data, error } = await supabase
-    .from("job_applications")
-    .insert({
-      candidate_id: user.id,
-      job_title,
-      company,
-      job_url: job_url || null,
-      status: status || "applied",
-      notes: notes || "",
-    })
-    .select()
-    .single();
+  try {
+    const { job_title, company, job_url, status, notes } = await request.json();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data, { status: 201 });
+    if (!job_title || !company) {
+      return NextResponse.json({ error: "Missing job title or company" }, { status: 400 });
+    }
+
+    const { data, error } = await supabase
+      .from("job_applications")
+      .insert({
+        candidate_id: user.id,
+        job_title,
+        company,
+        job_url: job_url || null,
+        status: status || "applied",
+        notes: notes || "",
+        applied_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }
 
 export async function PUT(request: Request) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const body = await request.json();
-  const { id, status, notes } = body;
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
-  if (!id) return NextResponse.json({ error: "Application ID required" }, { status: 400 });
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  const updateData: Record<string, string> = { updated_at: new Date().toISOString() };
-  if (status) updateData.status = status;
-  if (notes !== undefined) updateData.notes = notes;
+  try {
+    const { id, job_title, company, job_url, status, notes } = await request.json();
 
-  const { error } = await supabase
-    .from("job_applications")
-    .update(updateData)
-    .eq("id", id)
-    .eq("candidate_id", user.id);
+    if (!id) {
+      return NextResponse.json({ error: "Missing application ID" }, { status: 400 });
+    }
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ success: true });
+    const { data, error } = await supabase
+      .from("job_applications")
+      .update({
+        job_title,
+        company,
+        job_url,
+        status,
+        notes,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("candidate_id", user.id)
+      .select()
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }
 
 export async function DELETE(request: Request) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
-  const { error } = await supabase
-    .from("job_applications")
-    .delete()
-    .eq("id", id)
-    .eq("candidate_id", user.id);
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ success: true });
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing application ID" }, { status: 400 });
+    }
+
+    const { error } = await supabase
+      .from("job_applications")
+      .delete()
+      .eq("id", id)
+      .eq("candidate_id", user.id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }
