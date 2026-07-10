@@ -37,6 +37,8 @@ interface DashboardMetrics {
   totalEmployers: number;
   totalJobs: number;
   activePro: number;
+  totalPageViews?: number;
+  totalUniqueVisitors?: number;
 }
 
 export default function AdminDashboardPage() {
@@ -344,7 +346,7 @@ export default function AdminDashboardPage() {
 
       {/* Metrics Section */}
       {metrics && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <Card>
             <CardContent className="p-4 sm:p-6">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Total Candidates</span>
@@ -367,6 +369,18 @@ export default function AdminDashboardPage() {
             <CardContent className="p-4 sm:p-6">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Job Listings Count</span>
               <p className="text-2xl sm:text-3xl font-extrabold text-primary-600 mt-1">{metrics.totalJobs}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 sm:p-6">
+              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Total Page Views</span>
+              <p className="text-2xl sm:text-3xl font-extrabold text-neutral-900 mt-1">{metrics.totalPageViews ?? 0}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 sm:p-6">
+              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Unique Visitors</span>
+              <p className="text-2xl sm:text-3xl font-extrabold text-indigo-600 mt-1">{metrics.totalUniqueVisitors ?? 0}</p>
             </CardContent>
           </Card>
         </div>

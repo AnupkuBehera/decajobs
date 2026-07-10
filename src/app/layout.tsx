@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CookieConsent } from "@/components/cookie-consent";
 import { AdScripts, AdBanner } from "@/components/ad-scripts";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col antialiased overflow-x-hidden">
+        <AnalyticsTracker />
         {/* Ad scripts — only shown to non-Pro users */}
         <AdScripts />
         {/* Google Analytics */}

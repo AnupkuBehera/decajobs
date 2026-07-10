@@ -39,6 +39,25 @@ export async function GET() {
       throw countError;
     }
 
+    // 4. Fetch visitor page views and unique sessions (up to 10k limit for memory efficiency)
+    let totalPageViews = 0;
+    let totalUniqueVisitors = 0;
+    try {
+      const { count: pageViewsCount } = await supabase
+        .from("visitor_logs")
+        .select("*", { count: "exact", head: true });
+      
+      const { data: sessionLogs } = await supabase
+        .from("visitor_logs")
+        .select("session_id")
+        .limit(10000);
+
+      totalPageViews = pageViewsCount ?? 0;
+      totalUniqueVisitors = new Set(sessionLogs?.map((l) => l.session_id) ?? []).size;
+    } catch (e) {
+      console.warn("[Admin API] visitor_logs table may not exist yet:", e);
+    }
+
     // Calculate metrics
     const totalCandidates = candidates?.length ?? 0;
     const totalEmployers = employers?.length ?? 0;
@@ -53,6 +72,8 @@ export async function GET() {
         totalEmployers,
         totalJobs,
         activePro,
+        totalPageViews,
+        totalUniqueVisitors,
       },
       candidates: candidates ?? [],
       employers: employers ?? [],
