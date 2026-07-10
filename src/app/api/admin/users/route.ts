@@ -56,6 +56,11 @@ export async function GET() {
       },
       candidates: candidates ?? [],
       employers: employers ?? [],
+      debug: {
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+        serviceKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length ?? 0,
+        isServiceKeyPrefixValid: process.env.SUPABASE_SERVICE_ROLE_KEY?.startsWith("sb_") ?? false,
+      }
     });
   } catch (error: any) {
     console.error("[Admin API] Failed to fetch data:", error);

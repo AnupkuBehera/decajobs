@@ -44,6 +44,11 @@ export default function AdminDashboardPage() {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [employers, setEmployers] = useState<Employer[]>([]);
+  const [debugInfo, setDebugInfo] = useState<{
+    supabaseUrl: string;
+    serviceKeyLength: number;
+    isServiceKeyPrefixValid: boolean;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState(false);
   
@@ -75,6 +80,7 @@ export default function AdminDashboardPage() {
       setMetrics(json.metrics);
       setCandidates(json.candidates);
       setEmployers(json.employers);
+      setDebugInfo(json.debug || null);
     } catch (err: any) {
       console.error(err);
       addToast(err.message || "Failed to load admin dashboard data.", "error");
@@ -630,6 +636,19 @@ export default function AdminDashboardPage() {
                 </Button>
               </CardContent>
             </Card>
+
+            {debugInfo && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>System Diagnostics (Admin Only)</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-xs font-mono text-neutral-600 bg-neutral-50 p-4 rounded-lg">
+                  <div>Supabase URL: <span className="font-semibold text-neutral-900">{debugInfo.supabaseUrl}</span></div>
+                  <div>Service Key Length: <span className="font-semibold text-neutral-900">{debugInfo.serviceKeyLength} characters</span></div>
+                  <div>Service Key Prefix Valid (starts with sb_): <span className={`font-semibold ${debugInfo.isServiceKeyPrefixValid ? "text-green-600" : "text-red-600"}`}>{debugInfo.isServiceKeyPrefixValid ? "Yes" : "No"}</span></div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
       </div>
