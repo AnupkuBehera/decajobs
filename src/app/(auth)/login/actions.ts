@@ -1,12 +1,57 @@
 "use server";
 
 import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 import { sendMagicLink } from "@/lib/resend/send";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export interface LoginState {
   success: boolean;
   error?: string;
+}
+
+export async function signInWithPassword(
+  _prevState: LoginState | null,
+  formData: FormData
+): Promise<LoginState> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || typeof email !== "string") {
+    return { success: false, error: "Please enter a valid email address." };
+  }
+
+  if (!password || typeof password !== "string") {
+    return { success: false, error: "Please enter your password." };
+  }
+
+  let success = false;
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error("[Login] signInWithPassword error:", error.message);
+      return { success: false, error: error.message };
+    }
+    success = true;
+  } catch (err: any) {
+    console.error("[Login] Unexpected error in password sign-in:", err);
+    return {
+      success: false,
+      error: err?.message || "Unable to sign in. Please try again.",
+    };
+  }
+
+  if (success) {
+    redirect("/dashboard");
+  }
+
+  return { success: false };
 }
 
 export async function signInWithMagicLink(

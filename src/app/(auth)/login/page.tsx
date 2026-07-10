@@ -6,11 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
-import { signInWithMagicLink, type LoginState } from "./actions";
+import { signInWithMagicLink, signInWithPassword, type LoginState } from "./actions";
 
 export default function LoginPage() {
+  const [loginMode, setLoginMode] = useState<"magic-link" | "password">("magic-link");
   const [state, formAction, isPending] = useActionState<LoginState | null, FormData>(
     signInWithMagicLink,
+    null
+  );
+  const [passwordState, passwordFormAction, isPasswordPending] = useActionState<LoginState | null, FormData>(
+    signInWithPassword,
     null
   );
   const [oauthLoading, setOauthLoading] = useState(false);
@@ -75,30 +80,83 @@ export default function LoginPage() {
           </Card>
         ) : (
           <Card padding="lg">
-            <form action={formAction} className="space-y-4" aria-label="Sign in with email link">
-              <Input
-                label="Email address"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-                error={state?.error}
-              />
+            {loginMode === "magic-link" ? (
+              <form action={formAction} className="space-y-4" aria-label="Sign in with email link">
+                <Input
+                  label="Email address"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                  autoComplete="email"
+                  error={state?.error}
+                />
 
-              <p className="text-xs text-neutral-500 leading-relaxed">
-                If you already have an account, this will log you in. If you are new, this will create a free account. No password required.
-              </p>
+                <p className="text-xs text-neutral-500 leading-relaxed">
+                  If you already have an account, this will log you in. If you are new, this will create a free account. No password required.
+                </p>
 
-              <Button
-                type="submit"
-                className="w-full"
-                size="lg"
-                isLoading={isPending}
-              >
-                Send Sign-In Link
-              </Button>
-            </form>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  isLoading={isPending}
+                >
+                  Send Sign-In Link
+                </Button>
+
+                <div className="text-center mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setLoginMode("password")}
+                    className="text-xs text-primary-600 hover:underline min-h-[44px]"
+                  >
+                    Sign in with Password instead
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form action={passwordFormAction} className="space-y-4" aria-label="Sign in with password">
+                <Input
+                  label="Email address"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                  autoComplete="email"
+                  error={passwordState?.error}
+                />
+
+                <Input
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  autoComplete="current-password"
+                  error={passwordState?.error ? "" : undefined}
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  isLoading={isPasswordPending}
+                >
+                  Sign In
+                </Button>
+
+                <div className="text-center mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setLoginMode("magic-link")}
+                    className="text-xs text-primary-600 hover:underline min-h-[44px]"
+                  >
+                    Sign in with Magic Link instead
+                  </button>
+                </div>
+              </form>
+            )}
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
