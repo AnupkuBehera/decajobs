@@ -79,10 +79,14 @@ export async function sendDigestEmail(to: string, jobs: JobDigestItem[], candida
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://decajob.com";
 
+  const subject = jobs.length === 10
+    ? `Your DecaJobs Daily 10 — ${date}`
+    : `Your DecaJobs Daily Digest — ${date}`;
+
   await sendWithRetry({
     from: FROM_EMAIL,
     to,
-    subject: `Your DecaJobs Daily 10 — ${date}`,
+    subject,
     react: React.createElement(DailyDigestEmail, {
       jobs: digestJobs,
       date,

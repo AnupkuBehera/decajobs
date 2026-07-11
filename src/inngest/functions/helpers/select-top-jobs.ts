@@ -94,8 +94,34 @@ export function selectTopJobs(
     }
   }
 
-  // Step 4: If fewer than 10 total jobs are available, return null (skip candidate).
+  // Step 3b: Backup Fallback - If we still have fewer than 10 jobs, fill with ANY remaining active jobs,
+  // ranked by their match score first to prioritize relevance.
   if (selectedIds.length < DIGEST_SIZE) {
+    const remainingJobs = fallbackPool
+      .filter((job) => !selectedIdSet.has(job.id))
+      .map((job) => ({
+        job,
+        score: rankJobs(candidate, [job])[0]?.score ?? 0,
+      }))
+      .sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score;
+        }
+        return new Date(b.job.createdAt).getTime() - new Date(a.job.createdAt).getTime();
+      });
+
+    for (const item of remainingJobs) {
+      if (selectedIds.length >= DIGEST_SIZE) {
+        break;
+      }
+      selectedIds.push(item.job.id);
+      selectedIdSet.add(item.job.id);
+    }
+  }
+
+  // Step 4: If no jobs are available at all, return null (skip candidate).
+  // Otherwise, return whatever we have (even if fewer than 10).
+  if (selectedIds.length === 0) {
     return null;
   }
 

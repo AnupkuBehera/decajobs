@@ -133,6 +133,12 @@ export async function POST() {
     day: "numeric",
   });
 
+  const isDaily10 = top10.length === 10;
+  const brandingName = isDaily10 ? "Daily 10 Jobs" : "Daily Digest";
+  const subject = isDaily10
+    ? `Your DecaJobs Daily 10 — ${date}`
+    : `Your DecaJobs Daily Digest — ${date}`;
+
   const jobCards = top10
     .map((match, index) => {
       const job = allJobs.find((j) => j.id === match.jobListingId);
@@ -152,7 +158,7 @@ export async function POST() {
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
       <h1 style="font-size: 24px; color: #2563eb;">DecaJobs</h1>
-      <h2 style="font-size: 20px; color: #111827;">Your Daily 10 Jobs</h2>
+      <h2 style="font-size: 20px; color: #111827;">Your ${brandingName}</h2>
       <p style="color: #6b7280; font-size: 14px;">${date}</p>
       <p style="color: #374151; font-size: 14px;">Here are your top ${top10.length} job matches based on your profile (${profile.target_titles.join(", ")} · ${profile.location}):</p>
       <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;" />
@@ -169,7 +175,7 @@ export async function POST() {
     const { error: sendError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: user.email!,
-      subject: `Your DecaJobs Daily 10 — ${date}`,
+      subject,
       html,
     });
 

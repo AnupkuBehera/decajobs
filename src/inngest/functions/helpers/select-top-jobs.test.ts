@@ -204,8 +204,8 @@ describe("selectTopJobs", () => {
     });
   });
 
-  describe("skip candidate (return null)", () => {
-    it("returns null when fewer than 10 total jobs are available", () => {
+  describe("skip candidate or return fewer than 10 jobs", () => {
+    it("returns all available jobs (fewer than 10) instead of null when total jobs are fewer than 10", () => {
       const candidate = createCandidate({ location: "Nowhere, XX" });
 
       const eligibleJobs: JobListingWithDate[] = Array.from(
@@ -223,7 +223,10 @@ describe("selectTopJobs", () => {
 
       const result = selectTopJobs(candidate, eligibleJobs, allActiveJobs);
 
-      expect(result).toBeNull();
+      expect(result).not.toBeNull();
+      expect(result).toHaveLength(7);
+      expect(result).toContain("other-1");
+      expect(result).toContain("other-2");
     });
 
     it("returns null when no eligible or fallback jobs exist", () => {
@@ -232,7 +235,7 @@ describe("selectTopJobs", () => {
       expect(result).toBeNull();
     });
 
-    it("returns null when eligible jobs are empty and fallback has fewer than 10 matching", () => {
+    it("returns all available fallback jobs (fewer than 10) instead of null when eligible is empty", () => {
       const candidate = createCandidate({ location: "Seattle, WA" });
 
       const allActiveJobs: JobListingWithDate[] = Array.from(
@@ -243,7 +246,40 @@ describe("selectTopJobs", () => {
 
       const result = selectTopJobs(candidate, [], allActiveJobs);
 
-      expect(result).toBeNull();
+      expect(result).not.toBeNull();
+      expect(result).toHaveLength(5);
+    });
+
+    it("fills remainder with non-location-matched jobs ranked by score as backup fallback", () => {
+      const candidate = createCandidate({
+        targetTitles: ["Software Engineer"],
+        skills: ["React"],
+        location: "Seattle, WA"
+      });
+
+      // 5 local/remote jobs
+      const eligibleJobs = Array.from({ length: 5 }, (_, i) =>
+        createJob(`local-${i}`, "Software Engineer", "Seattle, WA")
+      );
+
+      // Fallback pool has non-local/non-remote jobs, some match title/skills, some don't
+      const allActiveJobs = [
+        ...eligibleJobs,
+        // High match title/skills, but wrong location
+        createJob("non-local-high", "Software Engineer", "New York, NY"),
+        // Low match title/skills, wrong location
+        createJob("non-local-low", "Gardener", "Miami, FL"),
+        createJob("non-local-mid", "React Developer", "Boston, MA"),
+      ];
+
+      const result = selectTopJobs(candidate, eligibleJobs, allActiveJobs);
+
+      expect(result).not.toBeNull();
+      // Should contain local jobs, plus non-local jobs sorted by relevance
+      expect(result).toHaveLength(8);
+      expect(result![5]).toBe("non-local-high"); // Software Engineer matches title
+      expect(result![6]).toBe("non-local-mid");  // React Developer matches skill
+      expect(result![7]).toBe("non-local-low");  // Gardener has lowest relevance
     });
   });
 

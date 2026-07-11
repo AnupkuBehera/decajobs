@@ -41,7 +41,9 @@ export function DailyDigestEmail({
       day: "numeric",
     });
 
-  const previewText = `Your DecaJobs Daily 10 for ${formattedDate}`;
+  const isDaily10 = jobs.length === 10;
+  const brandingName = isDaily10 ? "Daily 10" : "Daily Digest";
+  const previewText = `Your DecaJobs ${brandingName} for ${formattedDate}`;
 
   return (
     <Html>
@@ -51,7 +53,7 @@ export function DailyDigestEmail({
         <Container style={container}>
           {/* Header */}
           <Section style={header}>
-            <Heading style={headerTitle}>Your DecaJobs Daily 10</Heading>
+            <Heading style={headerTitle}>Your DecaJobs {brandingName}</Heading>
             <Text style={headerDate}>{formattedDate}</Text>
           </Section>
 

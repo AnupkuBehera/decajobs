@@ -144,7 +144,7 @@ describe("sendDigestEmail", () => {
     vi.useRealTimers();
   });
 
-  it("sends a digest email with correct subject and recipient", async () => {
+  it("sends a digest email with Daily Digest subject when fewer than 10 jobs are provided", async () => {
     mockSend.mockResolvedValueOnce(mockSuccessResponse("msg_digest"));
 
     const jobs = [
@@ -155,6 +155,30 @@ describe("sendDigestEmail", () => {
         applicationLink: "https://example.com/apply",
       },
     ];
+
+    const promise = sendDigestEmail("candidate@example.com", jobs, "a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+    await vi.runAllTimersAsync();
+    await promise;
+
+    expect(mockSend).toHaveBeenCalledTimes(1);
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: "DecaJobs <noreply@decajobs.com>",
+        to: "candidate@example.com",
+        subject: expect.stringContaining("Your DecaJobs Daily Digest"),
+      })
+    );
+  });
+
+  it("sends a digest email with Daily 10 subject when exactly 10 jobs are provided", async () => {
+    mockSend.mockResolvedValueOnce(mockSuccessResponse("msg_digest_10"));
+
+    const jobs = Array.from({ length: 10 }, () => ({
+      title: "Software Engineer",
+      description: "Build amazing things",
+      location: "Remote",
+      applicationLink: "https://example.com/apply",
+    }));
 
     const promise = sendDigestEmail("candidate@example.com", jobs, "a1b2c3d4-e5f6-7890-abcd-ef1234567890");
     await vi.runAllTimersAsync();
