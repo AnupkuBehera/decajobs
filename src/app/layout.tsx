@@ -59,6 +59,46 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col antialiased overflow-x-hidden">
         <AnalyticsTracker />
+        {/* Sitewide JSON-LD structured data for Google */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://decajob.com/#website",
+                  url: "https://decajob.com",
+                  name: "DecaJobs",
+                  description:
+                    "AI-powered job portal that delivers 10 perfectly matched jobs to your inbox every morning.",
+                  publisher: { "@id": "https://decajob.com/#organization" },
+                  inLanguage: "en-US",
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://decajob.com/#organization",
+                  name: "DecaJobs",
+                  url: "https://decajob.com",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://decajob.com/web-app-manifest-512x512.png",
+                    width: 512,
+                    height: 512,
+                  },
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    email: "support@decajob.com",
+                    contactType: "customer support",
+                    availableLanguage: "English",
+                  },
+                  sameAs: [],
+                },
+              ],
+            }),
+          }}
+        />
         {/* Ad scripts — only shown to non-Pro users */}
         <AdScripts />
         {/* Google Analytics */}

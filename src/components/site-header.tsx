@@ -167,6 +167,18 @@ export async function SiteHeader() {
           ) : (
             <>
               <Link
+                href="/how-it-works"
+                className="hidden sm:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/pricing"
+                className="hidden sm:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
+              >
+                Pricing
+              </Link>
+              <Link
                 href="/tools"
                 className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
               >

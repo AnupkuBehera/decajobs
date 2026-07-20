@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions - DecaJobs | AI Job Portal",
@@ -28,6 +29,8 @@ export default function FAQPage() {
   return (
     <div className="py-10 sm:py-16">
       <div className="mx-auto max-w-3xl">
+        <Breadcrumbs items={[{ label: "FAQ" }]} />
+
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
             Frequently Asked Questions

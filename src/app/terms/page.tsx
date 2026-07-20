@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions - DecaJobs",
@@ -12,8 +13,11 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="py-10 sm:py-16">
-      <div className="mx-auto max-w-3xl prose prose-neutral prose-sm sm:prose-base">
-        <h1>Terms &amp; Conditions</h1>
+      <div className="mx-auto max-w-3xl">
+        <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
+
+        <div className="prose prose-neutral prose-sm sm:prose-base">
+          <h1>Terms &amp; Conditions</h1>
         <p className="text-neutral-500 text-sm">Last updated: June 10, 2026</p>
 
         <h2>1. Acceptance of Terms</h2>
@@ -90,6 +94,7 @@ export default function TermsPage() {
           For questions about these Terms, contact us at{" "}
           <a href="mailto:legal@decajobs.com">legal@decajobs.com</a>.
         </p>
+        </div>
       </div>
     </div>
   );

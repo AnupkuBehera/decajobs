@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
-const articles: Record<string, { title: string; content: string; category: string; date: string }> = {
+const articles: Record<string, { title: string; content: string; category: string; date: string; dateISO: string; author: string; authorRole: string; readingTime: string }> = {
   "top-10-resume-mistakes": {
     title: "Top 10 Resume Mistakes That Get You Rejected (And How to Fix Them)",
     category: "Resume Tips",
-    date: "June 2026",
+    date: "June 12, 2026",
+    dateISO: "2026-06-12",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
     content: `Recruiters spend an average of just 7 seconds scanning your resume. In that tiny window, common mistakes can instantly disqualify you — no matter how qualified you are. Here are the top 10 resume mistakes and how to fix them:
 
 **1. Generic Objective Statement**
@@ -47,7 +52,11 @@ Double-check your email and phone number. An unprofessional email (coolboy99@gma
   "how-to-crack-any-interview": {
     title: "How to Crack Any Job Interview: The STAR Method + 50 Questions",
     category: "Interview Prep",
-    date: "June 2026",
+    date: "June 10, 2026",
+    dateISO: "2026-06-10",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "7 min read",
     content: `The STAR method is the gold standard for answering behavioral interview questions. Here's how to use it to ace any interview.
 
 **What is the STAR Method?**
@@ -86,7 +95,11 @@ Q: "Tell me about a time you solved a difficult problem"
   "remote-jobs-guide-india": {
     title: "Complete Guide to Finding Remote Jobs in India (2026)",
     category: "Remote Work",
-    date: "June 2026",
+    date: "June 8, 2026",
+    dateISO: "2026-06-08",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "8 min read",
     content: `Remote work in India has exploded. Over 40% of tech professionals now work remotely at least part-time. Here's your complete guide to finding and landing remote jobs.
 
 **Where to Find Remote Jobs:**
@@ -132,7 +145,11 @@ Set your DecaJobs location to "Remote" and get 10 remote job matches every morni
   "salary-negotiation-tips": {
     title: "Salary Negotiation: How to Get 20-40% More Than the Initial Offer",
     category: "Salary",
-    date: "June 2026",
+    date: "June 5, 2026",
+    dateISO: "2026-06-05",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "7 min read",
     content: `Most candidates accept the first offer without negotiating — leaving 20-40% on the table. Here's how to negotiate effectively.
 
 **The Data:**
@@ -176,7 +193,11 @@ Use our free Salary Calculator to know your market value before negotiating.`,
   "freshers-job-search-guide": {
     title: "Job Search Guide for Freshers: Land Your First Job in 30 Days",
     category: "Freshers",
-    date: "June 2026",
+    date: "June 3, 2026",
+    dateISO: "2026-06-03",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "7 min read",
     content: `Landing your first job is the hardest step. Here's a proven 30-day action plan for fresh graduates.
 
 **Week 1: Foundation**
@@ -225,7 +246,11 @@ Sign up for DecaJobs and get 10 fresher-friendly jobs matched to your skills eve
   "linkedin-profile-optimization": {
     title: "LinkedIn Profile Optimization: Get 10x More Recruiter Views",
     category: "LinkedIn",
-    date: "June 2026",
+    date: "June 1, 2026",
+    dateISO: "2026-06-01",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "8 min read",
     content: `93% of recruiters use LinkedIn to find candidates. Here's how to make your profile stand out.
 
 **Headline (Most Important)**
@@ -281,20 +306,24 @@ Optimize your LinkedIn, then let DecaJobs handle the rest — we scan LinkedIn j
   "ats-resume-secrets": {
     title: "How to Beat the ATS (Applicant Tracking System): Secrets from Recruiters",
     category: "Resume Tips",
-    date: "June 2026",
-    content: `More than 95% of major employers use Applicant Tracking Systems (ATS) to filter resumes before they reach human eyes. If your resume isn&apos;t optimized for these databases, you are applying into a black hole. Here are the secrets to beating the ATS:
+    date: "May 28, 2026",
+    dateISO: "2026-05-28",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
+    content: `More than 95% of major employers use Applicant Tracking Systems (ATS) to filter resumes before they reach human eyes. If your resume isn\u0027t optimized for these databases, you are applying into a black hole. Here are the secrets to beating the ATS:
 
 **1. Format for Scanners, Not Humans**
 Fancy templates, tables, graphics, progress bars, and dual-column layouts might look pretty, but they crash ATS parsers. Keep your resume in a clean, single-column layout using standard fonts like Arial, Calibri, or Helvetica.
 
 **2. Match the Job Title Exactly**
-If the job posting is for a &quot;Software Engineer II&quot; and your resume says &quot;Web Developer,&quot; the system might rank you lower. Align your job titles with the target role where reasonable, or put the target role title in your professional summary.
+If the job posting is for a \u0022Software Engineer II\u0022 and your resume says \u0022Web Developer,\u0022 the system might rank you lower. Align your job titles with the target role where reasonable, or put the target role title in your professional summary.
 
 **3. Optimize Your Skills Section**
-Copy the skills verbatim from the job description. If the posting mentions &quot;Project Management&quot; and you wrote &quot;Managing Projects,&quot; the ATS may miss the match. Use exact matches for both hard and soft skills.
+Copy the skills verbatim from the job description. If the posting mentions \u0022Project Management\u0022 and you wrote \u0022Managing Projects,\u0022 the ATS may miss the match. Use exact matches for both hard and soft skills.
 
-**4. Don&apos;t Hide Keywords in White Font**
-A common &quot;hack&quot; is to paste the job description in white font at the bottom of the resume. Modern ATS systems parse all text into a single plain-text string, which means recruiters will see your hidden block of keywords. Doing this gets you blacklisted immediately.
+**4. Don\u0027t Hide Keywords in White Font**
+A common \u0022hack\u0022 is to paste the job description in white font at the bottom of the resume. Modern ATS systems parse all text into a single plain-text string, which means recruiters will see your hidden block of keywords. Doing this gets you blacklisted immediately.
 
 **5. Keep It in PDF or Word Format**
 Unless specified otherwise, PDF is the safest format to preserve your layout. However, some legacy ATS platforms handle Microsoft Word (.docx) files better. If in doubt, upload a cleanly formatted PDF.
@@ -304,8 +333,12 @@ Unless specified otherwise, PDF is the safest format to preserve your layout. Ho
 
   "artificial-intelligence-careers": {
     title: "How AI is Changing the Job Market: Top Skills to Learn in 2026",
-    category: "Remote Work",
-    date: "June 2026",
+    category: "Career Growth",
+    date: "May 25, 2026",
+    dateISO: "2026-05-25",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
     content: `Artificial Intelligence is no longer a future trend — it is actively reshaping careers and job descriptions across every sector in 2026. To remain competitive, job seekers must pivot from fearing automation to leveraging AI tools. Here are the top skills you need:
 
 **1. AI Tool Literacy**
@@ -323,17 +356,21 @@ Skills that AI cannot replicate are in higher demand than ever: critical thinkin
 **5. Continuous Adaptability**
 The tech stack you use today will change in 12 months. The most important skill in 2026 is the ability to learn new tools and paradigms quickly. Highlight how you adapt and pick up new tools on your resume.
 
-**Pro tip:** Include a &quot;Technologies & Tools&quot; section on your resume and list the AI platforms you have integrated into your workflow.`,
+**Pro tip:** Include a \u0022Technologies \u0026 Tools\u0022 section on your resume and list the AI platforms you have integrated into your workflow.`,
   },
 
   "remote-job-interview-prep": {
     title: "Remote Job Interviews: 10 Tips to Ace Your Video and Tech Rounds",
     category: "Interview Prep",
-    date: "June 2026",
+    date: "May 22, 2026",
+    dateISO: "2026-05-22",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
     content: `Remote interviews require a different strategy than in-person meetings. Technical setups, communication cues, and body language all translate differently over a webcam. Follow this 10-step guide to ace your next video interview:
 
 **1. Test Your Tech Setup Early**
-Don&apos;t wait until 5 minutes before the call. Double-check your webcam, microphone, internet stability, and the video platform (Zoom, Teams, Google Meet) at least 30 minutes before the interview.
+Don\u0027t wait until 5 minutes before the call. Double-check your webcam, microphone, internet stability, and the video platform (Zoom, Teams, Google Meet) at least 30 minutes before the interview.
 
 **2. Set Up Professional Lighting**
 Position your main light source in front of you (behind your webcam) so your face is clearly illuminated. Avoid backlighting (like sitting in front of a window), which turns you into a dark silhouette.
@@ -342,7 +379,7 @@ Position your main light source in front of you (behind your webcam) so your fac
 Conduct the interview in a quiet room with a neutral background. If your room is cluttered, use a clean virtual background or a subtle blur effect to avoid distracting the interviewer.
 
 **4. Maintain Virtual Eye Contact**
-Look directly into your camera, not at the interviewer&apos;s face on your screen, when speaking. This creates the visual effect of looking the interviewer in the eye, conveying confidence and engagement.
+Look directly into your camera, not at the interviewer\u0027s face on your screen, when speaking. This creates the visual effect of looking the interviewer in the eye, conveying confidence and engagement.
 
 **5. Dress Professionally**
 Dress fully in professional attire, even if you are interviewing from your bedroom. It shifts your mindset into work mode and prepares you for any unexpected situation where you might need to stand up.
@@ -354,10 +391,10 @@ Keep your resume, the job description, and your STAR response notes open on a sp
 Turn off fans, close windows, mute notifications on your phone and computer, and notify family members or flatmates that you will be in an important meeting.
 
 **8. Practice Active Listening Cues**
-Because video calls have a slight latency, nod and smile to show you are engaged instead of using verbal filler words (like &quot;mm-hmm&quot;) which can interrupt the audio stream.
+Because video calls have a slight latency, nod and smile to show you are engaged instead of using verbal filler words (like \u0022mm-hmm\u0022) which can interrupt the audio stream.
 
 **9. Have a Backup Plan**
-If your internet fails, have your phone hotspot ready. Keep the recruiter&apos;s phone number or email handy to notify them immediately of any technical emergencies.
+If your internet fails, have your phone hotspot ready. Keep the recruiter\u0027s phone number or email handy to notify them immediately of any technical emergencies.
 
 **10. Send a Follow-Up Note**
 Within a few hours of finishing the call, send a thank-you email highlighting a specific conversation point to show interest and promptness.`,
@@ -366,13 +403,17 @@ Within a few hours of finishing the call, send a thank-you email highlighting a 
   "career-gaps-explanation": {
     title: "How to Explain Career Gaps in a Job Interview (With Examples)",
     category: "Interview Prep",
-    date: "June 2026",
+    date: "May 20, 2026",
+    dateISO: "2026-05-20",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
     content: `A gap on your resume is not the dealbreaker it used to be. In 2026, recruiters recognize that career paths are rarely linear. Whether you took time off for family, health, travel, or upskilling, here is how to explain it with confidence:
 
 **1. Be Honest and Brief**
 Do not try to hide the gap or over-explain it. State the reason clearly, keep it to one or two sentences, and immediately pivot to what you did during that time or why you are ready to return.
 
-**2. Pivot to Upskilling & Freelancing**
+**2. Pivot to Upskilling \u0026 Freelancing**
 Highlight any productive activities you engaged in during your break. Did you take certification courses? Build open-source side projects? Work on freelance gigs? This shows you kept your skills sharp.
 
 **3. Use the Focus-Future Formula**
@@ -382,22 +423,26 @@ Frame your response using this structure:
 3. Connect it to your readiness for this new role (Future)
 
 **Example for Family Caregiving:**
-&quot;I took a career break to care for an ailing family member. During this period, I also dedicated 10 hours a week to completing an advanced React certification. My family situation is now fully resolved, and I am excited to bring my updated frontend skills to this engineering team.&quot;
+\u0022I took a career break to care for an ailing family member. During this period, I also dedicated 10 hours a week to completing an advanced React certification. My family situation is now fully resolved, and I am excited to bring my updated frontend skills to this engineering team.\u0022
 
 **Example for Upskilling/Career Transition:**
-&quot;I stepped away from my previous marketing role to complete an intensive 6-month Data Analytics bootcamp. I wanted to focus fully on mastering Python, SQL, and Power BI so I could pivot into data-driven strategy roles, which brings me to this opportunity.&quot;
+\u0022I stepped away from my previous marketing role to complete an intensive 6-month Data Analytics bootcamp. I wanted to focus fully on mastering Python, SQL, and Power BI so I could pivot into data-driven strategy roles, which brings me to this opportunity.\u0022
 
-**Pro tip:** Update your resume with a brief entry explaining the gap (e.g., &quot;Career Break - Professional Development&quot; or &quot;Freelance Consultant&quot;) so the ATS doesn&apos;t automatically filter you out for gaps.`,
+**Pro tip:** Update your resume with a brief entry explaining the gap (e.g., \u0022Career Break - Professional Development\u0022 or \u0022Freelance Consultant\u0022) so the ATS doesn\u0027t automatically filter you out for gaps.`,
   },
 
   "linkedin-networking-guide": {
     title: "The Art of LinkedIn Cold Messaging: How to Get Referrals Without Being Annoying",
     category: "LinkedIn",
-    date: "June 2026",
+    date: "May 18, 2026",
+    dateISO: "2026-05-18",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
     content: `Applying to jobs online has a conversion rate of just 2-5%. Networking and securing internal referrals, however, boosts your chance of getting an interview by over 10x. Here is how to message professionals on LinkedIn and get replies:
 
-**1. Don&apos;t Just Ask for a Job or Referral Immediately**
-Sending a connection request with &quot;Hi, please refer me to job ID 12345&quot; is spammy and rarely works. Build a connection first. People refer candidates they trust and like.
+**1. Don\u0027t Just Ask for a Job or Referral Immediately**
+Sending a connection request with \u0022Hi, please refer me to job ID 12345\u0022 is spammy and rarely works. Build a connection first. People refer candidates they trust and like.
 
 **2. Target the Right People**
 Reach out to peers (e.g., Senior Developers if you are a Junior Developer) or alumni from your college. They are much more likely to reply and offer guidance than busy HR executives or high-level Directors.
@@ -406,13 +451,13 @@ Reach out to peers (e.g., Senior Developers if you are a Junior Developer) or al
 A short, personalized message has a 3x higher response rate. Introduce yourself, state why you are reaching out, and ask for a quick 10-minute informational chat.
 
 **Example Template:**
-&quot;Hi [Name], I saw your posts on React rendering optimization and really enjoyed your insights. I&apos;m a frontend engineer looking to transition into SaaS development. I&apos;d love to ask you 2 quick questions about how your team structures its workflows. Do you have 5 minutes for a quick chat next week?&quot;
+\u0022Hi [Name], I saw your posts on React rendering optimization and really enjoyed your insights. I\u0027m a frontend engineer looking to transition into SaaS development. I\u0027d love to ask you 2 quick questions about how your team structures its workflows. Do you have 5 minutes for a quick chat next week?\u0022
 
 **4. Ask for Advice, Not an Active Job**
-People love giving advice, but they are hesitant to give job referrals to strangers. Ask about their career journey, their team&apos;s stack, or advice for entering the field. At the end of a good conversation, the referral will naturally follow.
+People love giving advice, but they are hesitant to give job referrals to strangers. Ask about their career journey, their team\u0027s stack, or advice for entering the field. At the end of a good conversation, the referral will naturally follow.
 
 **5. Follow Up Politely**
-If they don&apos;t reply, don&apos;t take it personally. People are busy. Send one polite follow-up message 5-7 days later, and if they still don&apos;t respond, move on to other connections.
+If they don\u0027t reply, don\u0027t take it personally. People are busy. Send one polite follow-up message 5-7 days later, and if they still don\u0027t respond, move on to other connections.
 
 **Pro tip:** Make sure your LinkedIn profile is fully optimized before networking, as everyone you message will click on your profile first.`,
   },
@@ -420,20 +465,24 @@ If they don&apos;t reply, don&apos;t take it personally. People are busy. Send o
   "negotiating-first-salary": {
     title: "Fresher Salary Negotiation: Yes, You Can (And Should) Ask For More",
     category: "Salary",
-    date: "June 2026",
+    date: "May 15, 2026",
+    dateISO: "2026-05-15",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
     content: `One of the biggest career mistakes fresh graduates make is accepting their first job offer without negotiating. Many freshers assume negotiation is only for experienced professionals or fear they will lose the offer. In reality, you can and should negotiate:
 
 **1. Employers Expect It**
 Hiring budgets always have some flexibility. Even for entry-level roles, companies leave a buffer of 10% to 15% in their initial offer, anticipating that candidates might ask for more.
 
-**2. Negotiation Won&apos;t Lose You the Offer**
-As long as you are polite, professional, and base your request on market data, a company will not retract a job offer just because you negotiated. The worst they will say is, &quot;This is our final budget.&quot;
+**2. Negotiation Won\u0027t Lose You the Offer**
+As long as you are polite, professional, and base your request on market data, a company will not retract a job offer just because you negotiated. The worst they will say is, \u0022This is our final budget.\u0022
 
 **3. Use Market Benchmarks**
 Do your research. Calculate the average entry-level salary for your role and location using our Salary Calculator, Glassdoor, and AmbitionBox. Frame your request around this data.
 
 **Negotiation Script:**
-&quot;Thank you for this offer — I am thrilled to join the team. Based on my research for similar entry-level roles in Bangalore and the advanced project portfolio I shared, I was hoping we could explore a compensation closer to ₹8 LPA. Is there any flexibility in the base salary?&quot;
+\u0022Thank you for this offer — I am thrilled to join the team. Based on my research for similar entry-level roles in Bangalore and the advanced project portfolio I shared, I was hoping we could explore a compensation closer to ₹8 LPA. Is there any flexibility in the base salary?\u0022
 
 **4. Highlight Your Specific Skills**
 If you have completed relevant internships, won hackathons, or hold advanced certifications (e.g., AWS, Salesforce), use them as leverage. Explain how these skills allow you to contribute from day one without extensive training.
@@ -460,6 +509,15 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     alternates: {
       canonical: `/blog/${slug}`,
     },
+    authors: [{ name: article.author }],
+    openGraph: {
+      title: article.title,
+      description: article.content.slice(0, 160),
+      type: "article",
+      publishedTime: article.dateISO,
+      authors: [article.author],
+      section: article.category,
+    },
   };
 }
 
@@ -473,23 +531,54 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   if (!article) notFound();
 
+  // Calculate word count for quality signals
+  const wordCount = article.content.split(/\s+/).length;
+
   return (
     <div className="py-10 sm:py-16">
       <div className="mx-auto max-w-3xl">
-        <Link href="/blog" className="text-sm text-primary-600 hover:underline mb-4 inline-block">
-          ← Back to Blog
-        </Link>
+        <Breadcrumbs
+          items={[
+            { label: "Blog", href: "/blog" },
+            { label: article.title },
+          ]}
+        />
 
-        <article>
-          <span className="inline-block rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-700 mb-3">
-            {article.category}
-          </span>
-          <h1 className="text-2xl font-bold text-neutral-900 sm:text-3xl lg:text-4xl">
-            {article.title}
-          </h1>
-          <p className="mt-2 text-sm text-neutral-500">{article.date} · 5 min read</p>
+        <article itemScope itemType="https://schema.org/Article">
+          <header>
+            <span className="inline-block rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-700 mb-3">
+              {article.category}
+            </span>
+            <h1
+              className="text-2xl font-bold text-neutral-900 sm:text-3xl lg:text-4xl"
+              itemProp="headline"
+            >
+              {article.title}
+            </h1>
 
-          <div className="mt-8 prose prose-neutral prose-sm sm:prose-base max-w-none">
+            {/* Author & date info — critical for E-E-A-T */}
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-500 border-b border-neutral-200 pb-4">
+              <div className="flex items-center gap-2" itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-xs font-bold">
+                  DJ
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-neutral-900" itemProp="name">{article.author}</p>
+                  <p className="text-xs text-neutral-500">{article.authorRole}</p>
+                </div>
+              </div>
+              <span className="text-neutral-300">·</span>
+              <time dateTime={article.dateISO} itemProp="datePublished">
+                {article.date}
+              </time>
+              <span className="text-neutral-300">·</span>
+              <span>{article.readingTime}</span>
+              <span className="text-neutral-300">·</span>
+              <span>{wordCount.toLocaleString()} words</span>
+            </div>
+          </header>
+
+          <div className="mt-8 prose prose-neutral prose-sm sm:prose-base max-w-none" itemProp="articleBody">
             {article.content.split("\n\n").map((paragraph, i) => {
               if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
                 return <h2 key={i} className="text-xl font-bold mt-8 mb-3">{paragraph.replace(/\*\*/g, "")}</h2>;
@@ -518,8 +607,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </article>
 
+        {/* Author box — E-E-A-T signal */}
+        <div className="mt-10 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-600 text-white font-bold text-lg">
+              DJ
+            </div>
+            <div>
+              <p className="font-semibold text-neutral-900">About {article.author}</p>
+              <p className="mt-1 text-sm text-neutral-600 leading-relaxed">
+                The DecaJobs Editorial Team is a group of career experts, recruiters, and HR
+                professionals who create actionable career advice based on real-world hiring data.
+                Our articles are reviewed for accuracy and updated regularly to reflect current
+                job market trends in India and globally.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* CTA */}
-        <div className="mt-12 rounded-xl bg-primary-50 border border-primary-200 p-6 text-center">
+        <div className="mt-8 rounded-xl bg-primary-50 border border-primary-200 p-6 text-center">
           <h3 className="text-lg font-semibold text-neutral-900">Ready to supercharge your job search?</h3>
           <p className="mt-2 text-sm text-neutral-600">Get 10 AI-matched jobs delivered to your inbox every morning. Free to start.</p>
           <Link href="/login" className="mt-4 inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]">
@@ -527,6 +634,41 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Article JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: article.title,
+            datePublished: article.dateISO,
+            dateModified: article.dateISO,
+            author: {
+              "@type": "Organization",
+              name: article.author,
+              url: "https://decajob.com/about",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "DecaJobs",
+              url: "https://decajob.com",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://decajob.com/web-app-manifest-512x512.png",
+              },
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://decajob.com/blog/${slug}`,
+            },
+            articleSection: article.category,
+            wordCount: wordCount,
+            inLanguage: "en-US",
+          }),
+        }}
+      />
     </div>
   );
 }

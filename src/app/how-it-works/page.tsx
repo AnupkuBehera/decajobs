@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "How DecaJobs Works - AI Job Matching Explained | DecaJobs",
@@ -13,6 +14,8 @@ export default function HowItWorksPage() {
   return (
     <div className="py-10 sm:py-16">
       <div className="mx-auto max-w-3xl">
+        <Breadcrumbs items={[{ label: "How It Works" }]} />
+
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
             How DecaJobs Works

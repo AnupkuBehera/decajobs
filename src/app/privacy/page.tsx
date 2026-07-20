@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - DecaJobs",
@@ -12,8 +13,11 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <div className="py-10 sm:py-16">
-      <div className="mx-auto max-w-3xl prose prose-neutral prose-sm sm:prose-base">
-        <h1>Privacy Policy</h1>
+      <div className="mx-auto max-w-3xl">
+        <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
+
+        <div className="prose prose-neutral prose-sm sm:prose-base">
+          <h1>Privacy Policy</h1>
         <p className="text-neutral-500 text-sm">Last updated: June 10, 2026</p>
 
         <h2>1. Introduction</h2>
@@ -95,6 +99,7 @@ export default function PrivacyPolicyPage() {
           If you have questions about this Privacy Policy, please contact us at{" "}
           <a href="mailto:privacy@decajobs.com">privacy@decajobs.com</a>.
         </p>
+        </div>
       </div>
     </div>
   );

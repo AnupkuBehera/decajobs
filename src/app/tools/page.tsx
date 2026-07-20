@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Free Career Tools - Resume Checker, Salary Calculator, Interview Prep | DecaJobs",
@@ -59,6 +60,8 @@ export default function ToolsPage() {
   return (
     <div className="py-10 sm:py-16">
       <div className="mx-auto max-w-4xl">
+        <Breadcrumbs items={[{ label: "Free Tools" }]} />
+
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
             Free Career Tools
