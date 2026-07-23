@@ -94,6 +94,34 @@ Respond in this exact JSON format (no markdown, no code blocks):
 }
 
 /**
+ * Score a resume and provide brief improvements for free users (optimized for speed under 10s).
+ */
+export async function scoreResumeFree(resumeText: string): Promise<{
+  score: number;
+  sections: { name: string; score: number; feedback: string }[];
+  suggestions: string[];
+}> {
+  const prompt = `You are an expert resume reviewer. Analyze this resume and provide:
+1. An overall score out of 100
+2. Section scores for 3 sections only (Format & Layout, Experience, Skills) with short 1-sentence feedback
+3. Top 2 actionable suggestions to improve it
+
+Resume:
+${resumeText}
+
+Respond in this exact JSON format (no markdown, no code blocks):
+{"score":75,"sections":[{"name":"Format & Layout","score":80,"feedback":"Short sentence."},{"name":"Experience","score":65,"feedback":"Short sentence."},{"name":"Skills","score":85,"feedback":"Short sentence."}],"suggestions":["suggestion1","suggestion2"]}`;
+
+  const result = await callGemini(prompt);
+  try {
+    const cleaned = result.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    return JSON.parse(cleaned);
+  } catch {
+    return { score: 0, sections: [], suggestions: ["Failed to parse AI response. Please try again."] };
+  }
+}
+
+/**
  * Optimize a resume for a specific job description.
  */
 export async function optimizeResume(resumeText: string, jobDescription: string): Promise<{

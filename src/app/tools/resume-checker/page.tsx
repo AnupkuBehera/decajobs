@@ -25,14 +25,30 @@ export default function ResumeCheckerPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resumeText }),
       });
-      const data = await response.json();
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch {
+        if (response.status === 504 || response.status === 502) {
+          setError("Analysis timed out. The AI took too long to respond. Please try again with a shorter resume text, or sign up for a free account.");
+        } else {
+          setError("Server returned an invalid response. Please try again later.");
+        }
+        return;
+      }
+
       if (!response.ok) {
-        setError(data.error || "Analysis failed. Please try again.");
+        if (response.status === 429) {
+          setError(data.error || "Rate limit exceeded. The free AI tool is currently busy. Please wait a minute or sign up for a free account to get immediate access.");
+        } else {
+          setError(data.error || "Analysis failed. Please try again.");
+        }
       } else {
         setResult(data);
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError("Network error or connection timeout. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
