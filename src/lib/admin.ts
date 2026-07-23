@@ -15,7 +15,8 @@ export async function verifyAdmin() {
 
   const adminEmails = (process.env.ADMIN_EMAILS || "")
     .split(",")
-    .map((e) => e.trim().toLowerCase());
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
 
   if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
   if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
