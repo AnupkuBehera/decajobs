@@ -176,3 +176,44 @@ Return ONLY the cover letter text, no JSON, no extra formatting.`;
 
   return await callGemini(prompt);
 }
+
+/**
+ * Analyze resume against a target job description for free matching tool.
+ */
+export async function matchResumeToJob(resumeText: string, jobDescription: string): Promise<{
+  matchScore: number;
+  matchingKeywords: string[];
+  missingKeywords: string[];
+  tailoredBullets: string[];
+  summaryFeedback: string;
+}> {
+  const prompt = `You are an expert ATS (Applicant Tracking System) resume analyzer. Analyze this resume against the job description and return:
+1. matchScore: 0-100 match percentage
+2. matchingKeywords: top 5 relevant skills/keywords present in both
+3. missingKeywords: top 5 important skills/keywords in the job description that are missing from the resume
+4. tailoredBullets: top 3 optimized bullet points the candidate should add to their resume to match this role
+5. summaryFeedback: 2-sentence summary of overall fit and main recommendation
+
+Resume:
+${resumeText}
+
+Job Description:
+${jobDescription}
+
+Respond in this exact JSON format (no markdown, no code blocks):
+{"matchScore":82,"matchingKeywords":["React","TypeScript","Node.js","REST APIs","Git"],"missingKeywords":["Docker","Kubernetes","CI/CD","GraphQL","Jest"],"tailoredBullets":["Engineered scalable web applications using React and TypeScript, optimizing render performance by 30%.","Integrated CI/CD pipelines and unit testing with Jest to ensure high code quality.","Architected GraphQL & REST APIs to handle microservice communications."],"summaryFeedback":"Your resume shows strong frontend development experience matching the core requirements. Adding containerization (Docker) and testing skills will make your application stand out."}`;
+
+  const result = await callGemini(prompt);
+  try {
+    const cleaned = result.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    return JSON.parse(cleaned);
+  } catch {
+    return {
+      matchScore: 0,
+      matchingKeywords: [],
+      missingKeywords: [],
+      tailoredBullets: [],
+      summaryFeedback: "Failed to analyze resume match. Please check your inputs and try again.",
+    };
+  }
+}
