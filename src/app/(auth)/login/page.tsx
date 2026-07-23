@@ -41,7 +41,7 @@ export default function LoginPage() {
     if (typeof window !== "undefined" && (window as any).google) {
       try {
         (window as any).google.accounts.id.initialize({
-          client_id: "936134964170-sn6epnfotq4s5dfc4vas6qqucqrvveqb.apps.googleusercontent.com",
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "936134964170-sn6epnfotq4s5dfc4vas6qqucqrvveqb.apps.googleusercontent.com",
           callback: handleGoogleCredentialResponse,
         });
         (window as any).google.accounts.id.renderButton(
