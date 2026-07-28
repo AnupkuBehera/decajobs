@@ -233,6 +233,12 @@ export default async function CandidateDashboardPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <Link
+                  href="/resume-builder"
+                  className="flex items-center gap-2 text-xs font-semibold text-primary-700 hover:text-primary-800 p-2 hover:bg-primary-50 rounded transition-colors border border-primary-100 bg-primary-50/50"
+                >
+                  ✨ Build AI Resume
+                </Link>
+                <Link
                   href="/profile"
                   className="flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-primary-600 p-2 hover:bg-neutral-50 rounded transition-colors"
                 >

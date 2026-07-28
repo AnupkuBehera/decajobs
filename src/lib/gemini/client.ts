@@ -342,3 +342,150 @@ Respond in this exact JSON format (no markdown, no code blocks):
     };
   }
 }
+
+// ─── AI Resume Builder ────────────────────────────────────────────────────────
+
+export interface ResumePersonalInfo {
+  fullName: string;
+  headline: string;
+  email: string;
+  phone: string;
+  location: string;
+  linkedinUrl?: string;
+  portfolioUrl?: string;
+}
+
+export interface ResumeWorkExperience {
+  company: string;
+  jobTitle: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  highlights: string[];
+}
+
+export interface ResumeEducation {
+  degree: string;
+  institution: string;
+  completionDate: string;
+}
+
+export interface ResumeSkillCategory {
+  categoryName: string;
+  skills: string[];
+}
+
+export interface ResumeCertification {
+  name: string;
+  issuer: string;
+  year: string;
+}
+
+export interface ResumeContent {
+  personalInfo: ResumePersonalInfo;
+  professionalSummary: string;
+  workExperience: ResumeWorkExperience[];
+  education: ResumeEducation[];
+  skillCategories: ResumeSkillCategory[];
+  certifications: ResumeCertification[];
+}
+
+/**
+ * Transform raw candidate details into a structured, ATS-optimised resume JSON.
+ *
+ * Uses Gemini to produce every resume section from unformatted input.
+ * Returns a validated ResumeContent object ready for rendering.
+ *
+ * @param rawDetails - The candidate's unformatted work history, skills, metrics
+ * @param targetRole - The job title to tailor the resume toward
+ */
+export async function generateResumeFromRaw(
+  rawDetails: string,
+  targetRole: string
+): Promise<ResumeContent> {
+  const prompt = `You are an expert resume writer and ATS optimization specialist.
+Transform the candidate's raw information into a professional, ATS-optimised resume tailored for the role: "${targetRole}".
+
+RAW CANDIDATE INFO:
+${rawDetails.slice(0, 5000)}
+
+INSTRUCTIONS:
+- Write a compelling professional headline for the exact target role.
+- Write a 3-4 sentence professional summary packed with relevant keywords for "${targetRole}".
+- For each work experience, write 3-5 strong STAR-method achievement bullet points with quantifiable metrics where possible.
+- Group skills into logical categories (e.g., "Technical Skills", "Management", "Tools & Platforms").
+- If personal info (name, email, phone, location) is not found in the raw text, use realistic placeholder values.
+- Make every bullet point action-verb led and impact-driven.
+- Optimise for ATS keyword matching for "${targetRole}".
+
+Output ONLY raw JSON matching this exact schema (no markdown, no code fences, no extra text):
+{
+  "personalInfo": {
+    "fullName": "",
+    "headline": "",
+    "email": "",
+    "phone": "",
+    "location": "",
+    "linkedinUrl": "",
+    "portfolioUrl": ""
+  },
+  "professionalSummary": "",
+  "workExperience": [
+    {
+      "company": "",
+      "jobTitle": "",
+      "location": "",
+      "startDate": "",
+      "endDate": "",
+      "highlights": ["", "", ""]
+    }
+  ],
+  "education": [
+    {
+      "degree": "",
+      "institution": "",
+      "completionDate": ""
+    }
+  ],
+  "skillCategories": [
+    {
+      "categoryName": "",
+      "skills": ["", ""]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "",
+      "issuer": "",
+      "year": ""
+    }
+  ]
+}`;
+
+  const result = await callGemini(prompt);
+
+  try {
+    const cleaned = result
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+    return JSON.parse(cleaned) as ResumeContent;
+  } catch {
+    console.error("[Gemini] generateResumeFromRaw parse failed:", result.slice(0, 300));
+    // Return a graceful empty skeleton so the UI can still render
+    return {
+      personalInfo: {
+        fullName: "Your Name",
+        headline: targetRole,
+        email: "email@example.com",
+        phone: "+1 (555) 000-0000",
+        location: "Your Location",
+      },
+      professionalSummary: "AI generation failed. Please try again with more detailed input.",
+      workExperience: [],
+      education: [],
+      skillCategories: [],
+      certifications: [],
+    };
+  }
+}
