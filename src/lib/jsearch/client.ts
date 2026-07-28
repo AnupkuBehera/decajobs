@@ -110,6 +110,76 @@ export async function searchJobs(
 }
 
 /**
+ * Search for jobs with a user-specified date filter.
+ * Designed for the AI Recruiter tool where users control freshness.
+ *
+ * @param query      - Search query (e.g., "Product Manager Remote")
+ * @param datePosted - Freshness filter: "today" | "3days" | "week" | "month"
+ * @param numPages   - Number of result pages to fetch (default 1)
+ * @returns Array of normalized job listings
+ */
+export async function searchJobsWithFilter(
+  query: string,
+  datePosted: "today" | "3days" | "week" | "month" = "week",
+  numPages: number = 1
+): Promise<ExternalJob[]> {
+  const apiKey = process.env.RAPIDAPI_KEY;
+
+  if (!apiKey) {
+    console.warn("[JSearch] RAPIDAPI_KEY not configured. Skipping external job fetch.");
+    return [];
+  }
+
+  try {
+    const params = new URLSearchParams({
+      query,
+      page: "1",
+      num_pages: String(numPages),
+      date_posted: datePosted,
+    });
+
+    console.log(`[JSearch] Filtered search: "${query}" | date_posted=${datePosted}`);
+
+    const response = await fetch(`${JSEARCH_API_URL}/search?${params}`, {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": apiKey,
+        "X-RapidAPI-Host": JSEARCH_API_HOST,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[JSearch] API error: ${response.status} ${response.statusText}`, errorText);
+      return [];
+    }
+
+    const data: JSearchResponse = await response.json();
+    console.log(`[JSearch] Found ${data.data?.length ?? 0} jobs for filtered query: "${query}"`);
+
+    if (!data.data || data.data.length === 0) {
+      return [];
+    }
+
+    return data.data.map((job) => ({
+      id: `jsearch_${job.job_id}`,
+      title: job.job_title,
+      company: job.employer_name,
+      description: job.job_description?.slice(0, 800) || "",
+      location: job.job_is_remote
+        ? "Remote"
+        : [job.job_city, job.job_state, job.job_country].filter(Boolean).join(", "),
+      applicationLink: job.job_apply_link,
+      postedAt: job.job_posted_at_datetime_utc,
+      source: "jsearch" as const,
+    }));
+  } catch (error) {
+    console.error("[JSearch] searchJobsWithFilter failed:", error);
+    return [];
+  }
+}
+
+/**
  * Fetch jobs matching a candidate's profile.
  * Tries multiple search strategies to maximize results.
  *

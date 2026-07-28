@@ -13,6 +13,14 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    href: "/tools/ai-recruiter",
+    title: "AI Recruiter Mode",
+    description:
+      "Search live job listings, get brutally-honest AI match scores, skill gap analysis, visa flags, and tailored resume bullets for your top matches.",
+    emoji: "🤖",
+    badge: "New",
+  },
+  {
     href: "/tools/resume-matcher",
     title: "AI Resume-to-Job Matcher",
     description: "Compare your resume against any job description. Get your match score, missing ATS keywords, and AI bullet suggestions.",

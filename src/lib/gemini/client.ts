@@ -178,6 +178,131 @@ Return ONLY the cover letter text, no JSON, no extra formatting.`;
 }
 
 /**
+ * Job input shape for batch AI recruiter analysis.
+ */
+export interface RecruiterJobInput {
+  id: string;
+  title: string;
+  company: string;
+  description: string;
+  location: string;
+  applicationLink: string;
+  postedAt?: string;
+}
+
+/**
+ * Per-job analysis result from the AI recruiter.
+ */
+export interface JobAnalysis {
+  jobId: string;
+  matchScore: number;
+  requirementsMet: string[];
+  requirementsMissing: string[];
+  recommendation: "Apply Now" | "Apply with Tweaks" | "Skip";
+  recommendationReason: string;
+  visaFlag: "Flagged" | "None Detected";
+  tailoredBullet?: string;
+  coverLetterOpener?: string;
+}
+
+/**
+ * Analyze multiple live job listings against a candidate resume in one AI call.
+ *
+ * Instructs Gemini to be brutally honest — no score inflation. Produces:
+ * - matchScore (0-100) strictly based on experience, tools, and domain alignment
+ * - Top 3 requirements met / missing
+ * - Recommendation + 1-sentence rationale
+ * - Visa/sponsorship flag
+ * - For top 3 by score: tailored ATS resume bullet + 2-sentence cover letter opener
+ *
+ * @param resumeText  - Candidate's resume as plain text
+ * @param jobs        - Array of live job listings to analyze (max 15 recommended)
+ * @returns Array of per-job analysis results, unsorted
+ */
+export async function analyzeJobsAgainstResume(
+  resumeText: string,
+  jobs: RecruiterJobInput[]
+): Promise<JobAnalysis[]> {
+  if (jobs.length === 0) return [];
+
+  // Trim each description to keep token usage manageable
+  const jobsList = jobs
+    .map(
+      (j, i) =>
+        `JOB_${i + 1} id="${j.id}" title="${j.title}" company="${j.company}" location="${j.location}"\nDescription: ${j.description.slice(0, 600)}`
+    )
+    .join("\n\n---\n\n");
+
+  // Identify top 3 index placeholders so Gemini enriches them
+  const top3Note =
+    "For the 3 jobs you score highest, also provide a 'tailoredBullet' (one ATS-optimized impact-driven resume bullet, ≤30 words, using keywords from that job) and 'coverLetterOpener' (exactly 2 compelling sentences referencing the company name and key value proposition). Leave these fields null for all other jobs.";
+
+  const prompt = `You are a brutally honest AI recruiter and career advisor. Your job is to assess job fit without flattery.
+
+CANDIDATE RESUME:
+${resumeText.slice(0, 4000)}
+
+---
+
+LIVE JOB LISTINGS TO ANALYZE:
+${jobsList}
+
+---
+
+INSTRUCTIONS:
+- Assign a matchScore (0-100) strictly based on: years of experience alignment, technical tool overlap, domain/industry match. DO NOT inflate scores. A score of 80+ should only appear when there is very strong alignment.
+- List exactly 3 requirementsMet: the top 3 specific qualifications from the job the candidate clearly satisfies.
+- List exactly 3 requirementsMissing: the top 3 important qualifications from the job the candidate lacks or has weak evidence for.
+- recommendation must be one of: "Apply Now" (score ≥70, strong fit), "Apply with Tweaks" (score 50-69, fixable gaps), or "Skip" (score <50, significant mismatch).
+- recommendationReason: exactly 1 concise sentence explaining your recommendation.
+- visaFlag: "Flagged" if the description mentions visa sponsorship, work authorization, citizenship requirements, or employment restrictions; otherwise "None Detected".
+- ${top3Note}
+
+Respond with ONLY a JSON array (no markdown, no code fences):
+[
+  {
+    "jobId": "exact id string from the listing",
+    "matchScore": 72,
+    "requirementsMet": ["met requirement 1", "met requirement 2", "met requirement 3"],
+    "requirementsMissing": ["missing requirement 1", "missing requirement 2", "missing requirement 3"],
+    "recommendation": "Apply with Tweaks",
+    "recommendationReason": "One sentence rationale here.",
+    "visaFlag": "None Detected",
+    "tailoredBullet": null,
+    "coverLetterOpener": null
+  }
+]`;
+
+  const result = await callGemini(prompt);
+
+  try {
+    const cleaned = result
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+    const parsed: JobAnalysis[] = JSON.parse(cleaned);
+
+    // Sanitize: ensure all required fields exist
+    return parsed.map((item) => ({
+      jobId: item.jobId ?? "",
+      matchScore: Math.min(100, Math.max(0, Number(item.matchScore) || 0)),
+      requirementsMet: Array.isArray(item.requirementsMet) ? item.requirementsMet.slice(0, 3) : [],
+      requirementsMissing: Array.isArray(item.requirementsMissing) ? item.requirementsMissing.slice(0, 3) : [],
+      recommendation: (["Apply Now", "Apply with Tweaks", "Skip"].includes(item.recommendation)
+        ? item.recommendation
+        : "Skip") as JobAnalysis["recommendation"],
+      recommendationReason: item.recommendationReason ?? "",
+      visaFlag: item.visaFlag === "Flagged" ? "Flagged" : "None Detected",
+      tailoredBullet: item.tailoredBullet ?? undefined,
+      coverLetterOpener: item.coverLetterOpener ?? undefined,
+    }));
+  } catch {
+    console.error("[Gemini] analyzeJobsAgainstResume parse failed:", result.slice(0, 500));
+    return [];
+  }
+}
+
+/**
  * Analyze resume against a target job description for free matching tool.
  */
 export async function matchResumeToJob(resumeText: string, jobDescription: string): Promise<{
