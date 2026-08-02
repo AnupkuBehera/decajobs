@@ -492,6 +492,361 @@ If the base CTC is non-negotiable, ask about relocation allowances, joining bonu
 
 **Pro tip:** Keep your tone positive and collaborative. Negotiation is not a conflict; it is a conversation to find a mutually beneficial agreement.`,
   },
+
+  "how-to-answer-salary-expectations": {
+    title: "How to Answer \u0022What Are Your Salary Expectations?\u0022 (Scripts Included)",
+    category: "Salary",
+    date: "July 10, 2026",
+    dateISO: "2026-07-10",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
+    content: `"What are your salary expectations?" is one of the most dreaded interview questions — and also one of the most important. Answer too high and you price yourself out. Answer too low and you leave money on the table for years. Here is exactly how to handle it.
+
+**Why Recruiters Ask This Question**
+Recruiters ask to filter candidates early, manage their hiring budget, and gauge whether you understand your market value. It's a screening question, not a commitment. Your goal is to keep your options open while signaling you know what you're worth.
+
+**The Golden Rule: Delay Your Number**
+Whenever possible, avoid giving a specific number first. Instead, say:
+"I'd love to learn more about the scope and responsibilities of the role first. Could you share the budget range you have in mind for this position?"
+Many recruiters will reveal their range. If they do, you can position yourself within it. If they insist you go first, give a range based on research — not a single number.
+
+**The Research-Backed Range Script**
+"Based on my research for similar roles in this location with my experience level, and considering my skills in [Skill A] and [Skill B], I'm targeting a base salary in the range of ₹X to ₹Y. I'm flexible depending on the total compensation package."
+Why a range? A single number locks you in. A wide range (like ₹18-22 LPA) shows flexibility while anchoring at a strong midpoint.
+
+**If They Ask About Your Current Salary**
+In many regions, asking about current salary is becoming less common. If it comes up, you can say:
+"I'd prefer to focus on the value I'll bring to this role rather than my past compensation. Based on market benchmarks for this position, I'm looking at ₹X to ₹Y."
+This pivots the conversation from your history to the role's value.
+
+**What If the Number They Offer Is Low?**
+Don't reject it outright. Say: "Thank you — I'm excited about the opportunity. Based on the market rate and the scope of the role, I was expecting something closer to ₹X. Is there flexibility to bridge this gap?" Most employers have a buffer and respect candidates who negotiate professionally.
+
+**Common Mistakes to Avoid**
+- Giving a single number instead of a range
+- Saying "I don't know" or "whatever you think is fair"
+- Stating a number with no justification
+- Negotiating before you have a written offer
+- Forgetting to consider benefits, bonuses, and equity in the total package
+
+**Use Data, Not Guesswork**
+Before any interview, benchmark your role using our free Salary Calculator and platforms like Glassdoor, Levels.fyi, and AmbitionBox. Knowing the 25th, 50th, and 75th percentile for your role and location gives you a defensible anchor.
+
+**Pro tip:** Always frame your expectations around market data and the value you bring — never around your personal expenses or needs.`,
+  },
+
+  "best-skills-to-learn-2026": {
+    title: "The Best Skills to Learn in 2026 to Future-Proof Your Career",
+    category: "Career Growth",
+    date: "July 8, 2026",
+    dateISO: "2026-07-08",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "7 min read",
+    content: `The job market in 2026 rewards people who combine deep expertise with adaptability. Automation and AI are reshaping roles faster than ever, but they're also creating entirely new categories of work. Here are the skills that will give you the strongest career leverage this year.
+
+**1. AI Literacy and Tool Proficiency**
+You don't need to be a machine learning engineer to benefit from AI — but you do need to know how to use AI tools in your daily work. Every professional should be comfortable with at least one LLM assistant, one AI coding tool (if you're technical), and AI-powered analytics. The people who use these tools to become 2-3x more productive are the ones getting promoted.
+
+**2. Prompt Engineering and AI Workflows**
+Knowing how to write precise, structured prompts is becoming a core skill across marketing, engineering, design, and operations. Learn how to break complex tasks into sub-prompts, provide context, and chain AI outputs into workflows. This skill directly translates into output quality.
+
+**3. Data Interpretation**
+As AI generates more automated reports, the differentiator is the human who can interpret, challenge, and act on the data. Basic SQL, spreadsheet modeling, and statistical reasoning will keep you valuable regardless of your field.
+
+**4. Emotional Intelligence and Communication**
+Skills AI cannot easily replicate — empathy, negotiation, persuasion, and leadership — are in higher demand than ever. Companies pay a premium for people who can facilitate meetings, manage stakeholders, and build trust.
+
+**5. Continuous Learning Systems**
+The most future-proof skill is the ability to learn quickly. Build a personal system: dedicate 1 hour per week to structured learning, keep a "learning portfolio" of projects, and document your growth. Hiring managers increasingly look for evidence of adaptability over static credentials.
+
+**6. Specialized Technical Skills in High Demand**
+- Cloud: AWS, Azure, GCP (with Kubernetes and Terraform)
+- Data: Python, SQL, and modern BI tools
+- Security: basic cybersecurity awareness is now expected in every tech role
+- Product: analytics-driven product thinking and experimentation
+
+**How to Choose What to Learn**
+Start with the role you want, not the skill you find easiest. Open 10 job descriptions for your target role and list the top 10 recurring skills. Learn the top 3 you don't already have, and build a small project that demonstrates each one.
+
+**Pro tip:** Add a "Technologies & Tools" section to your resume and list the AI platforms you use. It signals to recruiters that you're current, not outdated.`,
+  },
+
+  "how-to-write-resume-summary": {
+    title: "How to Write a Resume Summary That Gets Interviews (10 Examples)",
+    category: "Resume Tips",
+    date: "July 5, 2026",
+    dateISO: "2026-07-05",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
+    content: `Your resume summary is the first thing a recruiter reads — and often the only thing. A strong summary tells the reader who you are, what you do, and what you've achieved in 3-4 lines. A weak one gets your resume skipped. Here's how to write one that opens doors.
+
+**What a Resume Summary Is (and Isn't)**
+A summary is a concise overview at the top of your resume that positions you for your target role. It is NOT an objective statement ("Seeking a challenging position...") and NOT your life story. It's a marketing pitch, backed by evidence.
+
+**The Formula: Role + Experience + Key Skills + Top Achievement**
+"[Job Title] with [X] years of experience in [field]. Proven track record of [key achievement]. Skilled in [3 core skills]. Looking to bring [specific value] to a [type of company]."
+
+**Example 1: Experienced Data Analyst**
+"Data Analyst with 4 years of experience transforming complex datasets into actionable insights. Improved reporting accuracy by 30% and reduced manual analysis time by 15 hours/week through automated dashboards. Proficient in SQL, Python, Power BI, and Tableau."
+
+**Example 2: Fresher / Entry Level**
+"Computer Science graduate with hands-on project experience in React, Node.js, and MongoDB. Built 6 full-stack projects, including a job-tracking app used by 200+ students. Seeking a Frontend Developer role where strong problem-solving and rapid learning can contribute from day one."
+
+**Example 3: Career Changer**
+"Marketing professional with 5 years of experience pivoting into product management. Led 12 cross-functional campaigns and translated customer insights into roadmap priorities. Certified Product Manager with hands-on experience in analytics and user research."
+
+**Example 4: Senior Leader**
+"Engineering Leader with 12 years of experience scaling teams from 5 to 50 engineers. Reduced infrastructure costs by 40% while improving deployment frequency 5x. Passionate about building inclusive, high-performing teams."
+
+**What Makes a Summary Effective**
+- It's tailored to the specific job (never send the same summary everywhere)
+- It contains numbers and measurable outcomes
+- It uses keywords from the job description (ATS critical)
+- It's 3-4 lines max — recruiters skim
+- It avoids clichés like "hardworking," "team player," and "go-getter"
+
+**Common Mistakes**
+- Using an objective statement instead of a summary
+- Listing responsibilities instead of achievements
+- Being vague ("experienced professional with diverse skills")
+- Including personal details (age, marital status, hobbies)
+- Writing a wall of text
+
+**Pro tip:** Paste your resume into our free AI Resume Checker to get an instant score and personalized suggestions for your summary section.`,
+  },
+
+  "remote-work-tools-guide": {
+    title: "The Essential Remote Work Tools Guide: Software & Gadgets for 2026",
+    category: "Remote Work",
+    date: "July 2, 2026",
+    dateISO: "2026-07-02",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
+    content: `Working remotely isn't just about a laptop and Wi-Fi. The right set of tools can be the difference between a productive, connected remote career and one that feels isolating and chaotic. Here's the essential toolkit every remote professional needs in 2026.
+
+**Communication: The Backbone of Remote Work**
+- Slack: Team chat, channels, and integrations. Learn to use threads, statuses, and do-not-disturb modes.
+- Microsoft Teams: Common in enterprise and education. Master meeting scheduling and document collaboration.
+- Zoom / Google Meet: For video calls. Test your audio and camera before every important meeting.
+
+**Project Management & Async Work**
+- Notion: All-in-one workspace for notes, wikis, docs, and simple project tracking.
+- Trello / Asana: Visual kanban boards for task management and team workflows.
+- Jira: The standard for software teams. Understand tickets, sprints, and agile boards.
+
+**Documentation & Knowledge Sharing**
+- Confluence / Notion: Where teams document processes, decisions, and how-tos.
+- Google Workspace: Docs, Sheets, Slides, and Drive — the universal standard for real-time collaboration.
+
+**Personal Productivity**
+- Todoist / TickTick: Task management for your personal to-do list.
+- Toggl / Clockify: Time tracking to understand where your hours actually go.
+- Focus apps: Pomodoro timers and distraction blockers (like Forest) help maintain deep work.
+
+**Hardware Essentials**
+- A quality headset with noise cancellation (crucial for calls)
+- A secondary monitor (productivity boost of 20-30%)
+- A stable wired internet connection for video calls
+- A comfortable chair — you'll spend hours in it
+- An external webcam and microphone if your laptop quality is poor
+
+**Setting Up Your Home Office**
+1. Choose a dedicated space with a door if possible
+2. Face a window or a well-lit area (light in front of you, not behind)
+3. Use a neutral, clean background for video calls
+4. Invest in cable management to reduce visual clutter
+5. Establish boundaries: set work hours and communicate them to household members
+
+**Reducing Distractions**
+- Use separate browser profiles for work and personal
+- Turn off non-essential notifications during deep work
+- Batch-check email 2-3 times a day instead of continuously
+- Take real breaks — step away from the screen
+
+**Pro tip:** Mention your remote toolset (Slack, Notion, Zoom, Jira) in your resume. Employers look for candidates who already know how to work in distributed environments.`,
+  },
+
+  "job-application-follow-up-guide": {
+    title: "The Perfect Job Application Follow-Up: Timing, Templates & Etiquette",
+    category: "Job Search Tips",
+    date: "June 28, 2026",
+    dateISO: "2026-06-28",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "5 min read",
+    content: `You've submitted your application. Now what? Most candidates simply wait — and waiting rarely gets you noticed. A well-timed, professional follow-up can move your application to the top of the pile. Here's exactly how to do it without being annoying.
+
+**Why Follow-Ups Work**
+Recruiters manage dozens of open roles and hundreds of applications. Yours can get lost. A polite follow-up demonstrates interest, initiative, and professionalism — three traits every employer wants. Done right, it keeps you top-of-mind.
+
+**The Follow-Up Timeline**
+- Day 0: Submit your application
+- Day 7: Send a brief check-in email (if the job is still open)
+- Day 14: Send a second, final follow-up
+- Day 21+: Move on unless they respond
+
+**The Day-7 Template**
+Subject: Following up on [Job Title] application — [Your Name]
+"Hi [Name], I hope you're doing well. I applied for the [Job Title] position on [Date] and wanted to briefly follow up. I'm very excited about the opportunity to contribute to [Company]'s work in [area], and I believe my experience with [Skill] would be a strong fit. Please let me know if there's anything else I can provide. Thanks for your time!"
+
+**The Day-14 Template (Final)**
+"Hi [Name], I wanted to check in one more time regarding my application for [Job Title]. I completely understand you're busy, and I just wanted to reiterate my enthusiasm for the role. If the position has been filled, I'd appreciate a quick note so I can adjust my search. Thanks again!"
+
+**Etiquette Rules**
+- Never follow up more than twice
+- Always reply to the same email thread
+- Keep it under 150 words
+- Don't call or message on social media unless you have an existing connection
+- Stay positive — never express frustration
+
+**What to Do While Waiting**
+Don't pause your job search. Keep applying, keep networking, and keep interviewing. The candidate who follows up AND has multiple options is in the strongest position.
+
+**Bonus: The Post-Interview Thank-You**
+Send a thank-you email within 24 hours of any interview. Reference one specific topic you discussed and reiterate your interest. This small step measurably increases your chances of moving forward.
+
+**Pro tip:** Track every application — where you applied, when, and your follow-up dates. DecaJobs' application tracker makes this easy, and it's built into your free dashboard.`,
+  },
+
+  "how-to-build-professional-network": {
+    title: "How to Build a Professional Network That Gets You Hired",
+    category: "LinkedIn",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
+    content: `They say it's not what you know, it's who you know — and data backs it up. Referrals dramatically increase your chances of getting an interview. But building a genuine professional network doesn't mean spamming hundreds of strangers with connection requests. Here's a sustainable approach.
+
+**Why Networking Matters for Your Job Search**
+- Referred candidates are 3-5x more likely to get hired than cold applicants
+- 70-80% of jobs are never publicly posted
+- Recruiters check your network before reaching out
+- People hire people they trust and like
+
+**Start With Your Existing Network**
+Before looking outward, map your current connections: former colleagues, classmates, alumni, managers, clients, and mentors. Most people find their next job through a second-degree connection — someone who knows someone.
+
+**The 5-Day Networking Plan**
+Day 1: List 20 people in your target industry (alumni + colleagues + LinkedIn connections)
+Day 2: Send 5 personalized connection requests
+Day 3: Have 2 informational conversations
+Day 4: Follow up with a thank-you and offer something of value
+Day 5: Repeat. Consistency beats intensity.
+
+**How to Write a Connection Request That Gets Accepted**
+"I'm [Name], a [Role] working in [Industry]. I noticed we're both alumni of [University] / share an interest in [Topic]. I'm building my network in [Field] and would value connecting. I'll keep it professional."
+
+**The Informational Interview**
+Ask for 15-20 minutes, not a job. Prepare 5 questions about their career journey, their industry, and their advice. At the end, ask: "Who else should I talk to?" This grows your network exponentially.
+
+**Give Before You Get**
+Networking is reciprocal. Share useful articles, introduce people to each other, and offer help before asking for favors. People remember those who helped them.
+
+**Maintain Your Network**
+- Comment meaningfully on posts (not just "Great post!")
+- Send a note when someone gets promoted or changes jobs
+- Check in every 3-6 months — not just when you need something
+- Celebrate others' wins publicly
+
+**Pro tip:** A fully optimized LinkedIn profile is your networking foundation. Use our LinkedIn Headline Generator to craft a profile that makes recruiters want to connect with you.`,
+  },
+
+  "switching-careers-guide": {
+    title: "How to Switch Careers in 2026: A Step-by-Step Pivot Guide",
+    category: "Career Growth",
+    date: "June 22, 2026",
+    dateISO: "2026-06-22",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "7 min read",
+    content: `Switching careers feels risky, but it's also one of the most rewarding moves you can make. Whether you're moving from marketing to data analytics, teaching to tech, or finance to product, a successful pivot follows a repeatable process. Here's the step-by-step guide for 2026.
+
+**Step 1: Define Your Target Role (Not Just an Industry)**
+Pick a specific role title, not a vague industry. "I want to work in tech" is too broad. "I want to become a Data Analyst in a SaaS company" is actionable. Research 10 job descriptions for your target role and note the recurring skills and requirements.
+
+**Step 2: Identify Your Transferable Skills**
+You have more relevant experience than you think. Common transferable skills include:
+- Communication and writing
+- Project and stakeholder management
+- Data literacy and analysis
+- Problem-solving and critical thinking
+- Budgeting and operations
+Map each of your current skills to the target role's requirements.
+
+**Step 3: Fill the Gaps Strategically**
+You don't need a full degree to pivot — you need evidence of the core skills. Take 1-2 targeted courses or certifications, then build 2-3 small projects that demonstrate those skills. A portfolio of real projects beats a certificate alone.
+
+**Step 4: Reposition Your Resume**
+Frame your experience around the target role, not your old title. Use a functional or hybrid resume format that leads with transferable skills. Every bullet should answer: "How does this prove I can do the new role?"
+
+**Step 5: Network Into the Field**
+Attend industry events (virtual or in-person), connect with people in your target role, and ask for informational interviews. Many career changers find their first role through referrals, not applications.
+
+**Step 6: Be Ready to Start Slightly Lower**
+Career pivots often require a step back in title or salary for 1-2 years. Plan for it. The long-term ceiling in a role you love will almost always exceed staying in a role you've outgrown.
+
+**Step 7: Tell a Compelling Story**
+In interviews, you'll be asked why you're switching. Prepare a confident narrative: "I excelled in [old field], but I discovered my passion lies in [new field]. I've spent the last [X months] building [skills/projects] to make this move, and here's proof."
+
+**Common Pivot Mistakes**
+- Jumping without research (network first!)
+- Applying to jobs before building any evidence
+- Hiding the career change on your resume
+- Waiting for "the perfect time" (there's no such thing)
+
+**Pro tip:** Use our AI Resume Matcher to check how well your resume aligns with your target role's job description before you start applying.`,
+  },
+
+  "how-to-negotiate-remote-salary": {
+    title: "How to Negotiate a Remote Salary: Global Pay & Geo-Bands Explained",
+    category: "Salary",
+    date: "June 19, 2026",
+    dateISO: "2026-06-19",
+    author: "DecaJobs Editorial Team",
+    authorRole: "Career Experts at DecaJobs",
+    readingTime: "6 min read",
+    content: `Remote work has changed salary negotiation. When a company can hire from anywhere, how do they decide what to pay? The answer is usually a geo-band or location-based compensation model. Understanding this — and knowing how to navigate it — can mean a difference of lakhs per year.
+
+**What Is a Geo-Band?**
+A geo-band is a salary range tied to the cost of living and market rates of a specific location. A software engineer hired in Bangalore might be paid one range, while the same role hired in London gets another. Many international companies use geo-bands to pay fairly across distributed teams.
+
+**Why Companies Use Geo-Bands**
+Geo-bands let companies hire talent anywhere while keeping costs aligned with local markets. They also prevent resentment — a senior engineer in San Francisco is paid more than a peer in Chennai because the cost of living differs dramatically.
+
+**How to Negotiate Within a Geo-Band**
+1. Know your band: Ask about the location-based range early in the process
+2. Justify the top of the band: Reference your specific skills, experience, and achievements
+3. Negotiate beyond base salary: equity, bonuses, home-office stipends, and learning budgets can offset a lower base
+4. Ask about currency and review cycles: some companies adjust bands annually
+
+**Key Questions to Ask**
+- "Is compensation based on a location-based band, or is it location-agnostic?"
+- "What is the salary range for this role in my location?"
+- "How often are bands reviewed and adjusted?"
+- "Are there additional allowances for home office, internet, or utilities?"
+
+**When Pay Is Location-Agnostic**
+Some companies pay the same regardless of location (often at a high global standard). If you're in a lower-cost location, this is a golden opportunity — you earn global rates while spending local. Negotiate confidently; you're not limited by local market rates.
+
+**Negotiating International Remote Roles**
+- Research global rates for your role using Levels.fyi and Glassdoor
+- Understand taxes and payment structure (contractor vs employee)
+- Factor in timezone expectations — overlap requirements can justify higher pay
+- Get everything in writing: currency, payment schedule, review cadence
+
+**Red Flags to Watch**
+- Refusing to share any salary information
+- Vague answers about currency or payment method
+- Pressuring you to accept before you see the full offer
+- Offering "experience" as payment — that's not a salary
+
+**Pro tip:** Before any remote salary negotiation, benchmark your role with our Salary Calculator. Knowing the remote range for your role and location gives you a data-backed anchor.`,
+  },
 };
 
 interface BlogPostPageProps {

@@ -22,7 +22,7 @@ export async function SiteHeader() {
         .split(",")
         .map((email) => email.trim().toLowerCase())
         .filter(Boolean);
-      
+
       if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
       if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
 
@@ -43,7 +43,7 @@ export async function SiteHeader() {
           .select("is_verified")
           .eq("email", user.email)
           .maybeSingle();
-        
+
         isEmployer = employer?.is_verified ?? false;
       }
 
@@ -186,6 +186,12 @@ export async function SiteHeader() {
                 Pricing
               </Link>
               <Link
+                href="/jobs"
+                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+              >
+                Jobs
+              </Link>
+              <Link
                 href="/tools"
                 className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
               >
@@ -193,7 +199,7 @@ export async function SiteHeader() {
               </Link>
               <Link
                 href="/blog"
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
+                className="hidden sm:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
               >
                 Blog
               </Link>

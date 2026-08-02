@@ -99,9 +99,10 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - Public assets with file extensions (e.g. ads.txt, sitemap.xml, site.webmanifest, etc.)
+     * - ads.txt, robots.txt, sitemap.xml
+     * - Public assets with file extensions (e.g. site.webmanifest, etc.)
      * - API routes (handled separately)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.[\\w]+$|api/).*)",
+    "/((?!_next/static|_next/image|favicon.ico|ads\\.txt|robots\\.txt|sitemap\\.xml|.*\\.[\\w]+$|api/).*)",
   ],
 };

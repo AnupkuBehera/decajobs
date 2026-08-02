@@ -34,6 +34,16 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/jobs" className="text-neutral-400 hover:text-white transition-colors">
+                  Browse Jobs
+                </Link>
+              </li>
+              <li>
+                <Link href="/jobs/remote" className="text-neutral-400 hover:text-white transition-colors">
+                  Remote Jobs
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools" className="text-neutral-400 hover:text-white transition-colors">
                   Free Tools
                 </Link>
