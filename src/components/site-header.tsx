@@ -126,12 +126,6 @@ export async function SiteHeader() {
                   Resume AI
                 </Link>
                 <Link
-                  href="/resume-builder"
-                  className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
-                >
-                  ✨ Builder
-                </Link>
-                <Link
                   href="/career-coach"
                   className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
                 >

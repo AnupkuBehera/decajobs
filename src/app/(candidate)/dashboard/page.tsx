@@ -100,11 +100,11 @@ export default async function CandidateDashboardPage() {
   // Format last digest date
   const lastDigestDate = lastDigest?.sent_at
     ? new Date(lastDigest.sent_at).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
     : null;
 
   // Dynamic daily tip
@@ -233,7 +233,7 @@ export default async function CandidateDashboardPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <Link
-                  href="/resume-builder"
+                  href="/resume-tools"
                   className="flex items-center gap-2 text-xs font-semibold text-primary-700 hover:text-primary-800 p-2 hover:bg-primary-50 rounded transition-colors border border-primary-100 bg-primary-50/50"
                 >
                   ✨ Build AI Resume

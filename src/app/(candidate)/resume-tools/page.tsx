@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import ResumeBuilder from "@/components/resume-builder";
 
-type Tab = "score" | "optimize" | "cover-letter";
+type Tab = "builder" | "score" | "optimize" | "cover-letter";
 
 interface ScoreResult {
   score: number;
@@ -109,13 +110,14 @@ export default function ResumeToolsPage() {
             AI Resume Tools
           </h1>
           <p className="mt-2 text-neutral-600">
-            Score your resume, optimize it for a job, or generate a cover letter.
+            Build a resume with AI, score your resume, optimize it for a job, or generate a cover letter.
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 border-b border-neutral-200">
+        <div className="flex gap-1 mb-6 border-b border-neutral-200 overflow-x-auto">
           {[
+            { id: "builder" as Tab, label: "✨ Builder" },
             { id: "score" as Tab, label: "Resume Score" },
             { id: "optimize" as Tab, label: "Optimize for Job" },
             { id: "cover-letter" as Tab, label: "Cover Letter" },
@@ -123,87 +125,93 @@ export default function ResumeToolsPage() {
             <button
               key={tab.id}
               onClick={() => { setActiveTab(tab.id); setError(""); }}
-              className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors min-h-[44px] ${
-                activeTab === tab.id
-                  ? "bg-primary-50 text-primary-700 border-b-2 border-primary-600"
-                  : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
-              }`}
+              className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors min-h-[44px] ${activeTab === tab.id
+                ? "bg-primary-50 text-primary-700 border-b-2 border-primary-600"
+                : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
+                }`}
             >
               {tab.label}
             </button>
           ))}
         </div>
 
-        {/* Input Section */}
-        <Card padding="lg" className="mb-6">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Paste Your Resume Text
-              </label>
-              <textarea
-                value={resumeText}
-                onChange={(e) => setResumeText(e.target.value)}
-                rows={8}
-                placeholder="Paste your full resume text here..."
-                className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
-              />
-            </div>
+        {/* Builder tab content */}
+        {activeTab === "builder" && (
+          <ResumeBuilder />
+        )}
 
-            {(activeTab === "optimize" || activeTab === "cover-letter") && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    Paste Job Description
-                  </label>
-                  <textarea
-                    value={jobDescription}
-                    onChange={(e) => setJobDescription(e.target.value)}
-                    rows={6}
-                    placeholder="Paste the full job description here..."
-                    className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
-                  />
-                </div>
-                {activeTab === "cover-letter" && (
+        {/* Input Section */}
+        {activeTab !== "builder" && (
+          <Card padding="lg" className="mb-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Paste Your Resume Text
+                </label>
+                <textarea
+                  value={resumeText}
+                  onChange={(e) => setResumeText(e.target.value)}
+                  rows={8}
+                  placeholder="Paste your full resume text here..."
+                  className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
+                />
+              </div>
+
+              {(activeTab === "optimize" || activeTab === "cover-letter") && (
+                <>
                   <div>
                     <label className="block text-sm font-medium text-neutral-700 mb-1">
-                      Company Name (optional)
+                      Paste Job Description
                     </label>
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="e.g. Google, Infosys"
-                      className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-[44px]"
+                    <textarea
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      rows={6}
+                      placeholder="Paste the full job description here..."
+                      className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
                     />
                   </div>
-                )}
-              </>
-            )}
+                  {activeTab === "cover-letter" && (
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-700 mb-1">
+                        Company Name (optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="e.g. Google, Infosys"
+                        className="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-[44px]"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
 
-            {error && (
-              error === "trial_expired" ? (
-                <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 space-y-2" role="alert">
-                  <p className="font-semibold flex items-center gap-1">🔒 Pro Features Locked</p>
-                  <p>Your 7-day free trial has expired. Subscribe to DecaJobs Pro to get unlimited access to all AI tools (Resume Analyzer, Job Optimizer, Cover Letter Generator) and daily morning job matches.</p>
-                  <div>
-                    <Link href="/subscribe" className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-700 min-h-[36px]">
-                      Subscribe to Pro →
-                    </Link>
+              {error && (
+                error === "trial_expired" ? (
+                  <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 space-y-2" role="alert">
+                    <p className="font-semibold flex items-center gap-1">🔒 Pro Features Locked</p>
+                    <p>Your 7-day free trial has expired. Subscribe to DecaJobs Pro to get unlimited access to all AI tools (Resume Analyzer, Job Optimizer, Cover Letter Generator) and daily morning job matches.</p>
+                    <div>
+                      <Link href="/subscribe" className="inline-flex items-center rounded-md bg-amber-600 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-700 min-h-[36px]">
+                        Subscribe to Pro →
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <p className="text-sm text-red-600" role="alert">{error}</p>
-              )
-            )}
+                ) : (
+                  <p className="text-sm text-red-600" role="alert">{error}</p>
+                )
+              )}
 
-            <Button onClick={handleSubmit} isLoading={isLoading} size="lg" className="w-full sm:w-auto">
-              {activeTab === "score" && "Analyze Resume"}
-              {activeTab === "optimize" && "Optimize Resume"}
-              {activeTab === "cover-letter" && "Generate Cover Letter"}
-            </Button>
-          </div>
-        </Card>
+              <Button onClick={handleSubmit} isLoading={isLoading} size="lg" className="w-full sm:w-auto">
+                {activeTab === "score" && "Analyze Resume"}
+                {activeTab === "optimize" && "Optimize Resume"}
+                {activeTab === "cover-letter" && "Generate Cover Letter"}
+              </Button>
+            </div>
+          </Card>
+        )}
 
         {/* Score Results */}
         {activeTab === "score" && scoreResult && (

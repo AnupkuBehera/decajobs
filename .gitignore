@@ -49,3 +49,5 @@ visible-velocity/
 next-env.d.ts
 OAuth.txt
 Decajob.txt
+.vercel
+.env*
