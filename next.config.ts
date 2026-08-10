@@ -12,6 +12,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.decajob.com",
+          },
+        ],
+        destination: "https://decajob.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/resume-builder",
         destination: "/resume-tools",
         permanent: true,
