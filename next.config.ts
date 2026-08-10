@@ -9,6 +9,20 @@ const nextConfig: NextConfig = {
     // Don't fail build on type errors (we validate locally)
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/resume-builder",
+        destination: "/resume-tools",
+        permanent: true,
+      },
+      {
+        source: "/tools/resume-builder",
+        destination: "/resume-tools",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

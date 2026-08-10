@@ -17,7 +17,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/login`, lastModified: new Date("2026-06-01"), changeFrequency: "monthly", priority: 0.6 },
     { url: `${baseUrl}/employer/register`, lastModified: new Date("2026-06-01"), changeFrequency: "monthly", priority: 0.6 },
     // Tools
-    { url: `${baseUrl}/tools`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/resume-tools`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/ai-recruiter`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/resume-matcher`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/tools/resume-checker`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/tools/salary-calculator`, lastModified: new Date("2026-06-15"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/tools/interview-questions`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.8 },
