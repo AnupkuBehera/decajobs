@@ -13,6 +13,7 @@ import {
     truncate,
     type ExternalJob,
 } from "@/lib/public-jobs";
+import { buildJobPostingSchema } from "@/lib/job-schema";
 
 export const revalidate = 3600;
 
@@ -226,28 +227,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "JobPosting",
-                        title: job.title,
-                        description: job.description,
-                        datePosted: job.postedAt,
-                        employmentType: "FULL_TIME",
-                        hiringOrganization: {
-                            "@type": "Organization",
-                            name: job.company,
-                        },
-                        jobLocation: {
-                            "@type": "Place",
-                            address: {
-                                "@type": "PostalAddress",
-                                addressLocality: remote ? "Remote" : job.location.split(",")[0],
-                                addressCountry: remote ? undefined : job.location.split(",").pop()?.trim() || undefined,
-                            },
-                        },
-                        directApply: false,
-                        url: `https://decajob.com/jobs/${slug}`,
-                    }),
+                    __html: JSON.stringify(buildJobPostingSchema(job, slug)),
                 }}
             />
         </div>
