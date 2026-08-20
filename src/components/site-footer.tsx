@@ -78,6 +78,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog/editorial-policy" className="text-neutral-400 hover:text-white transition-colors">
+                  Editorial Policy
+                </Link>
+              </li>
+              <li>
                 <Link href="/employer/register" className="text-neutral-400 hover:text-white transition-colors">
                   Post Jobs (Free)
                 </Link>

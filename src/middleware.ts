@@ -40,6 +40,16 @@ function matchesRoute(pathname: string, routes: string[]): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const host = request.headers.get("host") || "";
+
+  // 1. Redirect www.decajob.com -> decajob.com (301 Permanent Redirect for SEO canonicalization)
+  if (host.startsWith("www.decajob.com")) {
+    const redirectUrl = new URL(
+      pathname + request.nextUrl.search,
+      "https://decajob.com"
+    );
+    return NextResponse.redirect(redirectUrl, 301);
+  }
 
   // First, try to refresh the session (handles cookie updates)
   let response: NextResponse;

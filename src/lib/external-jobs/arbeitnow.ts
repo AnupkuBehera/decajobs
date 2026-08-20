@@ -34,7 +34,19 @@ export async function fetchArbeitnowJobs(query: string): Promise<ExternalJob[]> 
       return [];
     }
 
-    const data: ArbeitnowResponse = await response.json();
+    const text = await response.text();
+    if (!text || text.trim() === "" || text.trim().startsWith("<")) {
+      console.warn("[Arbeitnow] API returned empty or invalid JSON body");
+      return [];
+    }
+
+    let data: ArbeitnowResponse = { data: [] };
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.warn("[Arbeitnow] Failed to parse JSON response");
+      return [];
+    }
     console.log(`[Arbeitnow] Found ${data.data?.length ?? 0} jobs for "${query}"`);
 
     return (data.data || []).slice(0, 20).map((job) => ({

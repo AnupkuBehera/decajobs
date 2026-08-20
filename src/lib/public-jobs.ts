@@ -317,11 +317,20 @@ export function isRemoteJob(job: ExternalJob): boolean {
 
 const SEED_QUERIES = ["developer", "designer", "product manager", "data analyst", "marketing"];
 
+let cachedPublicJobs: ExternalJob[] | null = null;
+let lastPublicJobsFetchTime = 0;
+const PUBLIC_JOBS_CACHE_TTL = 10 * 60 * 1000; // 10 minutes in-memory cache for builds & server revalidation
+
 /**
  * Fetch public jobs from all free sources, deduplicated and sorted by recency.
- * Cached at the module level for 1 hour to limit external API calls.
+ * Cached at the module level for 10 minutes to limit external API calls.
  */
 export async function fetchPublicJobs(): Promise<ExternalJob[]> {
+    const now = Date.now();
+    if (cachedPublicJobs && now - lastPublicJobsFetchTime < PUBLIC_JOBS_CACHE_TTL) {
+        return cachedPublicJobs;
+    }
+
     try {
         // Try a few seed queries so we get broad coverage, then dedupe.
         const [remotiveA, remotiveB, remoteok, arbeitnowA, arbeitnowB] = await Promise.all([
@@ -355,10 +364,12 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
             return tb - ta;
         });
 
-        return unique.slice(0, MAX_JOBS_PER_PAGE * 3);
+        cachedPublicJobs = unique.slice(0, MAX_JOBS_PER_PAGE * 3);
+        lastPublicJobsFetchTime = now;
+        return cachedPublicJobs;
     } catch (error) {
         console.error("[PublicJobs] Failed to fetch public jobs:", error);
-        return [];
+        return cachedPublicJobs || [];
     }
 }
 

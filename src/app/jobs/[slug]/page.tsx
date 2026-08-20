@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import {
     getPublicJobs,
@@ -28,13 +28,36 @@ export async function generateStaticParams() {
     return jobs.slice(0, 40).map((job) => ({ slug: jobSlug(job) }));
 }
 
+/** Parse a human-readable title from a job slug (e.g. senior-software-engineer-erlin-119055 -> Senior Software Engineer Erlin). */
+function parseTitleFromSlug(slug: string): string {
+    const parts = slug.split("-").filter(Boolean);
+    if (parts.length > 1 && (/^\d+$/.test(parts[parts.length - 1]) || /^otive/i.test(parts[parts.length - 1]))) {
+        parts.pop();
+    }
+    if (parts.length === 0) return "Job Position";
+    return parts
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+}
+
 export async function generateMetadata({ params }: JobDetailPageProps): Promise<Metadata> {
     const { slug } = await params;
     const jobs = await getPublicJobs();
     const job = jobs.find((j) => jobSlug(j) === slug);
 
     if (!job) {
-        return { title: "Job Not Found | DecaJobs" };
+        const title = parseTitleFromSlug(slug);
+        return {
+            title: `${title} (Job Expired) | DecaJobs`,
+            description: `This job posting for ${title} has expired or is no longer accepting applications. Browse hundreds of active tech, remote, and engineering job openings on DecaJobs.`,
+            robots: {
+                index: false,
+                follow: true,
+            },
+            alternates: {
+                canonical: `/jobs/${slug}`,
+            },
+        };
     }
 
     return {
@@ -57,7 +80,80 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const jobs = await getPublicJobs();
     const job = jobs.find((j) => jobSlug(j) === slug);
 
-    if (!job) notFound();
+    if (!job) {
+        const expiredTitle = parseTitleFromSlug(slug);
+        const activeJobs = jobs.slice(0, 6);
+
+        return (
+            <div className="py-10 sm:py-16">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6">
+                    <Breadcrumbs
+                        items={[
+                            { label: "Jobs", href: "/jobs" },
+                            { label: "Expired Job" },
+                        ]}
+                    />
+
+                    {/* Expired Job Notice Card */}
+                    <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-6 sm:p-8">
+                        <div className="flex items-start gap-4">
+                            <span className="text-3xl" role="img" aria-label="warning">⚡</span>
+                            <div>
+                                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                                    Listing Expired
+                                </span>
+                                <h1 className="mt-2 text-xl font-bold text-neutral-900 sm:text-2xl">
+                                    {expiredTitle}
+                                </h1>
+                                <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+                                    This job posting is no longer active or accepting new applications. Don't worry — we have hundreds of active job openings waiting for you!
+                                </p>
+                                <div className="mt-5 flex flex-wrap items-center gap-3">
+                                    <Link
+                                        href="/jobs"
+                                        className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 transition-colors min-h-[44px]"
+                                    >
+                                        Browse All Active Jobs →
+                                    </Link>
+                                    <Link
+                                        href="/jobs/remote"
+                                        className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors min-h-[44px]"
+                                    >
+                                        Explore Remote Jobs
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Active Recommended Jobs */}
+                    {activeJobs.length > 0 && (
+                        <section className="mt-10">
+                            <h2 className="text-xl font-bold text-neutral-900 mb-4">
+                                Active Opportunities You Might Like
+                            </h2>
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {activeJobs.map((s) => (
+                                    <Link
+                                        key={s.id}
+                                        href={`/jobs/${jobSlug(s)}`}
+                                        className="group block rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-200"
+                                    >
+                                        <h3 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 line-clamp-2">
+                                            {s.title}
+                                        </h3>
+                                        <p className="mt-1 text-xs text-neutral-500">{s.company}</p>
+                                        <p className="mt-2 text-xs text-neutral-500">📍 {s.location}</p>
+                                        <p className="mt-3 text-xs text-neutral-400">{formatPostedDate(s.postedAt)}</p>
+                                    </Link>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     const days = daysSincePosted(job.postedAt);
     const remote = isRemoteJob(job);

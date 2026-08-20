@@ -1,51 +1,59 @@
 import type { MetadataRoute } from "next";
+import { getPublicJobs, jobSlug } from "@/lib/public-jobs";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
+  let jobs = [];
+  try {
+    jobs = await getPublicJobs();
+  } catch (error) {
+    console.error("[Sitemap] Failed to fetch public jobs for sitemap:", error);
+  }
 
-  return [
-    { url: baseUrl, lastModified: new Date("2026-07-15"), changeFrequency: "daily", priority: 1 },
-    { url: `${baseUrl}/about`, lastModified: new Date("2026-07-15"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/how-it-works`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/pricing`, lastModified: new Date("2026-07-15"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/faq`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/contact`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/privacy`, lastModified: new Date("2026-06-10"), changeFrequency: "yearly", priority: 0.5 },
-    { url: `${baseUrl}/terms`, lastModified: new Date("2026-06-10"), changeFrequency: "yearly", priority: 0.5 },
-    { url: `${baseUrl}/disclaimer`, lastModified: new Date("2026-07-15"), changeFrequency: "yearly", priority: 0.4 },
-    { url: `${baseUrl}/accessibility`, lastModified: new Date("2026-07-15"), changeFrequency: "yearly", priority: 0.4 },
-    { url: `${baseUrl}/login`, lastModified: new Date("2026-06-01"), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/employer/register`, lastModified: new Date("2026-06-01"), changeFrequency: "monthly", priority: 0.6 },
+  const staticEntries: MetadataRoute.Sitemap = [
+    { url: baseUrl, lastModified: new Date("2026-08-12"), changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/about`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/how-it-works`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/pricing`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/faq`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/contact`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/privacy`, lastModified: new Date("2026-08-12"), changeFrequency: "yearly", priority: 0.5 },
+    { url: `${baseUrl}/terms`, lastModified: new Date("2026-08-12"), changeFrequency: "yearly", priority: 0.5 },
+    { url: `${baseUrl}/disclaimer`, lastModified: new Date("2026-08-12"), changeFrequency: "yearly", priority: 0.4 },
+    { url: `${baseUrl}/accessibility`, lastModified: new Date("2026-08-12"), changeFrequency: "yearly", priority: 0.4 },
+    { url: `${baseUrl}/login`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/employer/register`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.6 },
     // Tools
-    { url: `${baseUrl}/tools`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/resume-tools`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/tools/ai-recruiter`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/tools/resume-matcher`, lastModified: new Date("2026-08-01"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/tools/resume-checker`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/tools/salary-calculator`, lastModified: new Date("2026-06-15"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/tools/interview-questions`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/tools/cover-letter-generator`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/tools/job-scam-detector`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/tools/linkedin-headline`, lastModified: new Date("2026-06-15"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/resume-tools`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/ai-recruiter`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/resume-matcher`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/resume-checker`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/tools/salary-calculator`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/tools/interview-questions`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools/cover-letter-generator`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools/job-scam-detector`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools/linkedin-headline`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
     // Jobs
-    { url: `${baseUrl}/jobs`, lastModified: new Date("2026-07-15"), changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/jobs/remote`, lastModified: new Date("2026-07-15"), changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/jobs/category/software-engineering`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/data-analytics`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/product-design`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/marketing-sales`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/devops-cloud`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/human-resources`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/finance-accounting`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/customer-support`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/bangalore`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/mumbai`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/delhi`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/hyderabad`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/chennai`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/pune`, lastModified: new Date("2026-07-15"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs`, lastModified: new Date("2026-08-12"), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/jobs/remote`, lastModified: new Date("2026-08-12"), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/jobs/category/software-engineering`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/data-analytics`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/product-design`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/marketing-sales`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/devops-cloud`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/human-resources`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/finance-accounting`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/category/customer-support`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/bangalore`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/mumbai`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/delhi`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/hyderabad`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/chennai`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/jobs/location/pune`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
     // Blog
-    { url: `${baseUrl}/blog`, lastModified: new Date("2026-07-10"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/blog`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/blog/editorial-policy`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/top-10-resume-mistakes`, lastModified: new Date("2026-06-12"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/how-to-crack-any-interview`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/remote-jobs-guide-india`, lastModified: new Date("2026-06-08"), changeFrequency: "monthly", priority: 0.7 },
@@ -68,4 +76,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/blog/switching-careers-guide`, lastModified: new Date("2026-06-22"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/how-to-negotiate-remote-salary`, lastModified: new Date("2026-06-19"), changeFrequency: "monthly", priority: 0.7 },
   ];
+
+  const jobEntries: MetadataRoute.Sitemap = jobs.map((job) => ({
+    url: `${baseUrl}/jobs/${jobSlug(job)}`,
+    lastModified: job.postedAt ? new Date(job.postedAt) : new Date("2026-08-12"),
+    changeFrequency: "daily",
+    priority: 0.8,
+  }));
+
+  return [...staticEntries, ...jobEntries];
 }

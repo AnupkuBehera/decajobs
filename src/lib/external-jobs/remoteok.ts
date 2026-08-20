@@ -36,7 +36,19 @@ export async function fetchRemoteOKJobs(tags: string[]): Promise<ExternalJob[]> 
       return [];
     }
 
-    const data: RemoteOKJob[] = await response.json();
+    const text = await response.text();
+    if (!text || text.trim() === "" || text.trim().startsWith("<")) {
+      console.warn("[RemoteOK] API returned empty or invalid JSON body");
+      return [];
+    }
+
+    let data: RemoteOKJob[] = [];
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.warn("[RemoteOK] Failed to parse JSON response");
+      return [];
+    }
 
     // First element is metadata, skip it
     const jobs = Array.isArray(data) ? data.slice(1) : [];

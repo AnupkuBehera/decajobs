@@ -52,7 +52,14 @@ export async function fetchApifyLinkedInJobs(
       return [];
     }
 
-    const items = await res.json();
+    const text = await res.text();
+    let items: any = [];
+    try {
+      items = JSON.parse(text);
+    } catch {
+      console.error("[Apify] Failed to parse JSON response from dataset");
+      return [];
+    }
     if (!Array.isArray(items)) {
       console.error("[Apify] Invalid response data format from dataset:", items);
       return [];

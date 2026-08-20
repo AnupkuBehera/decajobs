@@ -32,7 +32,19 @@ export async function fetchRemotiveJobs(query: string): Promise<ExternalJob[]> {
       return [];
     }
 
-    const data: RemotiveResponse = await response.json();
+    const text = await response.text();
+    if (!text || text.trim() === "" || text.trim().startsWith("<")) {
+      console.warn("[Remotive] API returned empty or invalid JSON body");
+      return [];
+    }
+
+    let data: RemotiveResponse = { jobs: [] };
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.warn("[Remotive] Failed to parse JSON response");
+      return [];
+    }
     console.log(`[Remotive] Found ${data.jobs?.length ?? 0} jobs for "${query}"`);
 
     return (data.jobs || []).map((job) => ({

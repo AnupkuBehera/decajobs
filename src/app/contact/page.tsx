@@ -3,17 +3,47 @@ import { ContactForm } from "./contact-form";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Contact Us - DecaJobs",
+  title: "Contact Us - DecaJobs | Support & Business Inquiries",
   description:
-    "Get in touch with the DecaJobs team. Contact us for support, partnership inquiries, feedback, or any questions about our AI-powered job portal.",
+    "Get in touch with the DecaJobs team. Contact us for candidate support, employer partnerships, editorial inquiries, or privacy questions.",
   alternates: {
     canonical: "/contact",
   },
 };
 
 export default function ContactPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact DecaJobs",
+    "url": "https://decajob.com/contact",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "DecaJobs",
+      "url": "https://decajob.com",
+      "email": "support@decajob.com",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "email": "support@decajob.com",
+          "contactType": "customer support",
+          "availableLanguage": ["English", "Hindi"],
+        },
+        {
+          "@type": "ContactPoint",
+          "email": "employers@decajob.com",
+          "contactType": "sales",
+        },
+      ],
+    },
+  };
+
   return (
     <div className="py-10 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mx-auto max-w-3xl">
         <Breadcrumbs items={[{ label: "Contact Us" }]} />
 
@@ -42,7 +72,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-neutral-900">Email</p>
-                    <a href="mailto:support@decajob.com" className="text-sm text-primary-600 hover:underline">
+                    <a href="mailto:support@decajob.com" className="text-sm text-primary-600 hover:underline font-medium">
                       support@decajob.com
                     </a>
                   </div>
@@ -56,7 +86,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-neutral-900">Response Time</p>
-                    <p className="text-sm text-neutral-600">We reply within 24 hours</p>
+                    <p className="text-sm text-neutral-600">We reply within 24 hours (Mon-Sat, 9 AM - 6 PM IST)</p>
                   </div>
                 </div>
               </div>
@@ -64,19 +94,23 @@ export default function ContactPage() {
 
             <div className="rounded-xl border border-neutral-200 bg-white p-6">
               <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-                Quick Links
+                Departmental Contacts
               </h2>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2.5 text-sm">
                 <li>
-                  <strong>General inquiries:</strong>{" "}
-                  <a href="mailto:hello@decajob.com" className="text-primary-600 hover:underline">hello@decajob.com</a>
+                  <strong>General &amp; Support:</strong>{" "}
+                  <a href="mailto:support@decajob.com" className="text-primary-600 hover:underline">support@decajob.com</a>
                 </li>
                 <li>
-                  <strong>Employer support:</strong>{" "}
+                  <strong>Employers &amp; Hiring:</strong>{" "}
                   <a href="mailto:employers@decajob.com" className="text-primary-600 hover:underline">employers@decajob.com</a>
                 </li>
                 <li>
-                  <strong>Privacy concerns:</strong>{" "}
+                  <strong>Editorial &amp; Fact-Check:</strong>{" "}
+                  <a href="mailto:editorial@decajob.com" className="text-primary-600 hover:underline">editorial@decajob.com</a>
+                </li>
+                <li>
+                  <strong>Privacy Concerns:</strong>{" "}
                   <a href="mailto:privacy@decajob.com" className="text-primary-600 hover:underline">privacy@decajob.com</a>
                 </li>
               </ul>
