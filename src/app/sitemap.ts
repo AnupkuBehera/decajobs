@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { getPublicJobs, jobSlug } from "@/lib/public-jobs";
+import { getPublicJobs, jobSlug, type ExternalJob } from "@/lib/public-jobs";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
-  let jobs = [];
+  let jobs: ExternalJob[] = [];
   try {
     jobs = await getPublicJobs();
   } catch (error) {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { StickyApplyBar } from "@/components/sticky-apply-bar";
 import {
     getPublicJobs,
     jobSlug,
@@ -31,7 +32,8 @@ export async function generateStaticParams() {
 /** Parse a human-readable title from a job slug (e.g. senior-software-engineer-erlin-119055 -> Senior Software Engineer Erlin). */
 function parseTitleFromSlug(slug: string): string {
     const parts = slug.split("-").filter(Boolean);
-    if (parts.length > 1 && (/^\d+$/.test(parts[parts.length - 1]) || /^otive/i.test(parts[parts.length - 1]))) {
+    const lastPart = parts[parts.length - 1];
+    if (parts.length > 1 && lastPart && (/^\d+$/.test(lastPart) || /^otive/i.test(lastPart))) {
         parts.pop();
     }
     if (parts.length === 0) return "Job Position";
@@ -176,7 +178,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const categoriesForJob = JOB_CATEGORIES.filter((cat) => jobMatchesCategory(job, cat));
 
     return (
-        <div className="py-10 sm:py-16">
+        <div className="pt-10 pb-24 sm:pt-16 sm:pb-28">
             <div className="mx-auto max-w-4xl">
                 <Breadcrumbs
                     items={[
@@ -325,6 +327,14 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(buildJobPostingSchema(job, slug)),
                 }}
+            />
+
+            {/* Sticky Mobile & Desktop Apply Bar */}
+            <StickyApplyBar
+                jobTitle={job.title}
+                company={job.company}
+                applicationLink={job.applicationLink}
+                slug={slug}
             />
         </div>
     );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DailyAlertForm } from "@/components/daily-alert-form";
 
 export const metadata: Metadata = {
   title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
@@ -83,18 +84,30 @@ export default function Home() {
             by 7 AM. No noise, no endless scrolling — just opportunities that matter.
           </p>
 
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="mt-8">
+            <DailyAlertForm />
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-primary-200">
             <Link
-              href="/login"
-              className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-primary-700 shadow-lg shadow-primary-900/30 transition-colors hover:bg-neutral-100 min-h-[52px]"
+              href="/jobs"
+              className="hover:text-white underline underline-offset-4 font-medium transition-colors"
             >
-              Start Free Trial →
+              Browse Active Jobs List →
             </Link>
+            <span>•</span>
+            <Link
+              href="/tools"
+              className="hover:text-white underline underline-offset-4 font-medium transition-colors"
+            >
+              Free Career & Resume AI Tools
+            </Link>
+            <span>•</span>
             <Link
               href="/employer/register"
-              className="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white hover:text-primary-800 min-h-[52px]"
+              className="hover:text-white underline underline-offset-4 font-medium transition-colors"
             >
-              Post Jobs Free
+              For Employers: Post Jobs Free
             </Link>
           </div>
 
