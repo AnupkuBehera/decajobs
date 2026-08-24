@@ -227,19 +227,59 @@ export default async function JobsPage() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "CollectionPage",
-                        name: "Latest Job Openings",
-                        url: "https://decajob.com/jobs",
-                        description:
-                            "Browse fresh job listings across software engineering, data analytics, design, marketing, and more. Updated daily.",
-                        isPartOf: {
-                            "@type": "WebSite",
-                            name: "DecaJobs",
-                            url: "https://decajob.com",
+                    __html: JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "CollectionPage",
+                            name: "Latest Job Openings 2026",
+                            url: "https://decajob.com/jobs",
+                            description:
+                                "Browse fresh job listings across software engineering, data analytics, design, marketing, and more. Updated daily.",
+                            isPartOf: {
+                                "@type": "WebSite",
+                                name: "DecaJobs",
+                                url: "https://decajob.com",
+                            },
                         },
-                    }),
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            mainEntity: [
+                                {
+                                    "@type": "Question",
+                                    name: "How does DecaJobs aggregate jobs?",
+                                    acceptedAnswer: {
+                                        "@type": "Answer",
+                                        text: "DecaJobs fetches job listings directly from free APIs (Remotive, RemoteOK, Arbeitnow) and employer-posted roles. We deduplicate results, clean descriptions, and score them against your candidate profile.",
+                                    },
+                                },
+                                {
+                                    "@type": "Question",
+                                    name: "Is it free to apply for jobs on DecaJobs?",
+                                    acceptedAnswer: {
+                                        "@type": "Answer",
+                                        text: "Yes. Browsing the job board is free, and applying to jobs is free. You can also create a free account to receive 10 AI-matched jobs in your inbox every morning at 7 AM.",
+                                    },
+                                },
+                                {
+                                    "@type": "Question",
+                                    name: "Can I find remote jobs?",
+                                    acceptedAnswer: {
+                                        "@type": "Answer",
+                                        text: "Yes. DecaJobs features hundreds of remote job listings across software engineering, marketing, design, analytics, and support.",
+                                    },
+                                },
+                                {
+                                    "@type": "Question",
+                                    name: "Are these jobs verified?",
+                                    acceptedAnswer: {
+                                        "@type": "Answer",
+                                        text: "We aggregate from verified platforms and filter out common scam signals. Candidates can also use our free Job Scam Detector tool to check any suspicious listing before applying.",
+                                    },
+                                },
+                            ],
+                        },
+                    ]),
                 }}
             />
         </div>

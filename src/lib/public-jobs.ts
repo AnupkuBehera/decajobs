@@ -31,7 +31,11 @@ export interface JobCategory {
     emoji: string;
     keywords: string[];
     intro: string;
+    salaryRange: { junior: string; mid: string; senior: string };
+    topSkills: string[];
+    marketOutlook: string;
     careers: { title: string; text: string }[];
+    faqs: { q: string; a: string }[];
 }
 
 export const JOB_CATEGORIES: JobCategory[] = [
@@ -41,12 +45,38 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "💻",
         keywords: ["software", "developer", "engineer", "full stack", "fullstack", "frontend", "front-end", "backend", "back-end", "programmer", "coding", "java", "python", "javascript", "typescript", "react", "node", "golang", "ruby", "php", "c++", ".net", "swift", "kotlin"],
         intro:
-            "Software engineering remains one of the highest-demand careers in 2026. From full-stack web developers to backend platform engineers, companies around the world are hiring for roles that build and maintain the products powering the digital economy.",
+            "Software engineering remains one of the highest-demand careers in 2026. From full-stack web developers to backend platform engineers, companies around the world are hiring for roles that build and maintain the digital products powering the modern global economy.",
+        salaryRange: {
+            junior: "₹4.5L - ₹8.5L / $65,000",
+            mid: "₹12L - ₹24L / $115,000",
+            senior: "₹26L - ₹55L+ / $165,000+",
+        },
+        topSkills: ["TypeScript / JavaScript", "Python & AI Integration", "React / Next.js", "Node.js & Go", "PostgreSQL & Redis", "System Design & Microservices", "Docker & CI/CD"],
+        marketOutlook:
+            "Demand for software engineers in 2026 has evolved toward AI-assisted development, high-throughput microservices, and full-stack autonomy. Engineers who pair core algorithms with modern web frameworks and AI APIs are commanding top-tier packages across both Indian IT hubs and US/EU remote teams.",
         careers: [
             { title: "Frontend Developer", text: "Build user interfaces with React, Vue, or Angular. Pair design with engineering to create fast, accessible, and delightful web experiences." },
-            { title: "Backend Engineer", text: "Design APIs, databases, and server-side systems that keep applications reliable, secure, and scalable." },
+            { title: "Backend Engineer", text: "Design APIs, databases, and server-side systems that keep applications reliable, secure, and scalable under heavy load." },
             { title: "Full-Stack Developer", text: "Own features end-to-end — from the database schema to the pixels on screen. The most versatile role in modern product teams." },
             { title: "DevOps / Platform Engineer", text: "Automate infrastructure with Docker, Kubernetes, and CI/CD pipelines so teams can ship software quickly and safely." },
+        ],
+        faqs: [
+            {
+                q: "What skills are most in demand for Software Engineers in 2026?",
+                a: "Full-stack proficiency (TypeScript, React/Next.js, Node.js or Python), cloud infrastructure knowledge (AWS/GCP), and experience incorporating AI tools or APIs into production applications are the top skills recruiters look for."
+            },
+            {
+                q: "How can freshers land their first software engineering job?",
+                a: "Build 2-3 full-stack projects showcasing real API integrations and database persistence. Publish your clean code on GitHub, write a targeted ATS-optimized resume using DecaJobs, and practice core data structures and algorithm interview questions."
+            },
+            {
+                q: "What is the difference between Frontend, Backend, and Full-Stack roles?",
+                a: "Frontend focuses on browser client interfaces (HTML/CSS/JS/React). Backend handles server logic, databases, and system architecture. Full-Stack developers bridges both tiers to deliver complete user-facing product features."
+            },
+            {
+                q: "Are remote software engineering jobs still available for international candidates?",
+                a: "Yes! Thousands of US, European, and Asian companies actively hire remote software engineers in India and worldwide. DecaJobs aggregates hundreds of verified remote developer listings daily."
+            }
         ],
     },
     {
@@ -55,12 +85,34 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "📊",
         keywords: ["data", "analyst", "analytics", "scientist", "machine learning", "ml", "ai", "business intelligence", "bi", "sql", "python", "tableau", "power bi", "databricks", "spark", "etl"],
         intro:
-            "Every company is now a data company. Analysts, data scientists, and machine learning engineers turn raw information into decisions, dashboards, and intelligent products — making data roles some of the most valuable in 2026.",
+            "Every enterprise is now a data-driven enterprise. Data analysts, scientists, and machine learning engineers transform raw unstructured data into strategic decisions, predictive models, and intelligent products — making analytics one of the fastest-growing fields in 2026.",
+        salaryRange: {
+            junior: "₹4.0L - ₹7.5L / $60,000",
+            mid: "₹10L - ₹20L / $105,000",
+            senior: "₹24L - ₹48L+ / $150,000+",
+        },
+        topSkills: ["Advanced SQL & Window Functions", "Python (Pandas, NumPy, Scikit-learn)", "Power BI & Tableau", "Data Warehousing (Snowflake/BigQuery)", "Machine Learning & Prompt Engineering", "ETL / ELT Pipelines"],
+        marketOutlook:
+            "The data landscape in 2026 prioritizes real-time analytics, automated data pipelines, and practical machine learning implementation over static reporting. Organizations are seeking data specialists who can translate complex data models into actionable business outcomes.",
         careers: [
-            { title: "Data Analyst", text: "Query, clean, and visualize data to answer business questions. SQL, Excel, and a dashboarding tool are your core toolkit." },
-            { title: "Data Scientist", text: "Apply statistics and machine learning to predict outcomes, segment users, and surface insights that drive strategy." },
-            { title: "Machine Learning Engineer", text: "Productionize models — train, deploy, and monitor ML systems that run at scale in real products." },
-            { title: "Business Intelligence Developer", text: "Design the dashboards and data pipelines that executives rely on for reporting and planning." },
+            { title: "Data Analyst", text: "Query, clean, and visualize data to answer business questions. SQL, Excel, and dashboarding tools (Power BI/Tableau) are your core toolkit." },
+            { title: "Data Scientist", text: "Apply statistics and machine learning to predict outcomes, segment users, and surface deep insights that drive executive strategy." },
+            { title: "Machine Learning Engineer", text: "Productionize ML models — train, deploy, and monitor scalable AI systems in live applications." },
+            { title: "Business Intelligence Developer", text: "Design the semantic layers, data models, and automated executive dashboards that leadership relies on for operational planning." },
+        ],
+        faqs: [
+            {
+                q: "What is the single most important skill for a Data Analyst?",
+                a: "SQL (Structured Query Language). Being able to write complex queries, joins, aggregations, and window functions to pull accurate datasets from large databases is fundamental to every data role."
+            },
+            {
+                q: "What tools should I master to transition into Data Science?",
+                a: "Start with Python (Pandas, NumPy, Matplotlib), SQL, statistical analysis, and basic machine learning concepts. Familiarity with cloud platforms (GCP, AWS) and data warehouses like Snowflake is highly beneficial."
+            },
+            {
+                q: "How does AI affect data analytics jobs?",
+                a: "AI automates routine boilerplate code, but increases demand for analysts who can validate AI outputs, interpret complex statistical models, and communicate narrative business insights to stakeholders."
+            }
         ],
     },
     {
@@ -69,12 +121,30 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "🎨",
         keywords: ["product manager", "product owner", "ux", "ui", "designer", "design", "research", "figma", "product"],
         intro:
-            "Great products need people who understand users, strategy, and craft. Product managers define what to build while designers make it intuitive and beautiful — a pairing at the heart of every successful company.",
+            "Exceptional digital products require practitioners who blend user empathy, strategic thinking, and visual polish. Product managers shape the product vision, while UX/UI designers transform complex workflows into intuitive, beautiful experiences.",
+        salaryRange: {
+            junior: "₹4.0L - ₹8.0L / $55,000",
+            mid: "₹11L - ₹22L / $100,000",
+            senior: "₹25L - ₹50L+ / $145,000+",
+        },
+        topSkills: ["Figma & Design Systems", "User Research & Usability Testing", "Wireframing & Interactive Prototyping", "Product Roadmap & Strategy", "Data-Informed Product Analytics", "Agile & Scrum Methodologies"],
+        marketOutlook:
+            "Design and Product roles in 2026 place heavy emphasis on micro-interactions, accessibility standards (WCAG 2.1), design systems, and rapid prototyping with AI tools. Strong Product Designers who understand both user research and business metrics are heavily sought after.",
         careers: [
-            { title: "Product Manager", text: "Own the roadmap and strategy. Prioritize what to build based on user research, data, and business goals." },
-            { title: "UX Designer", text: "Research user needs and design flows, wireframes, and prototypes that are intuitive and accessible." },
-            { title: "UI Designer", text: "Craft the visual language — color, typography, and components — that make products polished and on-brand." },
-            { title: "Product Designer", text: "A hybrid role covering research, interaction, and visual design to deliver end-to-end product experiences." },
+            { title: "Product Manager", text: "Own the product roadmap and feature strategy. Prioritize requirements based on customer research, data insights, and business growth targets." },
+            { title: "UX Designer", text: "Conduct user research, map user journeys, and design wireframes and interactive prototypes that make digital products intuitive and effortless." },
+            { title: "UI Designer", text: "Craft the visual identity — typography, color palettes, micro-animations, and component libraries — that give software products a polished look." },
+            { title: "Product Designer", text: "A holistic role combining user research, interaction design, and visual craft to ship end-to-end product features." },
+        ],
+        faqs: [
+            {
+                q: "Do I need a formal design degree to become a UX/UI Designer?",
+                a: "No. A strong portfolio demonstrating your design process, user research, wireframes, and polished Figma prototypes is the primary hiring criterion for design recruiters."
+            },
+            {
+                q: "How do Product Managers collaborate with Product Designers?",
+                a: "PMs define the problem statement, user goal, and business success metrics, while Designers lead the solution research, user flows, and interface execution. They work iteratively with engineering to ship features."
+            }
         ],
     },
     {
@@ -83,12 +153,30 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "📣",
         keywords: ["marketing", "sales", "growth", "seo", "content", "social media", "digital marketing", "account executive", "account manager", "bdm", "business development", "customer success", "affiliate", "ppc", "brand"],
         intro:
-            "Marketing and sales teams fuel revenue growth. From SEO specialists to account executives, these roles blend creativity, data, and relationship-building to connect products with the people who need them.",
+            "Marketing and sales professionals drive top-line revenue growth. From organic growth specialists and performance marketers to enterprise account executives, these roles blend creative storytelling, data analytics, and relationship management.",
+        salaryRange: {
+            junior: "₹3.5L - ₹6.5L / $45,000",
+            mid: "₹8.5L - ₹18L / $85,000",
+            senior: "₹20L - ₹42L+ / $135,000+",
+        },
+        topSkills: ["SEO & Content Strategy", "Performance Marketing (Google & Meta Ads)", "B2B Sales & Pipeline Management", "Customer Acquisition & Funnel Analytics", "CRM Tools (Salesforce, HubSpot)", "Email Marketing & Automation"],
+        marketOutlook:
+            "Revenue roles in 2026 rely heavily on multi-channel attribution, AI content optimization, and consultative enterprise selling. Marketers with strong analytical skills and salespeople who build authentic buyer trust command high performance bonuses and OTE packages.",
         careers: [
-            { title: "Digital Marketing Specialist", text: "Run campaigns across search, social, and email. Measure performance and optimize relentlessly." },
-            { title: "SEO Specialist", text: "Grow organic traffic through technical SEO, content strategy, and authoritative link building." },
-            { title: "Account Executive", text: "Own the sales cycle from prospecting to close. Build pipelines and negotiate deals that grow revenue." },
-            { title: "Customer Success Manager", text: "Retain and expand accounts by helping customers achieve their goals with your product." },
+            { title: "Digital Marketing Specialist", text: "Plan and execute targeted campaigns across search, social media, and email channels. Track CAC, ROAS, and funnel conversion metrics." },
+            { title: "SEO Specialist", text: "Expand organic traffic through technical SEO audits, high-intent content strategy, and authoritative backlink acquisition." },
+            { title: "Account Executive", text: "Lead the full sales cycle from initial discovery call to contract close. Build qualified pipelines and negotiate win-win client agreements." },
+            { title: "Customer Success Manager", text: "Ensure client retention and account expansion by helping customers achieve measurable success with your product or service." },
+        ],
+        faqs: [
+            {
+                q: "What is the difference between Inbound and Outbound Marketing?",
+                a: "Inbound attracts potential buyers naturally through SEO, valuable content, and social media. Outbound reaches out directly to prospective leads via paid ads, cold email, and sales prospecting."
+            },
+            {
+                q: "What metrics are most critical for digital marketers?",
+                a: "CAC (Customer Acquisition Cost), Conversion Rate, ROAS (Return on Ad Spend), LTV (Lifetime Value), and Organic Keyword Rankings."
+            }
         ],
     },
     {
@@ -97,12 +185,30 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "☁️",
         keywords: ["devops", "cloud", "aws", "azure", "gcp", "kubernetes", "docker", "sre", "site reliability", "infrastructure", "terraform", "linux", "sysadmin", "networking"],
         intro:
-            "Cloud and DevOps professionals keep modern systems running. As organizations move to multi-cloud architectures, SREs and platform engineers who can automate reliability are in extremely high demand.",
+            "DevOps and Cloud specialists build the secure, resilient foundation of modern cloud-native applications. As enterprises scale multi-cloud infrastructure, SREs and Platform Engineers ensure zero-downtime reliability and rapid automated deployments.",
+        salaryRange: {
+            junior: "₹5.0L - ₹9.0L / $70,000",
+            mid: "₹14L - ₹28L / $125,000",
+            senior: "₹30L - ₹60L+ / $175,000+",
+        },
+        topSkills: ["AWS / Azure / GCP Cloud", "Kubernetes & Docker Containerization", "Terraform & IaC", "CI/CD (GitHub Actions, GitLab CI)", "Linux System Administration", "Observability (Prometheus, Grafana, Datadog)"],
+        marketOutlook:
+            "Cloud automation and Site Reliability Engineering remain among the highest-paid specializations in software. As infrastructure moves toward automated IaC and container orchestration, skilled DevOps engineers are in massive demand globally.",
         careers: [
-            { title: "DevOps Engineer", text: "Build CI/CD pipelines, automate infrastructure, and streamline the path from commit to production." },
-            { title: "Site Reliability Engineer (SRE)", text: "Apply software engineering to operations — keep systems available, fast, and observable at scale." },
-            { title: "Cloud Architect", text: "Design secure, cost-efficient cloud architectures on AWS, Azure, or GCP." },
-            { title: "Platform Engineer", text: "Create internal developer platforms and tooling that make engineering teams more productive." },
+            { title: "DevOps Engineer", text: "Build automated CI/CD pipelines, manage infrastructure code, and eliminate manual deployment bottlenecks." },
+            { title: "Site Reliability Engineer (SRE)", text: "Combine software development with IT operations to maintain high system availability, low latency, and comprehensive logging." },
+            { title: "Cloud Architect", text: "Architect cost-effective, multi-region cloud infrastructures adhering to strict security and disaster recovery standards." },
+            { title: "Platform Engineer", text: "Develop internal developer platforms (IDPs) that empower product engineering teams to deploy services independently." },
+        ],
+        faqs: [
+            {
+                q: "What cloud certifications are most valuable in 2026?",
+                a: "AWS Certified Solutions Architect, Certified Kubernetes Administrator (CKA), and Terraform Associate are widely recognized certifications by hiring managers."
+            },
+            {
+                q: "How does DevOps differ from Site Reliability Engineering (SRE)?",
+                a: "DevOps is a operational cultural methodology emphasizing continuous integration and deployment automation. SRE is a specific engineering implementation created by Google that applies software practices to solve infrastructure and reliability challenges."
+            }
         ],
     },
     {
@@ -111,12 +217,26 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "🤝",
         keywords: ["hr", "human resources", "recruiter", "recruiting", "talent", "people", "operations", "onboarding", "payroll"],
         intro:
-            "People are a company's greatest asset — and HR professionals make sure they're hired, developed, and supported. Recruiting, people operations, and talent management roles continue to grow as companies scale.",
+            "Human Resources and Talent Acquisition professionals shape organizational culture and recruit top-tier talent. As hybrid workplaces and international hiring expand, strategic HR roles are essential for driving employee engagement and business retention.",
+        salaryRange: {
+            junior: "₹3.5L - ₹6.0L / $45,000",
+            mid: "₹8.0L - ₹16L / $80,000",
+            senior: "₹18L - ₹38L+ / $120,000+",
+        },
+        topSkills: ["Talent Sourcing & Screening", "HR Information Systems (HRIS)", "Employee Engagement & Retention", "Compensation & Benefits Architecture", "Performance Management Systems", "Employment Law & Labor Compliance"],
+        marketOutlook:
+            "Modern HR focuses heavily on talent analytics, employer branding, and streamlined candidate experiences. Technical recruiters and HR Business Partners who leverage AI sourcing tools are highly valued by fast-growing startups and enterprises.",
         careers: [
-            { title: "Recruiter", text: "Source, screen, and hire top talent. Build candidate pipelines and craft a great hiring experience." },
-            { title: "HR Business Partner", text: "Align people strategy with business goals — from performance management to organizational design." },
-            { title: "Talent Acquisition Lead", text: "Own hiring strategy for a company or region, including employer branding and hiring ops." },
-            { title: "People Operations", text: "Run the systems that support employees: onboarding, benefits, policies, and culture programs." },
+            { title: "Recruiter / Talent Partner", text: "Identify, engage, and evaluate top candidates across channels to fill open roles efficiently." },
+            { title: "HR Business Partner (HRBP)", text: "Align talent management strategy directly with executive business goals, leadership development, and team scaling." },
+            { title: "Talent Acquisition Manager", text: "Lead recruiting teams, establish hiring workflows, analyze hiring velocity metrics, and manage external agency relationships." },
+            { title: "People Operations Specialist", text: "Manage core operational systems: onboarding, employee benefits administration, HR compliance, and workplace policies." },
+        ],
+        faqs: [
+            {
+                q: "What tools do modern recruiters use for candidate sourcing?",
+                a: "LinkedIn Recruiter, Applicant Tracking Systems (Greenhouse, Lever, Workday), AI candidate matching tools like DecaJobs, and automated scheduling tools."
+            }
         ],
     },
     {
@@ -125,12 +245,26 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "💰",
         keywords: ["finance", "accountant", "accounting", "financial analyst", "fp&a", "audit", "tax", "bookkeeping", "controller", "investment", "payments"],
         intro:
-            "Finance professionals keep companies solvent, compliant, and strategically funded. From FP&A analysts to controllers, these roles combine analytical rigor with business judgment.",
+            "Finance and Accounting professionals maintain fiscal health, regulatory compliance, and strategic capital allocation. From financial planning and analysis (FP&A) to corporate treasury, these roles guide sound corporate growth.",
+        salaryRange: {
+            junior: "₹4.0L - ₹7.0L / $50,000",
+            mid: "₹9.5L - ₹19L / $95,000",
+            senior: "₹22L - ₹45L+ / $140,000+",
+        },
+        topSkills: ["Financial Modeling & Forecasting", "SQL & Advanced Financial Excel", "IFRS & GAAP Accounting Standards", "ERP Systems (SAP, NetSuite, Tally)", "Taxation & Regulatory Audit", "FP&A & Corporate Valuation"],
+        marketOutlook:
+            "Financial roles in 2026 combine classic accounting precision with data analytics (Python, SQL). Companies place high value on FP&A professionals who can model complex market scenarios and guide strategic investment decisions.",
         careers: [
-            { title: "Financial Analyst", text: "Build models and forecasts that guide budgeting, pricing, and investment decisions." },
-            { title: "Accountant", text: "Maintain accurate books, close the period, and ensure tax and regulatory compliance." },
-            { title: "FP&A Manager", text: "Own planning, forecasting, and management reporting for leadership." },
-            { title: "Controller", text: "Oversee accounting operations and financial reporting for the whole company." },
+            { title: "Financial Analyst", text: "Build detailed financial models, revenue forecasts, and investment appraisals to guide pricing and strategic growth." },
+            { title: "Corporate Accountant", text: "Maintain accurate general ledgers, oversee period-end closing, and ensure strict compliance with GAAP/IFRS standards." },
+            { title: "FP&A Manager", text: "Lead corporate budgeting, variance analysis, and management reporting for executive decision-makers." },
+            { title: "Financial Controller", text: "Direct overall accounting operations, internal controls, tax compliance, and financial reporting across the enterprise." },
+        ],
+        faqs: [
+            {
+                q: "What certifications boost a finance career in India & globally?",
+                a: "CA (Chartered Accountant) in India, CPA (Certified Public Accountant), CFA (Chartered Financial Analyst), and CMA (Certified Management Accountant) are top professional designations."
+            }
         ],
     },
     {
@@ -139,12 +273,26 @@ export const JOB_CATEGORIES: JobCategory[] = [
         emoji: "🎧",
         keywords: ["support", "customer service", "helpdesk", "help desk", "technical support", "success", "operations", "agent", "analyst support"],
         intro:
-            "Customer support is the frontline of every business. As products become more complex, companies invest in knowledgeable support and success teams that resolve issues and build loyalty.",
+            "Customer Support and Success teams serve as the direct link between users and software products. High-performing support teams resolve complex issues, advocate for user needs, and drive customer retention.",
+        salaryRange: {
+            junior: "₹3.0L - ₹5.5L / $40,000",
+            mid: "₹6.5L - ₹14L / $75,000",
+            senior: "₹15L - ₹30L+ / $115,000+",
+        },
+        topSkills: ["Technical Troubleshooting & APIs", "Zendesk / Freshdesk / Salesforce Service", "Product Knowledge & Documentation", "SLA & Ticket Resolution Management", "Empathy & Written Communication", "Customer Churn Reduction"],
+        marketOutlook:
+            "As AI handles basic tier-1 queries, Tier-2 and Technical Support Engineers who can inspect browser logs, query database records, and guide users through complex workflows are increasingly crucial for tech companies.",
         careers: [
-            { title: "Customer Support Agent", text: "Resolve customer questions via chat, email, and phone with speed and empathy." },
-            { title: "Technical Support Engineer", text: "Troubleshoot product issues and work with engineering to fix root causes." },
-            { title: "Support Team Lead", text: "Manage a team of agents, set SLAs, and drive continuous quality improvement." },
-            { title: "Customer Success Manager", text: "Proactively help customers get value from the product to reduce churn and drive expansion." },
+            { title: "Customer Support Specialist", text: "Assist customers via live chat, ticket queues, and email with clear, helpful, and empathetic guidance." },
+            { title: "Technical Support Engineer", text: "Investigate software bugs, verify API responses, and partner with engineering teams to resolve technical product escalations." },
+            { title: "Support Operations Lead", text: "Manage support queues, monitor customer satisfaction (CSAT) scores, and optimize support team workflows." },
+            { title: "Customer Success Specialist", text: "Guide client onboarding, drive feature adoption, and conduct regular account health checks to prevent customer churn." },
+        ],
+        faqs: [
+            {
+                q: "What skills are needed for Technical Support vs Standard Support?",
+                a: "Technical Support requires basic coding knowledge (HTML, CSS, JSON, SQL), API troubleshooting (Postman), log analysis, and deep product architecture understanding."
+            }
         ],
     },
 ];
@@ -160,6 +308,11 @@ export interface CityInfo {
     name: string;
     aliases: string[];
     blurb: string;
+    techParks: string[];
+    salaryInsight: string;
+    topIndustries: string[];
+    costOfLiving: string;
+    faqs: { q: string; a: string }[];
 }
 
 export const CITIES: CityInfo[] = [
@@ -168,44 +321,112 @@ export const CITIES: CityInfo[] = [
         name: "Bangalore",
         aliases: ["bangalore", "bengaluru", "blr"],
         blurb:
-            "Bangalore (Bengaluru) is India's Silicon Valley — home to thousands of tech companies, startups, and global capability centers. From product engineering to data science, the city offers some of the highest-paying tech roles in the country.",
+            "Bangalore (Bengaluru) is India's Silicon Valley — home to thousands of tech startups, Fortune 500 Global Capability Centers (GCCs), and unicorn product companies. From full-stack engineering to AI research, the city offers India's highest tech salary benchmarks.",
+        techParks: ["Manyata Tech Park (Thanisandra)", "Electronic City Phase 1 & 2", "ITPL (International Tech Park, Whitefield)", "Bagmane Tech Park (CV Raman Nagar)", "Embassy TechVillage (Outer Ring Road)"],
+        salaryInsight: "Software Engineers in Bangalore earn an average of ₹8L to ₹28L+ per annum depending on experience, with senior product talent commanding ₹45L+.",
+        topIndustries: ["SaaS & Enterprise Software", "Fintech & Digital Payments", "E-commerce & Logistics", "AI & Deep Tech Startups", "Global Capability Centers (GCCs)"],
+        costOfLiving: "Moderate-High. Rent in tech corridors (Indiranagar, HSR Layout, Bellandur) ranges from ₹20,000 to ₹45,000/month for 1BHK/2BHK apartments.",
+        faqs: [
+            {
+                q: "Why is Bangalore called the Silicon Valley of India?",
+                a: "Bangalore hosts over 40% of India's IT export services, hundreds of R&D innovation centers, major tech giants (Google, Microsoft, Amazon, Infosys), and the highest concentration of venture-backed startups."
+            },
+            {
+                q: "What are the best areas to live in Bangalore for tech professionals?",
+                a: "HSR Layout, Koramangala, Indiranagar, Bellandur, Whitefield, and Sarjapur Road offer close proximity to major tech parks and vibrant developer communities."
+            }
+        ],
     },
     {
         slug: "mumbai",
         name: "Mumbai",
         aliases: ["mumbai", "bombay"],
         blurb:
-            "Mumbai is India's financial capital and media hub. Banking, fintech, entertainment, and consulting companies cluster here, creating a rich mix of finance, technology, and business roles.",
+            "Mumbai is India's financial capital and media powerhouse. Leading banks, fintech unicorns, management consultancies, and digital agencies cluster here, offering high-impact roles in finance, technology, marketing, and corporate strategy.",
+        techParks: ["Mindspace IT Park (Malad & Airoli)", "Bandram Kurla Complex (BKC)", "Hiranandani Business Park (Powai)", "Infinity IT Park (Dindoshi)"],
+        salaryInsight: "Finance and Tech professionals in Mumbai earn competitive packages ranging from ₹7L to ₹25L per annum, with investment banking and senior leadership roles exceeding ₹50L.",
+        topIndustries: ["Banking & Financial Services (BFSI)", "Fintech & Payments", "Media & Entertainment", "Management Consulting", "Healthcare & Pharma"],
+        costOfLiving: "High. Residential rent in Powai, Bandra, or Malad ranges from ₹30,000 to ₹65,000/month.",
+        faqs: [
+            {
+                q: "What kinds of tech jobs are most common in Mumbai?",
+                a: "Fintech engineering, quantitative finance analysis, core banking technology, media-tech product design, and digital performance marketing."
+            }
+        ],
     },
     {
         slug: "delhi",
         name: "Delhi NCR",
         aliases: ["delhi", "ncr", "gurgaon", "gurugram", "noida", "new delhi"],
         blurb:
-            "Delhi NCR — including Gurugram and Noida — is a massive employment hub spanning tech, e-commerce, startups, and government-adjacent industries. It offers some of the highest volumes of job openings in India.",
+            "Delhi NCR — encompassing Gurugram, Noida, and New Delhi — is a massive commercial and technology hub. It hosts corporate headquarters, e-commerce giants, consultancies, and rapidly expanding tech corridors.",
+        techParks: ["Cyber City & Cyber Hub (Gurugram)", "Golf Course Extension Road (Gurugram)", "Noida Sector 62 & 125 Tech Hubs", "Udyog Vihar (Gurugram)"],
+        salaryInsight: "Average software and marketing packages range from ₹6.5L to ₹24L, with senior product managers and tech leads earning ₹35L - ₹50L+.",
+        topIndustries: ["E-Commerce & Quick Commerce", "B2B SaaS & Enterprise Tech", "Consumer Internet Startups", "Management Consulting & Analytics", "Telecom & Infrastructure"],
+        costOfLiving: "Moderate-High. Rent in Gurgaon/Noida sectors ranges from ₹18,000 to ₹40,000/month.",
+        faqs: [
+            {
+                q: "What is the difference between job opportunities in Gurgaon vs Noida?",
+                a: "Gurgaon is heavily focused on corporate headquarters, B2B SaaS, management consulting, and fintech startups. Noida has a strong concentration of IT services, electronic manufacturing, media tech, and software development centers."
+            }
+        ],
     },
     {
         slug: "hyderabad",
         name: "Hyderabad",
         aliases: ["hyderabad", "hitech", "gachibowli"],
         blurb:
-            "Hyderabad has emerged as a global tech and pharma hub. With major tech parks in HITEC City and Gachibowli, the city offers strong opportunities in IT services, product companies, and life sciences.",
+            "Hyderabad is a premier global technology and life sciences destination. Featuring world-class infrastructure in HITEC City and Gachibowli, the city hosts major campuses for Microsoft, Google, Amazon, Meta, and leading IT services firms.",
+        techParks: ["HITEC City (Cyberabad)", "Gachibowli Financial District", "Mindspace Cyberabad", "Raheja Mindspace IT Park", "Nanakramguda IT Zone"],
+        salaryInsight: "Tech salaries in Hyderabad closely mirror Bangalore, ranging from ₹7L to ₹26L annually for mid-level software engineers.",
+        topIndustries: ["Cloud & Platform Infrastructure", "Enterprise IT Services", "Pharmaceuticals & Biotechnology", "Global Capability Centers (GCCs)", "Gaming & Animation"],
+        costOfLiving: "Moderate. Rent in Gachibowli, Madhapur, and Kondapur ranges from ₹16,000 to ₹32,000/month, offering excellent quality of life.",
+        faqs: [
+            {
+                q: "Why is Hyderabad popular among IT professionals?",
+                a: "Hyderabad offers modern infrastructure, lower cost of living compared to Bangalore and Mumbai, excellent connectivity, and massive technology campuses for top Fortune 500 firms."
+            }
+        ],
     },
     {
         slug: "chennai",
         name: "Chennai",
         aliases: ["chennai", "madras"],
         blurb:
-            "Chennai is a manufacturing, automotive, and IT powerhouse. Its thriving engineering, healthcare, and BFSI sectors make it a stable market for both freshers and experienced professionals.",
+            "Chennai is a major software engineering, SaaS, automotive, and financial services hub. Dubbed the 'SaaS Capital of India' due to pioneers like Zoho and Freshworks, Chennai offers stable, long-term tech career paths.",
+        techParks: ["OMR (Old Mahabalipuram Road Tech Corridor)", "DLF IT Park (Porur)", "Ramanujan IT City (Taramani)", "TIDEL Park (Taramani)"],
+        salaryInsight: "Software and SaaS professionals earn average packages from ₹5.5L to ₹20L per annum, with low employee turnover and high job security.",
+        topIndustries: ["B2B SaaS & Product Software", "IT & Telecom Services", "Automotive & Industrial Tech", "BFSI Operations", "Healthcare IT"],
+        costOfLiving: "Moderate. Rent along OMR and Velachery ranges from ₹14,000 to ₹28,000/month.",
+        faqs: [
+            {
+                q: "Why is Chennai known as the SaaS hub of India?",
+                a: "Chennai birthed global SaaS leaders like Zoho and Freshworks, creating a deep ecosystem of SaaS product managers, software engineers, and global customer success talent."
+            }
+        ],
     },
     {
         slug: "pune",
         name: "Pune",
         aliases: ["pune", "puna"],
         blurb:
-            "Pune is a fast-growing IT and manufacturing hub known for its automotive clusters, engineering colleges, and a rapidly expanding startup ecosystem — a great market for engineers and analysts.",
+            "Pune is a thriving technology, automotive, and education city. Known for its pleasant climate, engineering institutions, and massive IT parks in Hinjewadi and Kharadi, Pune is a top choice for developers and analysts.",
+        techParks: ["Rajiv Gandhi Infotech Park (Hinjewadi Phase 1, 2, 3)", "EON Free Zone (Kharadi)", "Cybercity Magarpatta", "Commerzone (Yerwada)"],
+        salaryInsight: "Software engineers and DevOps specialists earn average salaries ranging from ₹6L to ₹22L per annum.",
+        topIndustries: ["Automotive & Mobility Tech", "Enterprise IT Services", "Product Engineering", "Fintech & Insurance Tech", "Embedded Systems & IoT"],
+        costOfLiving: "Moderate. Rent in Wakad, Hinjewadi, Kharadi, and Baner ranges from ₹15,000 to ₹30,000/month.",
+        faqs: [
+            {
+                q: "What makes Pune attractive for software professionals?",
+                a: "Proximity to Mumbai, top engineering colleges, major IT parks in Hinjewadi and Kharadi, and a vibrant work-life balance."
+            }
+        ],
     },
 ];
+
+export function getCityBySlug(slug: string): CityInfo | undefined {
+    return CITIES.find((c) => c.slug === slug);
+}
 
 export function getCityBySlug(slug: string): CityInfo | undefined {
     return CITIES.find((c) => c.slug === slug);

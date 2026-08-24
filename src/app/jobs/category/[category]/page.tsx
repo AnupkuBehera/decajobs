@@ -47,6 +47,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const jobs = await getPublicJobsFiltered({ category: cat });
     const displayJobs = jobs.slice(0, 24);
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: cat.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a,
+            },
+        })),
+    };
+
     return (
         <div className="py-10 sm:py-16">
             <div className="mx-auto max-w-6xl">
@@ -60,55 +73,120 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 <div className="text-center mb-12">
                     <span className="text-5xl">{cat.emoji}</span>
                     <h1 className="mt-4 text-3xl font-bold text-neutral-900 sm:text-4xl lg:text-5xl">
-                        {cat.name} Jobs
+                        {cat.name} Jobs 2026
                     </h1>
-                    <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">{cat.intro}</p>
+                    <p className="mx-auto mt-4 max-w-3xl text-lg text-neutral-600 leading-relaxed">{cat.intro}</p>
+                </div>
+
+                {/* Salary & Skills Quick Snapshot */}
+                <div className="grid gap-6 sm:grid-cols-2 mb-12">
+                    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+                        <h2 className="text-lg font-bold text-neutral-900 flex items-center gap-2">
+                            <span>💰</span> {cat.name} Salary Benchmarks 2026
+                        </h2>
+                        <div className="mt-4 space-y-3">
+                            <div className="flex justify-between items-center pb-2 border-b border-neutral-100 text-sm">
+                                <span className="text-neutral-500 font-medium">Junior (0-2 Yrs)</span>
+                                <span className="font-semibold text-neutral-900">{cat.salaryRange.junior}</span>
+                            </div>
+                            <div className="flex justify-between items-center pb-2 border-b border-neutral-100 text-sm">
+                                <span className="text-neutral-500 font-medium">Mid-Level (3-6 Yrs)</span>
+                                <span className="font-semibold text-neutral-900">{cat.salaryRange.mid}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-neutral-500 font-medium">Senior Lead (7+ Yrs)</span>
+                                <span className="font-semibold font-bold text-primary-700">{cat.salaryRange.senior}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+                        <h2 className="text-lg font-bold text-neutral-900 flex items-center gap-2">
+                            <span>⚡</span> Top In-Demand Skills for {cat.name}
+                        </h2>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {cat.topSkills.map((skill) => (
+                                <span
+                                    key={skill}
+                                    className="rounded-lg bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700"
+                                >
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Live jobs */}
                 <section className="mb-12">
                     <h2 className="text-xl font-bold text-neutral-900 mb-4">
-                        Live {cat.name} Openings
+                        Live {cat.name} Openings ({jobs.length} Found)
                     </h2>
                     <JobCardGrid jobs={displayJobs} />
                 </section>
 
-                {/* Career paths editorial */}
+                {/* Industry Outlook & Career Paths */}
                 <article className="rounded-2xl border border-neutral-200 bg-neutral-50 p-8 sm:p-10 mb-12">
                     <h2 className="text-2xl font-bold text-neutral-900">
-                        Careers in {cat.name}
+                        2026 Industry Outlook & Career Paths in {cat.name}
                     </h2>
-                    <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    <p className="mt-3 text-neutral-600 leading-relaxed text-base">
+                        {cat.marketOutlook}
+                    </p>
+
+                    <h3 className="mt-8 text-xl font-bold text-neutral-900">
+                        Core Roles & Specializations
+                    </h3>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
                         {cat.careers.map((career) => (
-                            <div key={career.title} className="rounded-xl border border-neutral-200 bg-white p-5">
-                                <h3 className="font-semibold text-neutral-900">{career.title}</h3>
+                            <div key={career.title} className="rounded-xl border border-neutral-200 bg-white p-5 shadow-xs">
+                                <h4 className="font-semibold text-neutral-900">{career.title}</h4>
                                 <p className="mt-2 text-sm text-neutral-600 leading-relaxed">{career.text}</p>
                             </div>
                         ))}
                     </div>
+
                     <div className="mt-8 space-y-4 text-neutral-600 leading-relaxed prose prose-neutral max-w-none">
+                        <h3 className="text-xl font-bold text-neutral-900">
+                            How to Land a {cat.name} Role with DecaJobs
+                        </h3>
                         <p>
-                            Whether you&apos;re just starting out or looking to take the next step,
-                            a career in {cat.name.toLowerCase()} offers strong growth potential in
-                            2026. The key to standing out is a combination of in-demand skills,
-                            a well-optimized resume, and a targeted job search strategy.
+                            Standing out in {cat.name.toLowerCase()} requires pairing high-demand technical skills with a targeted job application strategy. Rather than applying to hundreds of generic job posts, successful candidates focus on tailored applications with ATS-friendly resumes.
                         </p>
                         <p>
-                            DecaJobs helps you find the right {cat.name.toLowerCase()} roles without
-                            the noise. Create a free profile with your target titles and skills, and
-                            our AI engine will deliver 10 highly relevant matches to your inbox every
-                            morning. You can also use our free{" "}
-                            <Link href="/tools/resume-checker" className="text-primary-600 hover:underline">
+                            DecaJobs simplifies your search. Create a free profile with your target titles, skills, and preferred compensation. Our AI engine delivers 10 perfectly matched {cat.name.toLowerCase()} openings directly to your inbox every morning at 7 AM. Boost your odds using our free{" "}
+                            <Link href="/tools/resume-checker" className="text-primary-600 font-medium hover:underline">
                                 AI Resume Checker
                             </Link>{" "}
                             and{" "}
-                            <Link href="/tools/interview-questions" className="text-primary-600 hover:underline">
+                            <Link href="/tools/interview-questions" className="text-primary-600 font-medium hover:underline">
                                 AI Interview Prep
                             </Link>{" "}
-                            tools to get interview-ready.
+                            tools.
                         </p>
                     </div>
                 </article>
+
+                {/* Frequently Asked Questions */}
+                {cat.faqs && cat.faqs.length > 0 && (
+                    <section className="mb-12 rounded-2xl border border-neutral-200 bg-white p-8">
+                        <h2 className="text-2xl font-bold text-neutral-900 mb-6">
+                            Frequently Asked Questions — {cat.name} Careers
+                        </h2>
+                        <div className="space-y-6">
+                            {cat.faqs.map((faq) => (
+                                <div key={faq.q} className="border-b border-neutral-100 pb-5 last:border-b-0 last:pb-0">
+                                    <h3 className="text-base font-semibold text-neutral-900">
+                                        {faq.q}
+                                    </h3>
+                                    <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+                                        {faq.a}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* Other categories */}
                 <section className="mb-12">
@@ -132,8 +210,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         Get {cat.name} Jobs Delivered Every Morning
                     </h2>
                     <p className="mt-2 text-sm text-neutral-600 max-w-xl mx-auto">
-                        Stop scrolling. Get 10 AI-matched {cat.name.toLowerCase()} roles in your
-                        inbox at 7 AM — free to start.
+                        Stop scrolling through thousands of posts. Get 10 AI-matched {cat.name.toLowerCase()} roles delivered to your inbox at 7 AM — free to start.
                     </p>
                     <Link
                         href="/login"
@@ -143,6 +220,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     </Link>
                 </div>
             </div>
+
+            {/* FAQPage JSON-LD Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
         </div>
     );
 }
