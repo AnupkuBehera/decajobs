@@ -428,10 +428,6 @@ export function getCityBySlug(slug: string): CityInfo | undefined {
     return CITIES.find((c) => c.slug === slug);
 }
 
-export function getCityBySlug(slug: string): CityInfo | undefined {
-    return CITIES.find((c) => c.slug === slug);
-}
-
 /* ─────────────────────────── Slug generation ───────────────────────────── */
 
 /** Create a stable, URL-safe slug from a job title + company. */
