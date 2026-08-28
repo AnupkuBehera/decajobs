@@ -530,6 +530,154 @@ export function isRemoteJob(job: ExternalJob): boolean {
     return normalizeLocation(job.location).includes("remote");
 }
 
+/* ──────────────────────── Anti-Scam & Quality Filter ───────────────────── */
+
+const SCAM_PATTERNS = [
+    /\bt\.me\/[a-z0-9_]+/i,
+    /\bwa\.me\/[0-9]+/i,
+    /\bchat\.whatsapp\.com/i,
+    /contact (me |us )?(on |via )?(telegram|whatsapp)/i,
+    /send (cv|resume) to whatsapp/i,
+    /registration fee/i,
+    /security deposit/i,
+    /pay (a |an )?(initial |small |refundable )?fee/i,
+    /investment required/i,
+    /processing fee/i,
+    /no interview direct joining/i,
+    /earn \$\d{4,}\+? (per|a) day/i,
+    /earn ₹\d{5,}\+? (per|a) day/i,
+    /data entry operator (home based|offline)/i,
+    /form filling (work|job)/i,
+    /captcha typing/i,
+];
+
+/**
+ * Validates if a job is genuine and free from common scam patterns.
+ */
+export function isGenuineJob(job: Partial<ExternalJob>): boolean {
+    if (!job.title || job.title.trim().length < 3) return false;
+    if (!job.company || job.company.trim().length < 2) return false;
+    if (!job.description || job.description.trim().length < 40) return false;
+
+    // Check application link
+    if (!job.applicationLink || !/^https?:\/\//i.test(job.applicationLink.trim())) {
+        return false;
+    }
+
+    const textToScan = `${job.title} ${job.company} ${job.description}`.toLowerCase();
+
+    for (const pattern of SCAM_PATTERNS) {
+        if (pattern.test(textToScan)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Check if a job is fresh (posted within maxDays, default 30 days).
+ */
+export function isJobFresh(job: Pick<ExternalJob, "postedAt">, maxDays = 30): boolean {
+    const days = daysSincePosted(job.postedAt);
+    if (days === null) return true; // If no date, treat as fresh if recent
+    return days <= maxDays;
+}
+
+/* ────────────────────────── Skills Extraction ─────────────────────────── */
+
+const COMMON_SKILLS = [
+    "TypeScript", "JavaScript", "Python", "React", "Next.js", "Node.js", "Go", "Golang",
+    "Rust", "Java", "C++", "C#", ".NET", "PHP", "Ruby", "Rails", "Swift", "Kotlin",
+    "SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "GraphQL", "REST API",
+    "AWS", "GCP", "Azure", "Docker", "Kubernetes", "CI/CD", "Terraform", "Linux",
+    "Figma", "UI/UX", "Tailwind CSS", "HTML5", "CSS3", "Git", "GitHub",
+    "Machine Learning", "AI", "LLM", "Prompt Engineering", "PyTorch", "TensorFlow",
+    "Power BI", "Tableau", "Pandas", "Scikit-Learn", "ETL", "Data Warehousing",
+    "Agile", "Scrum", "Product Management", "Jira", "SEO", "Growth Marketing"
+];
+
+/**
+ * Extract matched skills from a job title and description.
+ */
+export function extractSkillsFromJob(text: string, limit = 6): string[] {
+    const lower = text.toLowerCase();
+    const matched: string[] = [];
+
+    for (const skill of COMMON_SKILLS) {
+        const skillLower = skill.toLowerCase();
+        // Regex word boundary matching
+        const escaped = skillLower.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i");
+        if (regex.test(lower)) {
+            matched.push(skill);
+            if (matched.length >= limit) break;
+        }
+    }
+
+    return matched;
+}
+
+/* ─────────────────────── Curated Top 10 Job Engine ─────────────────────── */
+
+/**
+ * Ranks and extracts the Top 10 Curated, verified, genuine, and fresh jobs.
+ */
+export function getCuratedTop10Jobs(jobs: ExternalJob[]): ExternalJob[] {
+    // Filter to genuine & fresh jobs (< 21 days old)
+    const valid = jobs.filter((j) => isGenuineJob(j) && isJobFresh(j, 21));
+
+    // Calculate quality score for ranking
+    const scored = valid.map((job) => {
+        let score = 50;
+        const days = daysSincePosted(job.postedAt) ?? 10;
+        
+        // Recency bonus: max 30 pts for 0 days, decay down
+        score += Math.max(0, 30 - days * 2);
+
+        // Content depth bonus
+        if (job.description.length > 300) score += 10;
+        if (job.description.length > 800) score += 10;
+
+        // Skills clarity bonus
+        const skills = extractSkillsFromJob(`${job.title} ${job.description}`);
+        score += Math.min(skills.length * 2, 10);
+
+        // Remote bonus
+        if (isRemoteJob(job)) score += 5;
+
+        return { job, score };
+    });
+
+    // Sort by highest score first
+    scored.sort((a, b) => b.score - a.score);
+
+    // Ensure diversity across roles in top 10
+    const top10: ExternalJob[] = [];
+    const seenTitles = new Set<string>();
+
+    for (const { job } of scored) {
+        const simplifiedTitle = normalizeTitle(job.title).slice(0, 15);
+        if (!seenTitles.has(simplifiedTitle)) {
+            seenTitles.add(simplifiedTitle);
+            top10.push(job);
+        }
+        if (top10.length === 10) break;
+    }
+
+    // If fewer than 10 unique, fill with remaining scored
+    if (top10.length < 10) {
+        for (const { job } of scored) {
+            if (!top10.some((t) => t.id === job.id)) {
+                top10.push(job);
+            }
+            if (top10.length === 10) break;
+        }
+    }
+
+    return top10.slice(0, 10);
+}
+
 /* ─────────────────────────────── Data fetch ────────────────────────────── */
 
 const SEED_QUERIES = ["developer", "designer", "product manager", "data analyst", "marketing"];
@@ -560,10 +708,13 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
 
         const all = [...remotiveA, ...remotiveB, ...remoteok, ...arbeitnowA, ...arbeitnowB];
 
-        // Deduplicate by normalized title + company.
+        // Deduplicate by normalized title + company & filter genuine / non-expired jobs.
         const seen = new Set<string>();
         const unique: ExternalJob[] = [];
         for (const job of all) {
+            if (!isGenuineJob(job) || !isJobFresh(job, 30)) {
+                continue;
+            }
             const key = `${normalizeTitle(job.title)}|${job.company.toLowerCase().trim()}`;
             if (!seen.has(key)) {
                 seen.add(key);
@@ -598,6 +749,7 @@ export async function fetchPublicJobsFiltered(opts?: {
 }): Promise<ExternalJob[]> {
     const all = await fetchPublicJobs();
     return all.filter((job) => {
+        if (!isJobFresh(job, 30)) return false;
         if (opts?.remoteOnly && !isRemoteJob(job)) return false;
         if (opts?.category && !jobMatchesCategory(job, opts.category)) return false;
         if (opts?.city && !jobMatchesCity(job, opts.city)) return false;

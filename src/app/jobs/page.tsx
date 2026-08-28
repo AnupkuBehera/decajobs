@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { JobCardGrid } from "@/components/jobs/JobCard";
+import { JobSearchFilter } from "@/components/jobs/JobSearchFilter";
 import {
     getPublicJobs,
+    getCuratedTop10Jobs,
     JOB_CATEGORIES,
     CITIES,
     formatPostedDate,
-    daysSincePosted,
 } from "@/lib/public-jobs";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: "Latest Jobs 2026 - Search Jobs by Category & Location | DecaJobs",
+    title: "Latest Verified Jobs 2026 - Top 10 Curated Daily & Search | DecaJobs",
     description:
-        "Browse the latest job openings across software engineering, data analytics, design, marketing, DevOps, and more. Search remote jobs and jobs in Bangalore, Mumbai, Delhi, Hyderabad, Chennai & Pune. Updated daily.",
+        "Search genuine, non-expired job openings across software engineering, data analytics, design, marketing, DevOps, and more. Top 10 curated jobs daily, remote and India tech hubs. Updated daily.",
     alternates: {
         canonical: "/jobs",
     },
     openGraph: {
-        title: "Latest Jobs 2026 | DecaJobs Job Board",
+        title: "Latest Verified Jobs 2026 | DecaJobs Curated Job Board",
         description:
-            "Browse fresh job openings across tech, data, design, marketing, and more. New listings added daily.",
+            "Browse genuine, verified job openings across tech, data, design, marketing, and more. 10 fresh matches curated daily.",
         url: "https://decajob.com/jobs",
         type: "website",
     },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default async function JobsPage() {
     const jobs = await getPublicJobs();
-    const newest = jobs.slice(0, 18);
+    const curatedTop10 = getCuratedTop10Jobs(jobs);
     const firstJob = jobs[0];
     const newestDate = firstJob ? formatPostedDate(firstJob.postedAt) : "today";
 
@@ -42,21 +42,30 @@ export default async function JobsPage() {
                 {/* Header */}
                 <div className="text-center mb-12">
                     <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl lg:text-5xl">
-                        Latest Job Openings
+                        Genuine & Curated Job Openings
                     </h1>
                     <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-                        Fresh job listings from around the world, updated daily. Browse by
-                        category, explore remote roles, or find jobs in India&apos;s top
-                        tech cities — then sign up free to get 10 AI-matched jobs in your
-                        inbox every morning.
+                        Zero spam, zero expired links. Verified opportunities from top tech companies
+                        around the world — updated daily with our algorithmic Top 10 curated matches.
                     </p>
                     <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                            {jobs.length} active listings · updated {newestDate}
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3.5 py-1.5 text-xs font-semibold text-green-800 shadow-sm">
+                            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                            {jobs.length} genuine active listings · Verified {newestDate}
                         </span>
+                        <Link
+                            href="/resume-tools"
+                            className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3.5 py-1.5 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors"
+                        >
+                            <span>✨</span> Build ATS Resume For Free
+                        </Link>
                     </div>
                 </div>
+
+                {/* Search & Filter Component */}
+                <section className="mb-12">
+                    <JobSearchFilter allJobs={jobs} curatedTop10={curatedTop10} />
+                </section>
 
                 {/* Category quick links */}
                 <section className="mb-12">
@@ -104,24 +113,6 @@ export default async function JobsPage() {
                             </Link>
                         ))}
                     </div>
-                </section>
-
-                {/* Latest jobs */}
-                <section className="mb-12">
-                    <div className="flex items-end justify-between mb-4">
-                        <div>
-                            <h2 className="text-xl font-bold text-neutral-900">Latest Jobs</h2>
-                            <p className="text-sm text-neutral-500 mt-1">
-                                The most recently posted opportunities from our job sources.
-                            </p>
-                        </div>
-                    </div>
-                    <JobCardGrid jobs={newest} />
-                    {jobs.length > 18 && (
-                        <p className="mt-4 text-center text-sm text-neutral-500">
-                            Showing the {newest.length} most recent listings. New jobs are added continuously.
-                        </p>
-                    )}
                 </section>
 
                 {/* Editorial section */}

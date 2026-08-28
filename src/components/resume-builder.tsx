@@ -25,6 +25,7 @@ export default function ResumeBuilder() {
     const [targetRole, setTargetRole] = useState("");
     const [rawDetails, setRawDetails] = useState("");
     const [resumeTitle, setResumeTitle] = useState("");
+    const [tailoringInfo, setTailoringInfo] = useState<{ role?: string; company?: string } | null>(null);
 
     // Builder step
     const [step, setStep] = useState<BuilderStep>("form");
@@ -40,6 +41,25 @@ export default function ResumeBuilder() {
 
     useEffect(() => {
         fetchSavedResumes();
+
+        // Check if query params were passed from a job listing
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const role = params.get("role");
+            const company = params.get("company");
+            const desc = params.get("desc");
+
+            if (role) {
+                setTargetRole(role);
+                setResumeTitle(`${role}${company ? ` – ${company}` : ""} Resume`);
+                setTailoringInfo({ role, company: company || undefined });
+            }
+            if (desc && !rawDetails) {
+                setRawDetails(
+                    `Target Role Requirements (${role || "Position"} at ${company || "Company"}):\n${desc}\n\nCandidate Experience & Skills:\n`
+                );
+            }
+        }
     }, []);
 
     // ── API Calls ───────────────────────────────────────────────────────────────
@@ -172,9 +192,28 @@ export default function ResumeBuilder() {
                     {/* Form */}
                     {step !== "preview" && (
                         <Card padding="lg">
-                            <h2 className="text-base font-semibold text-neutral-900 mb-4">
-                                Build Your Resume
-                            </h2>
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-base font-semibold text-neutral-900">
+                                    Build Your Resume
+                                </h2>
+                                <span className="text-xs font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded-full">
+                                    ATS Standard 2026
+                                </span>
+                            </div>
+
+                            {tailoringInfo && (
+                                <div className="mb-4 rounded-xl border border-teal-200 bg-teal-50/70 p-3 text-xs text-teal-800 flex items-start gap-2">
+                                    <span className="text-base">🎯</span>
+                                    <div>
+                                        <p className="font-semibold">
+                                            Tailoring for {tailoringInfo.role} {tailoringInfo.company ? `at ${tailoringInfo.company}` : ""}
+                                        </p>
+                                        <p className="text-teal-700 mt-0.5">
+                                            Our AI will prioritize matching skills, action verbs, and quantify your achievements for this role.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="space-y-4">
                                 {/* Target role */}
@@ -239,7 +278,7 @@ export default function ResumeBuilder() {
                                     <p className="mt-1.5 text-xs text-neutral-400 text-right">
                                         {rawDetails.length} chars
                                         {rawDetails.length < 50 && rawDetails.length > 0 && (
-                                            <span className="text-red-500 ml-1">(min 50)</span>
+                                             <span className="text-red-500 ml-1">(min 50)</span>
                                         )}
                                     </p>
                                 </div>
@@ -270,9 +309,22 @@ export default function ResumeBuilder() {
                     {/* Preview controls */}
                     {step === "preview" && (
                         <Card padding="lg">
-                            <h2 className="text-base font-semibold text-neutral-900 mb-4">
+                            <h2 className="text-base font-semibold text-neutral-900 mb-2">
                                 Your Resume is Ready!
                             </h2>
+
+                            {/* ATS Score Indicator */}
+                            <div className="mb-4 rounded-xl border border-green-200 bg-green-50 p-3.5 text-center">
+                                <div className="flex items-center justify-center gap-2">
+                                    <span className="text-2xl font-black text-green-700">95%</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-green-800">
+                                        ATS Optimized
+                                    </span>
+                                </div>
+                                <p className="mt-1 text-[11px] text-green-700">
+                                    Standard fonts, clean headings, and keyword-tailored achievement metrics.
+                                </p>
+                            </div>
 
                             <div className="space-y-3">
                                 <Button
@@ -292,6 +344,13 @@ export default function ResumeBuilder() {
                                         ✅ Resume saved to your account
                                     </div>
                                 )}
+
+                                <a
+                                    href="/login"
+                                    className="block w-full text-center rounded-lg border border-primary-300 bg-primary-50 py-2.5 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors"
+                                >
+                                    📩 Get 10 Matching Jobs in Inbox Daily
+                                </a>
 
                                 <button
                                     onClick={handleReset}

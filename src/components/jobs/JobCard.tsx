@@ -4,6 +4,7 @@ import {
     formatPostedDate,
     daysSincePosted,
     truncate,
+    extractSkillsFromJob,
     type ExternalJob,
 } from "@/lib/public-jobs";
 
@@ -15,45 +16,72 @@ interface JobCardProps {
 export function JobCard({ job }: JobCardProps) {
     const days = daysSincePosted(job.postedAt);
     const isRemote = job.location.toLowerCase().includes("remote");
+    const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 3);
 
     return (
-        <Link
-            href={`/jobs/${jobSlug(job)}`}
-            className="group block h-full rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-200"
-        >
-            <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                    <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
-                        {job.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-neutral-500">{job.company}</p>
+        <div className="group flex flex-col justify-between h-full rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-300">
+            <div>
+                <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                        <Link href={`/jobs/${jobSlug(job)}`}>
+                            <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                {job.title}
+                            </h3>
+                        </Link>
+                        <div className="mt-1 flex items-center gap-1.5 text-sm text-neutral-500">
+                            <span className="font-medium text-neutral-700">{job.company}</span>
+                            <span className="inline-flex items-center text-[11px] text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded font-medium" title="Verified Non-Scam Posting">
+                                ✓ Verified
+                            </span>
+                        </div>
+                    </div>
+                    {isRemote && (
+                        <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
+                            Remote
+                        </span>
+                    )}
                 </div>
-                {isRemote && (
-                    <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
-                        Remote
-                    </span>
+
+                <p className="mt-3 text-sm text-neutral-600 line-clamp-3">
+                    {truncate(job.description, 150)}
+                </p>
+
+                {skills.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                        {skills.map((skill) => (
+                            <span
+                                key={skill}
+                                className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-600"
+                            >
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
                 )}
             </div>
 
-            <p className="mt-3 text-sm text-neutral-600 line-clamp-3">
-                {truncate(job.description, 160)}
-            </p>
-
-            <div className="mt-4 flex items-center justify-between text-xs text-neutral-400 border-t border-neutral-100 pt-3">
-                <span className="inline-flex items-center gap-1">
+            <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-400">
+                <span className="inline-flex items-center gap-1 truncate max-w-[130px]">
                     <span aria-hidden="true">📍</span>
                     {job.location}
                 </span>
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                     {days !== null && days <= 7 && (
                         <span className="rounded-full bg-primary-50 px-2 py-0.5 text-[11px] font-medium text-primary-700">
                             New
                         </span>
                     )}
                     <time>{formatPostedDate(job.postedAt)}</time>
-                </span>
+                    <Link
+                        href={`/resume-tools?tab=builder&role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}`}
+                        className="rounded border border-primary-200 bg-primary-50/70 px-2 py-0.5 text-[11px] font-medium text-primary-700 hover:bg-primary-100 transition-colors"
+                        title="Generate ATS resume tailored to this role"
+                    >
+                        Tailor Resume ✨
+                    </Link>
+                </div>
             </div>
-        </Link>
+        </div>
     );
 }
 
@@ -77,4 +105,5 @@ export function JobCardGrid({ jobs }: { jobs: ExternalJob[] }) {
         </div>
     );
 }
+
 

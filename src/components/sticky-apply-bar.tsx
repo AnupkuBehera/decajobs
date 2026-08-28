@@ -9,6 +9,7 @@ interface StickyApplyBarProps {
   company: string;
   applicationLink: string;
   slug: string;
+  jobDescription?: string;
 }
 
 export function StickyApplyBar({
@@ -16,6 +17,7 @@ export function StickyApplyBar({
   company,
   applicationLink,
   slug,
+  jobDescription,
 }: StickyApplyBarProps) {
   const [copied, setCopied] = useState(false);
 
@@ -56,6 +58,10 @@ export function StickyApplyBar({
     }
   };
 
+  const resumeUrl = `/resume-tools?tab=builder&role=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(company)}${
+    jobDescription ? `&desc=${encodeURIComponent(jobDescription.slice(0, 1000))}` : ""
+  }`;
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white/95 p-3 sm:p-4 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-white/85">
       <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-2 sm:px-4">
@@ -64,7 +70,7 @@ export function StickyApplyBar({
             {jobTitle}
           </p>
           <p className="truncate text-[11px] text-neutral-500 sm:text-xs">
-            {company} • <span className="text-primary-600 font-medium">Verified Posting</span>
+            {company} • <span className="text-teal-600 font-medium">✓ Verified Posting</span>
           </p>
         </div>
 
@@ -72,17 +78,17 @@ export function StickyApplyBar({
           <button
             type="button"
             onClick={handleShareClick}
-            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition-colors min-h-[40px]"
+            className="hidden sm:inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition-colors min-h-[40px]"
             title="Share job link"
           >
             {copied ? "Link Copied! ✨" : "Share 🔗"}
           </button>
 
           <Link
-            href="/login"
-            className="hidden md:inline-flex items-center justify-center rounded-lg border border-primary-300 bg-primary-50 px-3 py-2 text-xs font-medium text-primary-700 hover:bg-primary-100 transition-colors min-h-[40px]"
+            href={resumeUrl}
+            className="inline-flex items-center justify-center rounded-lg border border-primary-300 bg-primary-50 px-3 py-2 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors min-h-[40px]"
           >
-            Get Daily 10 Jobs 📩
+            Tailor Resume ✨
           </Link>
 
           <a

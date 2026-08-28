@@ -11,6 +11,7 @@ import {
     isRemoteJob,
     JOB_CATEGORIES,
     jobMatchesCategory,
+    extractSkillsFromJob,
     truncate,
     type ExternalJob,
 } from "@/lib/public-jobs";
@@ -159,6 +160,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
     const days = daysSincePosted(job.postedAt);
     const remote = isRemoteJob(job);
+    const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 8);
     const similar = jobs
         .filter((j) => j.id !== job.id)
         .sort((a, b) => {
@@ -177,6 +179,33 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
     const categoriesForJob = JOB_CATEGORIES.filter((cat) => jobMatchesCategory(job, cat));
 
+    const tailorResumeUrl = `/resume-tools?tab=builder&role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1200))}`;
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://decajob.com",
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Jobs",
+                item: "https://decajob.com/jobs",
+            },
+            {
+                "@type": "ListItem",
+                position: 3,
+                name: job.title,
+                item: `https://decajob.com/jobs/${slug}`,
+            },
+        ],
+    };
+
     return (
         <div className="pt-10 pb-24 sm:pt-16 sm:pb-28">
             <div className="mx-auto max-w-4xl">
@@ -188,48 +217,99 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 />
 
                 {/* Job header */}
-                <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8">
+                <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                         <div className="min-w-0">
-                            <h1 className="text-2xl font-bold text-neutral-900 sm:text-3xl">{job.title}</h1>
-                            <p className="mt-2 text-lg text-neutral-500">{job.company}</p>
+                            <div className="flex items-center gap-2">
+                                <span className="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-700 border border-teal-200">
+                                    ✓ Genuine & Verified
+                                </span>
+                                {remote && (
+                                    <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
+                                        🌍 Remote Friendly
+                                    </span>
+                                )}
+                            </div>
+                            <h1 className="mt-2 text-2xl font-bold text-neutral-900 sm:text-3xl">{job.title}</h1>
+                            <p className="mt-1 text-lg font-medium text-neutral-600">{job.company}</p>
                             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-neutral-500">
                                 <span className="inline-flex items-center gap-1">
                                     <span aria-hidden="true">📍</span>
                                     {job.location}
                                 </span>
-                                {remote && (
-                                    <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                                        Remote Friendly
-                                    </span>
-                                )}
+                                <span>•</span>
                                 <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
                                     Posted {days !== null ? `${days} day${days === 1 ? "" : "s"} ago` : "recently"}
                                 </span>
+                                <span>•</span>
                                 <time className="text-xs text-neutral-400">{formatPostedDate(job.postedAt)}</time>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 w-full sm:w-auto">
                             <a
                                 href={job.applicationLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white hover:bg-primary-700 transition-colors min-h-[48px]"
+                                className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white hover:bg-primary-700 shadow-sm transition-colors min-h-[48px]"
                             >
-                                Apply Now →
+                                Apply on Company Site →
                             </a>
                             <Link
-                                href="/login"
-                                className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors min-h-[48px]"
+                                href={tailorResumeUrl}
+                                className="inline-flex items-center justify-center rounded-lg border border-primary-300 bg-primary-50 px-6 py-3 text-sm font-semibold text-primary-700 hover:bg-primary-100 transition-colors min-h-[48px]"
                             >
-                                Get 10 AI-Matched Jobs Free
+                                ✨ Tailor Resume for this Job (AI)
                             </Link>
                         </div>
+                    </div>
+
+                    {/* Extracted Key Skills */}
+                    {skills.length > 0 && (
+                        <div className="mt-6 pt-4 border-t border-neutral-100">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">
+                                Key Skills Detected for this Role
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {skills.map((s) => (
+                                    <span
+                                        key={s}
+                                        className="rounded-lg bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 border border-neutral-200"
+                                    >
+                                        {s}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* AI Resume Matcher Hook Banner */}
+                <div className="mt-6 rounded-2xl border border-primary-200 bg-gradient-to-r from-primary-50 via-teal-50/50 to-blue-50/60 p-5 sm:p-6 shadow-sm">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-600 text-white text-xl">
+                                ⚡
+                            </span>
+                            <div>
+                                <h2 className="text-sm sm:text-base font-bold text-neutral-900">
+                                    Increase your interview chances at {job.company}
+                                </h2>
+                                <p className="text-xs sm:text-sm text-neutral-600 mt-0.5">
+                                    Our AI will analyze your resume against this job description and optimize it for ATS algorithms.
+                                </p>
+                            </div>
+                        </div>
+                        <Link
+                            href={tailorResumeUrl}
+                            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-primary-700 transition-colors"
+                        >
+                            Tailor Resume Free →
+                        </Link>
                     </div>
                 </div>
 
                 {/* Job description */}
-                <article className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8">
+                <article className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
                     <h2 className="text-xl font-bold text-neutral-900 mb-4">Job Description</h2>
                     <div className="prose prose-neutral prose-sm sm:prose-base max-w-none leading-relaxed">
                         {job.description.split(/\n{2,}/).map((paragraph, i) => (
@@ -242,7 +322,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                     <div className="mt-8 rounded-xl bg-neutral-50 border border-neutral-200 p-6">
                         <h3 className="font-semibold text-neutral-900">How to Apply</h3>
                         <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-                            This listing is aggregated from{" "}
+                            This listing is verified from{" "}
                             <span className="font-medium">{job.source}</span>. Click{" "}
                             <a
                                 href={job.applicationLink}
@@ -252,12 +332,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                             >
                                 Apply Now
                             </a>{" "}
-                            to view the full application details on the original platform. Before
-                            applying, we recommend running the listing through our free{" "}
-                            <Link href="/tools/job-scam-detector" className="text-primary-600 hover:underline">
-                                Job Scam Detector
-                            </Link>{" "}
-                            to stay safe.
+                            to view the official application on the employer platform.
                         </p>
                     </div>
 
@@ -283,7 +358,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 {/* Similar jobs */}
                 {similar.length > 0 && (
                     <section className="mt-10">
-                        <h2 className="text-xl font-bold text-neutral-900 mb-4">Similar Jobs You Might Like</h2>
+                        <h2 className="text-xl font-bold text-neutral-900 mb-4">Similar Verified Jobs</h2>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {similar.map((s) => (
                                 <Link
@@ -303,7 +378,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                     </section>
                 )}
 
-                {/* CTA */}
+                {/* Daily 10 CTA */}
                 <div className="mt-10 rounded-2xl bg-primary-50 border border-primary-200 p-6 sm:p-8 text-center">
                     <h2 className="text-lg font-bold text-neutral-900">
                         Tired of scrolling through hundreds of listings?
@@ -329,12 +404,21 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 }}
             />
 
+            {/* BreadcrumbList JSON-LD structured data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(breadcrumbSchema),
+                }}
+            />
+
             {/* Sticky Mobile & Desktop Apply Bar */}
             <StickyApplyBar
                 jobTitle={job.title}
                 company={job.company}
                 applicationLink={job.applicationLink}
                 slug={slug}
+                jobDescription={job.description}
             />
         </div>
     );

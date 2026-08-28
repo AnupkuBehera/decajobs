@@ -186,6 +186,12 @@ export async function SiteHeader() {
                 Jobs
               </Link>
               <Link
+                href="/resume-templates"
+                className="hidden md:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
+              >
+                Templates
+              </Link>
+              <Link
                 href="/tools"
                 className="rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] flex items-center"
               >

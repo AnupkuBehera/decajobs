@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -21,12 +21,26 @@ interface OptimizeResult {
 }
 
 export default function ResumeToolsPage() {
-  const [activeTab, setActiveTab] = useState<Tab>("score");
+  const [activeTab, setActiveTab] = useState<Tab>("builder");
   const [resumeText, setResumeText] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab");
+      if (tabParam === "builder" || tabParam === "score" || tabParam === "optimize" || tabParam === "cover-letter") {
+        setActiveTab(tabParam);
+      }
+      const desc = params.get("desc");
+      if (desc) setJobDescription(desc);
+      const company = params.get("company");
+      if (company) setCompanyName(company);
+    }
+  }, []);
 
   // Results
   const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null);

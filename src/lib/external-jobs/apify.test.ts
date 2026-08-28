@@ -48,7 +48,7 @@ describe("fetchApifyLinkedInJobs", () => {
 
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockDatasetItems,
+      text: async () => JSON.stringify(mockDatasetItems),
     } as Response);
 
     const result = await fetchApifyLinkedInJobs("React Developer", "Remote", 5);
@@ -108,7 +108,7 @@ describe("fetchApifyLinkedInJobs", () => {
 
     vi.mocked(globalThis.fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ status: "error", message: "invalid payload" }),
+      text: async () => JSON.stringify({ status: "error", message: "invalid payload" }),
     } as Response);
 
     const result = await fetchApifyLinkedInJobs("React Developer", "Remote");
