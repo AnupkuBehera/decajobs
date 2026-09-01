@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "DecaJobs pricing: 7-day free trial with full access, then ₹299/month for Pro. Compare Free Trial vs Pro features. Employers post jobs for free. Cancel anytime.",
   alternates: {
-    canonical: "/pricing",
+    canonical: "https://decajob.com/pricing",
   },
 };
 

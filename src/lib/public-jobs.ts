@@ -422,10 +422,535 @@ export const CITIES: CityInfo[] = [
             }
         ],
     },
+    {
+        slug: "london",
+        name: "London",
+        aliases: ["london", "uk", "united kingdom", "greater london"],
+        blurb:
+            "London is Europe's leading tech capital and global financial hub. Home to world-class fintech, AI labs (like Google DeepMind), and thousands of venture-backed scaleups, London offers Europe's highest software engineering packages.",
+        techParks: ["Silicon Roundabout (Old Street)", "King's Cross Knowledge Quarter", "Canary Wharf Financial District", "Paddington Tech Cluster"],
+        salaryInsight: "Software Engineers in London earn £65,000 to £120,000+ per year, with senior fintech architects commanding £150,000+.",
+        topIndustries: ["Fintech & Banking Technology", "Artificial Intelligence & Deep Tech", "E-Commerce & Digital Marketplaces", "Cybersecurity & Regtech"],
+        costOfLiving: "High. Monthly rent for 1-bedroom apartments in Zones 1-3 ranges from £1,800 to £2,600.",
+        faqs: [
+            {
+                q: "Why is London a premier global tech destination?",
+                a: "London combines access to global capital, top universities, a vibrant startup ecosystem, and European headquarters for Google, Meta, and Stripe."
+            }
+        ],
+    },
+    {
+        slug: "berlin",
+        name: "Berlin",
+        aliases: ["berlin", "germany", "deutschland"],
+        blurb:
+            "Berlin is Germany's tech powerhouse and Europe's startup capital. Known for its international English-first developer community, vibrant cultural scene, and deep venture funding in mobility, fintech, and climate tech.",
+        techParks: ["Silicon Allee (Mitte)", "Kreuzberg Tech District", "Adlershof Technology Park", "Factory Berlin Hub"],
+        salaryInsight: "Developers in Berlin earn an average of €60,000 to €105,000 annually, with senior and lead engineers reaching €125,000+.",
+        topIndustries: ["SaaS & B2B Platforms", "Fintech & Insurtech", "Mobility & CleanTech", "Creative Tech & E-Commerce"],
+        costOfLiving: "Moderate. Monthly apartment rent ranges from €1,000 to €1,800.",
+        faqs: [
+            {
+                q: "Do I need to speak German to work in tech in Berlin?",
+                a: "Most startups and international tech firms in Berlin operate entirely in English. However, conversational German is helpful for administrative tasks."
+            }
+        ],
+    },
+    {
+        slug: "madrid",
+        name: "Madrid",
+        aliases: ["madrid", "spain", "españa"],
+        blurb:
+            "Madrid is the bustling heart of Spain's tech ecosystem and the bridge to Latin American markets. The city boasts rapid growth in software development, cloud computing, and telecommunications.",
+        techParks: ["Madrid Tech City", "La Nave Innovation Center", "Parque Tecnológico de Leganés", "Chamartín Business Zone"],
+        salaryInsight: "Software Engineers in Madrid earn between €38,000 and €75,000+ per year, with remote international contracts offering even higher compensation.",
+        topIndustries: ["Telecommunications & Cloud", "Fintech & Payments", "TravelTech & Hospitality", "Renewable Energy & IoT"],
+        costOfLiving: "Moderate. Monthly rent for central apartments ranges from €900 to €1,600.",
+        faqs: [
+            {
+                q: "How is Madrid's tech job market evolving?",
+                a: "Madrid has rapidly emerged as a European tech hub with competitive salaries, high quality of life, and growing international R&D hubs for companies like Amazon, Google, and Microsoft."
+            }
+        ],
+    },
+    {
+        slug: "paris",
+        name: "Paris",
+        aliases: ["paris", "france", "ile-de-france"],
+        blurb:
+            "Paris is Europe's premier AI and deep tech hotspot, home to Station F (the world's largest startup campus) and leading generative AI innovators like Mistral AI and Hugging Face.",
+        techParks: ["Station F (13th Arrondissement)", "Silicon Sentier", "Paris-Saclay Innovation Cluster", "La Défense Business District"],
+        salaryInsight: "Tech professionals in Paris earn an average of €50,000 to €95,000 per year, with AI researchers and senior engineering leads commanding €120,000+.",
+        topIndustries: ["Artificial Intelligence & Machine Learning", "Luxury-Tech & E-Commerce", "Fintech & SaaS", "Biotech & HealthTech"],
+        costOfLiving: "High. Monthly apartment rent ranges from €1,200 to €2,200.",
+        faqs: [
+            {
+                q: "Why is Paris called the AI capital of Europe?",
+                a: "With top mathematical institutions, research universities, and government support, Paris hosts leading AI laboratories for Meta, Google, and groundbreaking startups like Mistral AI."
+            }
+        ],
+    },
+    {
+        slug: "tokyo",
+        name: "Tokyo",
+        aliases: ["tokyo", "japan", "shibuya", "roppongi", "nihon", "日本"],
+        blurb:
+            "Tokyo is Asia's innovation giant, combining cutting-edge robotics, gaming, consumer internet, and enterprise software. A rapidly growing number of international tech companies offer bilingual and English-friendly engineering roles.",
+        techParks: ["Shibuya Bit Valley", "Roppongi Hills Tech District", "Shinagawa Tech Corridor", "Otemachi Financial & Fintech Hub"],
+        salaryInsight: "Software Engineers in Tokyo earn ¥6.5M to ¥14M+ (approx. $45,000 to $100,000+ USD), with foreign tech firms paying competitive international rates.",
+        topIndustries: ["Gaming & Interactive Entertainment", "Robotics & Hardware-Software Systems", "Fintech & Mobile Payments", "Enterprise DX (Digital Transformation)"],
+        costOfLiving: "Moderate-High. Monthly rent in central wards ranges from ¥100,000 to ¥220,000.",
+        faqs: [
+            {
+                q: "Can foreign engineers find jobs in Tokyo without fluent Japanese?",
+                a: "Yes, many tech unicorns (Mercari, Rakuten, LINE) and global companies hire bilingual and English-speaking software engineers and product managers."
+            }
+        ],
+    },
+    {
+        slug: "sao-paulo",
+        name: "São Paulo",
+        aliases: ["sao paulo", "são paulo", "brazil", "brasil", "sp"],
+        blurb:
+            "São Paulo is the financial and tech capital of Latin America, producing more tech unicorns than any other city in the Southern Hemisphere. Major hubs in Faria Lima and Pinheiros drive fintech, SaaS, and e-commerce innovation.",
+        techParks: ["Faria Lima Financial & Tech Corridor", "Pinheiros Innovation District", "Berrini Tech Center", "Cubo Itaú Tech Hub"],
+        salaryInsight: "Software Engineers in São Paulo earn R$90,000 to R$220,000+ per year, with senior engineers working for US remote employers earning up to $60,000+ USD.",
+        topIndustries: ["Fintech & Digital Banking (Nubank, etc.)", "E-Commerce & Logistics", "AgriTech & BioTech", "B2B SaaS"],
+        costOfLiving: "Moderate. Monthly apartment rent in safe tech districts ranges from R$2,500 to R$5,500.",
+        faqs: [
+            {
+                q: "Why is São Paulo considered the Silicon Valley of Latin America?",
+                a: "São Paulo accounts for over 60% of venture capital invested in Brazil and hosts the headquarters of Latin America's largest tech scaleups."
+            }
+        ],
+    },
+    {
+        slug: "seoul",
+        name: "Seoul",
+        aliases: ["seoul", "south korea", "korea", "pangyo", "gangnam"],
+        blurb:
+            "Seoul and its nearby Pangyo Techno Valley form one of the world's most advanced technology metropolises. Leading in ultra-fast mobile infrastructure, semiconductors, AI, gaming, and web applications.",
+        techParks: ["Pangyo Techno Valley", "Teheran Valley (Gangnam)", "Digital Media City (Sangam)", "Gasan Digital Complex"],
+        salaryInsight: "Software Engineers earn an average of ₩55M to ₩120M+ per year, with leading tech platforms offering attractive stock bonuses.",
+        topIndustries: ["Semiconductors & Mobile Tech", "Gaming & Entertainment (K-Tech)", "E-Commerce & Delivery Platforms", "AI & Robotics"],
+        costOfLiving: "Moderate-High. Monthly rent for studios/officetels ranges from ₩700,000 to ₩1,600,000 with a standard deposit.",
+        faqs: [
+            {
+                q: "What is Pangyo Techno Valley?",
+                a: "Pangyo is South Korea's dedicated Silicon Valley located just south of Gangnam, hosting giants like Kakao, NCSoft, Naver, and hundreds of startups."
+            }
+        ],
+    },
+    {
+        slug: "milan",
+        name: "Milan",
+        aliases: ["milan", "milano", "italy", "italia"],
+        blurb:
+            "Milan is Italy's economic engine and fastest-growing tech center. Home to Italy's main stock exchange, design powerhouses, and burgeoning fintech and e-commerce ecosystems.",
+        techParks: ["Porta Nuova Innovation District", "MIND (Milano Innovation District)", "Bovisa Tech Park", "Tortona Creative & Tech Hub"],
+        salaryInsight: "Software and IT professionals in Milan earn between €35,000 and €70,000 annually, with high demand for full-stack and cloud talent.",
+        topIndustries: ["Fintech & Banking", "Fashion-Tech & E-Commerce", "Digital Marketing & Design", "Industry 4.0 & Automation"],
+        costOfLiving: "Moderate-High. Monthly rent for 1-bedroom apartments ranges from €900 to €1,700.",
+        faqs: [
+            {
+                q: "How is Milan's tech job market growing?",
+                a: "Milan is attracting major international tech firms and investment funds, creating strong demand for cloud engineers, data scientists, and digital product specialists."
+            }
+        ],
+    },
+    {
+        slug: "new-york",
+        name: "New York",
+        aliases: ["new york", "nyc", "manhattan", "brooklyn", "ny"],
+        blurb:
+            "New York City (Silicon Alley) is the world's second-largest tech ecosystem. Combining Wall Street capital with Madison Avenue media, NYC offers top-tier engineering and product roles.",
+        techParks: ["Silicon Alley (Flatiron/Chelsea)", "DUMBO Tech Hub (Brooklyn)", "Cornell Tech Campus (Roosevelt Island)", "Hudson Yards"],
+        salaryInsight: "Software Engineers in NYC earn $125,000 to $220,000+ base salary, with total compensation packages often exceeding $300,000+.",
+        topIndustries: ["Fintech & Quantitative Trading", "Media & AdTech", "HealthTech & Enterprise SaaS", "AI & Machine Learning"],
+        costOfLiving: "Very High. Monthly rent for 1-bedroom apartments ranges from $3,000 to $4,500.",
+        faqs: [
+            {
+                q: "What makes NYC's tech ecosystem unique?",
+                a: "NYC pairs high tech talent with the world's largest financial, media, healthcare, and retail corporations, creating massive B2B and consumer market opportunities."
+            }
+        ],
+    },
+    {
+        slug: "san-francisco",
+        name: "San Francisco",
+        aliases: ["san francisco", "sf", "bay area", "silicon valley", "california"],
+        blurb:
+            "San Francisco and Silicon Valley remain the global epicenter of tech innovation, venture capital, and cutting-edge artificial intelligence research.",
+        techParks: ["SoMa Tech Corridor", "Mission Bay Life Sciences & Tech", "Silicon Valley (Palo Alto, Mountain View, San Jose)", "South Park"],
+        salaryInsight: "Software Engineers in the Bay Area command the highest salaries in the world, averaging $140,000 to $250,000+ base.",
+        topIndustries: ["Generative AI & LLMs", "Cloud Computing & SaaS", "Autonomous Vehicles & Robotics", "Venture Capital & Seed Startups"],
+        costOfLiving: "Very High. Monthly apartment rent averages $2,800 to $4,200.",
+        faqs: [
+            {
+                q: "Why is San Francisco leading the AI revolution?",
+                a: "OpenAI, Anthropic, Google, and dozens of top AI research labs and specialized venture firms are centered in San Francisco."
+            }
+        ],
+    },
+    {
+        slug: "toronto",
+        name: "Toronto",
+        aliases: ["toronto", "canada", "gta", "ontario"],
+        blurb:
+            "Toronto is Canada's technology capital and the third-largest tech hub in North America. Renowned for AI pioneers at the Vector Institute and an welcoming tech immigration policy.",
+        techParks: ["Downtown Toronto Tech Corridor", "MaRS Discovery District", "Liberty Village Tech Hub", "Waterloo-Toronto Tech Corridor"],
+        salaryInsight: "Software Engineers in Toronto earn CAD $90,000 to $160,000+ per year.",
+        topIndustries: ["AI & Machine Learning", "Fintech & Banking", "Enterprise SaaS", "HealthTech"],
+        costOfLiving: "High. Monthly apartment rent ranges from CAD $2,000 to $2,800.",
+        faqs: [
+            {
+                q: "Why is Toronto a top hub for AI talent?",
+                a: "Toronto is home to the Vector Institute and University of Toronto, producing groundbreaking research in deep learning and neural networks."
+            }
+        ],
+    },
+    {
+        slug: "singapore",
+        name: "Singapore",
+        aliases: ["singapore", "sg"],
+        blurb:
+            "Singapore is the technology and financial gateway to Southeast Asia. With government-backed innovation, progressive digital regulations, and regional headquarters for Fortune 500 tech firms.",
+        techParks: ["One-North Innovation District", "Marina Bay Financial Centre", "Mapletree Business City", "Jurong Innovation District"],
+        salaryInsight: "Software Engineers in Singapore earn SGD $75,000 to $160,000+ annually.",
+        topIndustries: ["Fintech & Payments", "E-Commerce & SuperApps (Grab, Shopee)", "Cloud Infrastructure & Cybersecurity", "Regional Tech HQ"],
+        costOfLiving: "High. Monthly rent for 1-bedroom apartments ranges from SGD $2,500 to $4,200.",
+        faqs: [
+            {
+                q: "Why do multinational tech companies set up in Singapore?",
+                a: "Singapore offers political stability, low corporate taxes, English proficiency, and immediate access to the 650M+ Southeast Asian consumer market."
+            }
+        ],
+    },
 ];
 
 export function getCityBySlug(slug: string): CityInfo | undefined {
     return CITIES.find((c) => c.slug === slug);
+}
+
+/* ────────────────────────────── Companies ──────────────────────────────── */
+
+export interface CompanyInfo {
+    slug: string;
+    name: string;
+    aliases: string[];
+    logoEmoji: string;
+    hq: string;
+    industry: string;
+    blurb: string;
+    cultureHighlights: string[];
+    salaryInsight: string;
+    techStack: string[];
+    faqs: { q: string; a: string }[];
+}
+
+export const COMPANIES: CompanyInfo[] = [
+    {
+        slug: "google",
+        name: "Google",
+        aliases: ["google", "alphabet", "google llc", "google cloud"],
+        logoEmoji: "🌐",
+        hq: "Mountain View, CA (Global Locations & Remote)",
+        industry: "Search, Cloud Computing, AI & Consumer Technology",
+        blurb:
+            "Google (Alphabet) is a global technology leader organizing world information. Known for groundbreaking innovations in Search, Android, Google Cloud, and Gemini AI, Google offers industry-defining engineering culture, high autonomy, and world-class total compensation.",
+        cultureHighlights: [
+            "20% Innovation Time policy for experimental projects",
+            "Comprehensive global health, wellness, and parental leave benefits",
+            "Hybrid work flexibility with leading remote engineering teams",
+            "Continuous education and conference sponsorships"
+        ],
+        salaryInsight: "Software engineers average $150K–$320K+ in North America / ₹28L–₹65L+ in India with competitive equity (GSUs).",
+        techStack: ["Go", "C++", "Python", "Java", "Angular", "Kubernetes", "TensorFlow", "Spanner"],
+        faqs: [
+            {
+                q: "What is Google's interview process like in 2026?",
+                a: "The process typically includes an initial recruiter call, 1–2 technical phone/coding screenings (DSA), followed by an onsite/virtual round with coding, system design (for mid/senior), and Googleyness & Leadership behavioral interviews."
+            },
+            {
+                q: "Does Google hire remote software engineers?",
+                a: "Yes, Google offers approved remote roles across multiple teams including Google Cloud, Developer Relations, and platform infrastructure, alongside hybrid campus hubs worldwide."
+            }
+        ],
+    },
+    {
+        slug: "amazon",
+        name: "Amazon",
+        aliases: ["amazon", "aws", "amazon web services", "amazon.com"],
+        logoEmoji: "📦",
+        hq: "Seattle, WA (Global Locations)",
+        industry: "E-Commerce, Cloud Computing (AWS), Logistics & Digital Streaming",
+        blurb:
+            "Amazon and AWS power planetary-scale cloud infrastructure, retail logistics, and consumer devices. Guided by 16 Leadership Principles, Amazon provides fast career velocity and high-ownership problem solving across global distributed systems.",
+        cultureHighlights: [
+            "Customer Obsession and Ownership Leadership Principles",
+            "Data-driven 2-pizza engineering teams",
+            "Massive internal mobility across AWS, Retail, and Prime Video",
+            "Day 1 startup mindset with global enterprise resources"
+        ],
+        salaryInsight: "SDE I to SDE III base packages range from $140K–$310K+ / ₹22L–₹55L+ with sign-on bonuses and vesting RSUs.",
+        techStack: ["Java", "Python", "AWS Cloud Services", "Rust", "React", "DynamoDB", "ECS/EKS"],
+        faqs: [
+            {
+                q: "How important are Amazon's 16 Leadership Principles?",
+                a: "Vital. Every interview round at Amazon (including the Bar Raiser round) evaluates candidates on how their past experiences align with Customer Obsession, Ownership, Bias for Action, and Deliver Results using the STAR method."
+            }
+        ],
+    },
+    {
+        slug: "microsoft",
+        name: "Microsoft",
+        aliases: ["microsoft", "azure", "microsoft corporation"],
+        logoEmoji: "💻",
+        hq: "Redmond, WA (Global Hubs & Remote)",
+        industry: "Enterprise Cloud (Azure), Productivity (Office 365), OS & AI",
+        blurb:
+            "Microsoft empowers every person and organization on the planet to achieve more. Under Satya Nadella's leadership, Microsoft is pioneering generative AI with Copilot, Azure enterprise cloud, and gaming across Xbox.",
+        cultureHighlights: [
+            "Growth Mindset culture championed across all departments",
+            "Exceptional work-life balance and family support policies",
+            "Flexible hybrid and fully remote engineering arrangements",
+            "Massive global learning budgets and internal hackathons"
+        ],
+        salaryInsight: "Software and cloud architects earn $145K–$290K+ in the US / ₹20L–₹50L+ in India.",
+        techStack: ["C# / .NET", "TypeScript", "Python", "Azure", "React", "C++", "CosmosDB"],
+        faqs: [
+            {
+                q: "What benefits does Microsoft offer remote engineers?",
+                a: "Microsoft provides home office stipends, top-tier health insurance, 401(k)/PF matching, wellness reimbursements, and comprehensive paid time off."
+            }
+        ],
+    },
+    {
+        slug: "meta",
+        name: "Meta",
+        aliases: ["meta", "facebook", "instagram", "whatsapp", "meta platforms"],
+        logoEmoji: "♾️",
+        hq: "Menlo Park, CA (Remote Friendly)",
+        industry: "Social Technology, Open-Source AI, Virtual & Mixed Reality",
+        blurb:
+            "Meta connects over 3 billion people daily across Facebook, Instagram, WhatsApp, and Messenger, while spearheading open-source AI with the Llama foundational model family and PyTorch.",
+        cultureHighlights: [
+            "Move Fast and Focus on Long-Term Impact philosophy",
+            "Top-of-market compensation and equity grants",
+            "Bootcamp onboarding allowing engineers to choose their own squad",
+            "Open-source first development ethos"
+        ],
+        salaryInsight: "Software engineers (E4–E6) command top compensation: $165K–$340K+ in North America / ₹30L–₹70L+ in India.",
+        techStack: ["React", "Python", "PyTorch", "Rust", "Hack / PHP", "GraphQL", "RocksDB"],
+        faqs: [
+            {
+                q: "What is Meta's Engineering Bootcamp?",
+                a: "New engineering hires spend their first 4–6 weeks exploring different codebases, fixing real production bugs, and interviewing prospective teams before selecting their permanent squad."
+            }
+        ],
+    },
+    {
+        slug: "apple",
+        name: "Apple",
+        aliases: ["apple", "apple inc", "apple computer"],
+        logoEmoji: "🍎",
+        hq: "Cupertino, CA",
+        industry: "Consumer Hardware, Operating Systems & Digital Services",
+        blurb:
+            "Apple designs the world's most beloved consumer technology products, including the iPhone, Mac, iPad, and Apple Watch. Driven by meticulous design precision, privacy, and silicon innovation (M-series chips).",
+        cultureHighlights: [
+            "Uncompromising standard for craftsmanship and user experience",
+            "Deep focus on user privacy and environmental sustainability",
+            "Collaborative cross-functional teams between software and hardware",
+            "Generous employee product discounts and stock purchase programs"
+        ],
+        salaryInsight: "ICT3 to ICT5 software engineers earn $150K–$310K+ / ₹25L–₹60L+ with RSUs.",
+        techStack: ["Swift", "Objective-C", "C++", "Python", "Metal", "CoreML", "Go"],
+        faqs: [
+            {
+                q: "What does Apple look for in software engineers?",
+                a: "Apple values deep systems understanding, pixel-perfect attention to detail, strong CS fundamentals, and passion for delighting millions of everyday users."
+            }
+        ],
+    },
+    {
+        slug: "netflix",
+        name: "Netflix",
+        aliases: ["netflix"],
+        logoEmoji: "🍿",
+        hq: "Los Gatos, CA (Remote Friendly)",
+        industry: "Streaming Entertainment & Media Production",
+        blurb:
+            "Netflix delivers award-winning streaming entertainment to 260M+ paid memberships worldwide. Renowned for its 'Freedom and Responsibility' culture and top-of-market all-cash compensation.",
+        cultureHighlights: [
+            "Freedom and Responsibility culture with no bureaucratic guardrails",
+            "Top-of-market compensation with flexible cash vs stock allocation",
+            "Stunning colleagues philosophy — hiring only high-performing senior talent",
+            "Context, not control management approach"
+        ],
+        salaryInsight: "Known for industry-leading all-cash compensation: $250K–$500K+ for senior software engineers.",
+        techStack: ["Java", "Node.js", "React", "Python", "AWS", "Spinnaker", "GraphQL"],
+        faqs: [
+            {
+                q: "Does Netflix hire junior engineers?",
+                a: "Historically Netflix hired almost exclusively senior talent. Recently, they expanded early-career programs and internships in engineering and data science."
+            }
+        ],
+    },
+    {
+        slug: "stripe",
+        name: "Stripe",
+        aliases: ["stripe", "stripe payments"],
+        logoEmoji: "💳",
+        hq: "San Francisco, CA & Dublin (Remote First)",
+        industry: "Financial Infrastructure & Internet Payments",
+        blurb:
+            "Stripe builds financial infrastructure for the internet, processing hundreds of billions of dollars annually for startups to Fortune 500 enterprises with world-class developer experience.",
+        cultureHighlights: [
+            "Written culture emphasizing deep memos and analytical rigor",
+            "Remote-first engineering hubs across North America, Europe, and Asia",
+            "Obsession with developer API ergonomics and uptime reliability",
+            "High trust and transparent company-wide communications"
+        ],
+        salaryInsight: "Engineers earn $160K–$330K+ / ₹30L–₹65L+ with strong remote benefits.",
+        techStack: ["Ruby / Sorbet", "Go", "TypeScript", "React", "AWS", "Kafka", "PostgreSQL"],
+        faqs: [
+            {
+                q: "How does Stripe support remote workers?",
+                a: "Stripe was an early pioneer of remote-first engineering, offering ergonomic home office stipends, local co-working allowances, and bi-annual team offsites."
+            }
+        ],
+    },
+    {
+        slug: "uber",
+        name: "Uber",
+        aliases: ["uber", "uber technologies"],
+        logoEmoji: "🚗",
+        hq: "San Francisco, CA",
+        industry: "Mobility, Logistics & On-Demand Delivery",
+        blurb:
+            "Uber moves millions of people and goods every day across 70+ countries. Engineers build hyper-scalable distributed dispatch algorithms, real-time routing engines, and fintech billing systems.",
+        cultureHighlights: [
+            "High scale challenges processing petabytes of real-time geospatial data",
+            "Global tech campuses in the US, Amsterdam, Bangalore, and Hyderabad",
+            "Comprehensive commuter benefits and Uber ride credits",
+            "Open source contributions in distributed tracing (Jaeger) and data lakes"
+        ],
+        salaryInsight: "Software engineers earn $150K–$310K+ in the US / ₹26L–₹58L+ in India.",
+        techStack: ["Go", "Java", "Python", "Kafka", "React Native", "MySQL", "Cassandra"],
+        faqs: [
+            {
+                q: "What types of problems do Uber engineers solve?",
+                a: "Geospatial routing algorithms, dynamic marketplace pricing, fraud prevention, distributed database scaling, and autonomous vehicle simulation."
+            }
+        ],
+    },
+    {
+        slug: "spotify",
+        name: "Spotify",
+        aliases: ["spotify", "spotify ab"],
+        logoEmoji: "🎧",
+        hq: "Stockholm, Sweden (Work From Anywhere)",
+        industry: "Audio Streaming, Music Technology & Podcasting",
+        blurb:
+            "Spotify is the world's most popular audio streaming subscription service with 600M+ users. Guided by its pioneering 'Work From Anywhere' policy, engineers build recommendation algorithms and audio players worldwide.",
+        cultureHighlights: [
+            "Official 'Work From Anywhere' flexible location program",
+            "Agile squad and chapter engineering model",
+            "Passionate, music-infused creative work environment",
+            "Swedish work-life balance and family wellness principles"
+        ],
+        salaryInsight: "Software engineers earn €75K–€140K in Europe / $150K–$280K in North America.",
+        techStack: ["Java", "Python", "GCP", "C++", "React", "BigQuery", "Docker"],
+        faqs: [
+            {
+                q: "How does Spotify's 'Work From Anywhere' policy work?",
+                a: "Spotify employees can choose whether to work from home, from a Spotify office, or from a co-working space in an approved country or timezone."
+            }
+        ],
+    },
+    {
+        slug: "shopify",
+        name: "Shopify",
+        aliases: ["shopify"],
+        logoEmoji: "🛍️",
+        hq: "Ottawa, Canada (Digital by Default / Remote)",
+        industry: "E-Commerce Software & Merchant Solutions",
+        blurb:
+            "Shopify powers over millions of businesses in more than 175 countries with an entirely remote, 'Digital by Default' culture. Famous for building on Ruby on Rails at monumental global scale.",
+        cultureHighlights: [
+            "Digital by Default — 100% remote company by design",
+            "High autonomy and craft-focused engineering tracks",
+            "World-leading contributions to open-source Ruby on Rails",
+            "Flexible total rewards compensation model"
+        ],
+        salaryInsight: "CAD $130K–$240K in Canada / USD $140K–$260K for software developers.",
+        techStack: ["Ruby on Rails", "TypeScript", "React", "GraphQL", "MySQL", "Google Cloud"],
+        faqs: [
+            {
+                q: "Is Shopify fully remote?",
+                a: "Yes. Shopify operates under a permanent 'Digital by Default' model where employees work remotely from across North America and select global hubs."
+            }
+        ],
+    },
+    {
+        slug: "zoho",
+        name: "Zoho",
+        aliases: ["zoho", "zoho corporation", "zoho corp"],
+        logoEmoji: "💼",
+        hq: "Chennai, India (Global Offices)",
+        industry: "Enterprise Cloud Software, CRM & B2B SaaS",
+        blurb:
+            "Zoho is a bootstrapped Indian technology giant providing 55+ cloud applications to over 100 million users. Known for building its own data centers, rural tech offices, and deep engineering self-reliance.",
+        cultureHighlights: [
+            "Bootstrapped, zero-debt company with unmatched job security",
+            "R&D focused: all software and hardware infrastructure built in-house",
+            "Pioneering rural tech campuses in Tenkasi and beyond",
+            "No credentialism: skills prioritized over university pedigree"
+        ],
+        salaryInsight: "Entry-level to senior product engineers earn ₹6L to ₹25L+ with extensive campus amenities.",
+        techStack: ["Java", "JavaScript", "C++", "PostgreSQL", "Linux", "Proprietary Cloud"],
+        faqs: [
+            {
+                q: "What makes Zoho's company culture unique?",
+                a: "Zoho is 100% privately owned and profitable, shielding employees from short-term investor pressures and tech layoffs while investing deeply in local community development."
+            }
+        ],
+    },
+    {
+        slug: "tcs",
+        name: "Tata Consultancy Services (TCS)",
+        aliases: ["tcs", "tata consultancy", "tata consultancy services"],
+        logoEmoji: "🏢",
+        hq: "Mumbai, India (Global Delivery Centers)",
+        industry: "IT Services, Enterprise Consulting & Digital Solutions",
+        blurb:
+            "TCS is a global leader in IT services, consulting, and business solutions. As the flagship technology arm of the Tata Group, TCS employs over 600,000 consultants across 55 countries.",
+        cultureHighlights: [
+            "Part of the revered, values-driven Tata Group",
+            "Unrivaled scale and training programs (TCS Elevate & Digital)",
+            "Global client exposure across banking, healthcare, and retail",
+            "Comprehensive health, retirement, and job stability"
+        ],
+        salaryInsight: "Freshers (Ninja/Digital/Prime) start from ₹3.6L to ₹9L, while architects earn ₹18L to ₹40L+.",
+        techStack: ["Java", "Python", "Cloud (AWS/Azure/GCP)", "SAP", "React", "Angular", "Spring Boot"],
+        faqs: [
+            {
+                q: "What are the TCS Fresher hiring tracks?",
+                a: "TCS hires freshers via the National Qualifier Test (NQT) into three distinct tiers: Ninja (~₹3.6 LPA), Digital (~₹7 LPA), and Prime (~₹9 LPA) based on coding performance."
+            }
+        ],
+    },
+];
+
+export function getCompanyBySlug(slug: string): CompanyInfo | undefined {
+    return COMPANIES.find((c) => c.slug === slug);
+}
+
+export function jobMatchesCompany(job: ExternalJob, company: CompanyInfo): boolean {
+    const comp = job.company.toLowerCase().trim();
+    if (comp === company.slug || comp.includes(company.slug)) return true;
+    return company.aliases.some((alias) => comp.includes(alias));
 }
 
 /* ─────────────────────────── Slug generation ───────────────────────────── */
@@ -741,10 +1266,10 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
     }
 }
 
-/** Fetch jobs, optionally filtered by category / location / remote. */
 export async function fetchPublicJobsFiltered(opts?: {
     category?: JobCategory;
     city?: CityInfo;
+    company?: CompanyInfo;
     remoteOnly?: boolean;
 }): Promise<ExternalJob[]> {
     const all = await fetchPublicJobs();
@@ -753,6 +1278,7 @@ export async function fetchPublicJobsFiltered(opts?: {
         if (opts?.remoteOnly && !isRemoteJob(job)) return false;
         if (opts?.category && !jobMatchesCategory(job, opts.category)) return false;
         if (opts?.city && !jobMatchesCity(job, opts.city)) return false;
+        if (opts?.company && !jobMatchesCompany(job, opts.company)) return false;
         return true;
     });
 }
@@ -849,6 +1375,7 @@ export async function getPublicJobs(): Promise<ExternalJob[]> {
 export async function getPublicJobsFiltered(opts?: {
     category?: JobCategory;
     city?: CityInfo;
+    company?: CompanyInfo;
     remoteOnly?: boolean;
 }): Promise<ExternalJob[]> {
     const live = await fetchPublicJobsFiltered(opts);
@@ -859,6 +1386,7 @@ export async function getPublicJobsFiltered(opts?: {
         if (opts?.remoteOnly && !isRemoteJob(job)) return false;
         if (opts?.category && !jobMatchesCategory(job, opts.category)) return false;
         if (opts?.city && !jobMatchesCity(job, opts.city)) return false;
+        if (opts?.company && !jobMatchesCompany(job, opts.company)) return false;
         return true;
     });
     return filtered;

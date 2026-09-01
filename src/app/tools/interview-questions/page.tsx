@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Generate role-specific interview questions and answers with expert tips. Master the STAR method for behavioral, technical, and management roles.",
   alternates: {
-    canonical: "/tools/interview-questions",
+    canonical: "https://decajob.com/tools/interview-questions",
   },
   openGraph: {
     title: "Free AI Interview Question & Answer Generator | DecaJobs",

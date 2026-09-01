@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Generate tailored professional cover letters in seconds. Simply input your job role, company name, and key skills to generate high-converting application letters.",
   alternates: {
-    canonical: "/tools/cover-letter-generator",
+    canonical: "https://decajob.com/tools/cover-letter-generator",
   },
   openGraph: {
     title: "Free AI Cover Letter Generator & Writer | DecaJobs",

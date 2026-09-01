@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Frequently Asked Questions - DecaJobs | AI Job Portal",
   description: "Get answers to common questions about DecaJobs. Learn how our AI job matching works, pricing, features, and how to get started finding your perfect job.",
   alternates: {
-    canonical: "/faq",
+    canonical: "https://decajob.com/faq",
   },
 };
 
@@ -65,6 +65,25 @@ export default function FAQPage() {
           </div>
         </div>
       </div>
+
+      {/* FAQPage JSON-LD structured data for Google rich search results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a,
+              },
+            })),
+          }),
+        }}
+      />
     </div>
   );
 }

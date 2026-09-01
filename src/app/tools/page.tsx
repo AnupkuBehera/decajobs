@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Free AI-powered career tools: check your resume score, calculate salary by role, prepare for interviews, and generate cover letters. No login required.",
   alternates: {
-    canonical: "/tools",
+    canonical: "https://decajob.com/tools",
   },
 };
 

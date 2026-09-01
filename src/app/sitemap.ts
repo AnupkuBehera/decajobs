@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
-import { getPublicJobs, jobSlug, type ExternalJob } from "@/lib/public-jobs";
+import {
+  getPublicJobs,
+  jobSlug,
+  type ExternalJob,
+  CITIES,
+  JOB_CATEGORIES,
+  COMPANIES,
+} from "@/lib/public-jobs";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
@@ -11,7 +18,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   const staticEntries: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date("2026-08-12"), changeFrequency: "daily", priority: 1 },
+    {
+      url: baseUrl,
+      lastModified: new Date("2026-08-12"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: {
+        languages: {
+          en: baseUrl,
+          es: `${baseUrl}/es`,
+          ja: `${baseUrl}/ja`,
+          fr: `${baseUrl}/fr`,
+          de: `${baseUrl}/de`,
+          pt: `${baseUrl}/pt`,
+          ko: `${baseUrl}/ko`,
+          it: `${baseUrl}/it`,
+        },
+      },
+    },
+    // Localized Landing Pages for International Indexing
+    { url: `${baseUrl}/es`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/ja`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/fr`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/de`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/pt`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/ko`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/it`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
+
     { url: `${baseUrl}/about`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/how-it-works`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/pricing`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.9 },
@@ -44,20 +77,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Jobs
     { url: `${baseUrl}/jobs`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 1.0 },
     { url: `${baseUrl}/jobs/remote`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/jobs/category/software-engineering`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/data-analytics`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/product-design`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/marketing-sales`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/devops-cloud`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/human-resources`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/finance-accounting`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/category/customer-support`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/bangalore`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/mumbai`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/delhi`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/hyderabad`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/chennai`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/jobs/location/pune`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    // Category Job Hubs
+    ...JOB_CATEGORIES.map((cat) => ({
+      url: `${baseUrl}/jobs/category/${cat.slug}`,
+      lastModified: new Date("2026-08-28"),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    // Location Job Hubs (India & Global Tech Capitals)
+    ...CITIES.map((city) => ({
+      url: `${baseUrl}/jobs/location/${city.slug}`,
+      lastModified: new Date("2026-08-28"),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    // Company Career Hubs
+    ...COMPANIES.map((company) => ({
+      url: `${baseUrl}/jobs/company/${company.slug}`,
+      lastModified: new Date("2026-08-28"),
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    })),
     // Blog
     { url: `${baseUrl}/blog`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/blog/editorial-policy`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },

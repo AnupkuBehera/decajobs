@@ -4,12 +4,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { ShareScoreModal } from "@/components/share-score-modal";
 
 export function ResumeCheckerClient() {
   const [resumeText, setResumeText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   async function handleAnalyze() {
     if (!resumeText.trim() || resumeText.trim().length < 50) {
@@ -85,10 +87,16 @@ export function ResumeCheckerClient() {
       ) : (
         <div className="space-y-6">
           {/* Score */}
-          <Card padding="lg" className="text-center">
+          <Card padding="lg" className="text-center relative overflow-hidden">
             <p className="text-sm text-neutral-600">Your Resume Score</p>
             <p className={`text-6xl font-bold ${getScoreColor(result.score)}`}>{result.score}</p>
-            <p className="text-neutral-500">/100</p>
+            <p className="text-neutral-500 mb-3">/100</p>
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#0A66C2] hover:bg-[#084e96] text-white px-4 py-2 text-xs font-bold transition-all shadow-xs"
+            >
+              <span>🚀</span> Share Scorecard on LinkedIn
+            </button>
           </Card>
 
           {/* Sections */}
@@ -132,6 +140,16 @@ export function ResumeCheckerClient() {
             Check another resume
           </button>
         </div>
+      )}
+
+      {result && (
+        <ShareScoreModal
+          score={result.score}
+          grade={result.score >= 90 ? "A+" : result.score >= 80 ? "A" : "B"}
+          role="Professional Candidate"
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+        />
       )}
     </>
   );

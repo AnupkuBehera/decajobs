@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { CookieConsent } from "@/components/cookie-consent";
 import { AdScripts, AdBanner } from "@/components/ad-scripts";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { getHreflangAlternates } from "@/lib/i18n/utils";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +28,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://decajob.com"),
+  alternates: {
+    canonical: "https://decajob.com",
+    languages: getHreflangAlternates("/"),
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },

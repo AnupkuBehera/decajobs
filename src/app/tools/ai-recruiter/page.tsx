@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Analyze live job postings from LinkedIn & Indeed against your resume using Google Gemini AI. Get brutally honest match scores, skill gap analysis, and visa flags.",
   alternates: {
-    canonical: "/tools/ai-recruiter",
+    canonical: "https://decajob.com/tools/ai-recruiter",
   },
   openGraph: {
     title: "Free AI Recruiter Mode & Job Match Scanner | DecaJobs",

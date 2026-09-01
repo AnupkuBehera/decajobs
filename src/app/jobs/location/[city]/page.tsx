@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
         title: `Jobs in ${cityInfo.name} 2026 - ${cityInfo.name} Job Openings | DecaJobs`,
         description: `${cityInfo.blurb} Browse live job openings in ${cityInfo.name}, plus career insights. Sign up free to get ${cityInfo.name} jobs matched to your profile daily.`,
         alternates: {
-            canonical: `/jobs/location/${cityInfo.slug}`,
+            canonical: `https://decajob.com/jobs/location/${cityInfo.slug}`,
         },
         openGraph: {
             title: `Jobs in ${cityInfo.name} 2026 | DecaJobs`,

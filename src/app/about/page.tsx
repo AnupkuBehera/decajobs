@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Learn about DecaJobs, the AI-powered job portal that delivers 10 perfectly matched jobs to your inbox every morning. Our mission, team, technology, and values.",
   alternates: {
-    canonical: "/about",
+    canonical: "https://decajob.com/about",
   },
 };
 

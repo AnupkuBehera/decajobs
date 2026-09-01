@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Career Blog - Job Search Tips, Interview Guides & Resume Advice | DecaJobs",
   description: "Expert career advice, job search tips, interview preparation guides, resume writing tips, and salary negotiation strategies from the DecaJobs editorial team. Updated for 2026.",
   alternates: {
-    canonical: "/blog",
+    canonical: "https://decajob.com/blog",
   },
 };
 

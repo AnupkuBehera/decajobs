@@ -4,6 +4,9 @@ import {
     isJobFresh,
     extractSkillsFromJob,
     getCuratedTop10Jobs,
+    COMPANIES,
+    getCompanyBySlug,
+    jobMatchesCompany,
     SAMPLE_JOBS,
 } from "./public-jobs";
 import type { ExternalJob } from "./external-jobs/types";
@@ -88,6 +91,46 @@ describe("Public Jobs Quality & Anti-Scam Engine", () => {
             for (const job of top10) {
                 expect(isGenuineJob(job)).toBe(true);
             }
+        });
+    });
+
+    describe("Company Career Hubs", () => {
+        it("should contain 12 top tech employers with complete profiles", () => {
+            expect(COMPANIES.length).toBe(12);
+            for (const c of COMPANIES) {
+                expect(c.slug).toBeTruthy();
+                expect(c.name).toBeTruthy();
+                expect(c.hq).toBeTruthy();
+                expect(c.industry).toBeTruthy();
+                expect(c.salaryInsight).toBeTruthy();
+                expect(c.techStack.length).toBeGreaterThan(0);
+                expect(c.faqs.length).toBeGreaterThan(0);
+            }
+        });
+
+        it("should find company by slug", () => {
+            const google = getCompanyBySlug("google");
+            expect(google).toBeDefined();
+            expect(google?.name).toBe("Google");
+
+            const stripe = getCompanyBySlug("stripe");
+            expect(stripe).toBeDefined();
+            expect(stripe?.name).toBe("Stripe");
+        });
+
+        it("should match jobs to companies accurately", () => {
+            const google = getCompanyBySlug("google")!;
+            const googleJob = {
+                title: "Software Engineer III",
+                company: "Google Cloud LLC",
+            } as ExternalJob;
+            expect(jobMatchesCompany(googleJob, google)).toBe(true);
+
+            const otherJob = {
+                title: "Frontend Developer",
+                company: "Acme Startups",
+            } as ExternalJob;
+            expect(jobMatchesCompany(otherJob, google)).toBe(false);
         });
     });
 });

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JobSearchFilter } from "@/components/jobs/JobSearchFilter";
+import { InstantAlertsBanner } from "@/components/instant-alerts-banner";
 import {
     getPublicJobs,
     getCuratedTop10Jobs,
     JOB_CATEGORIES,
     CITIES,
+    COMPANIES,
     formatPostedDate,
 } from "@/lib/public-jobs";
 
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
     description:
         "Search genuine, non-expired job openings across software engineering, data analytics, design, marketing, DevOps, and more. Top 10 curated jobs daily, remote and India tech hubs. Updated daily.",
     alternates: {
-        canonical: "/jobs",
+        canonical: "https://decajob.com/jobs",
     },
     openGraph: {
         title: "Latest Verified Jobs 2026 | DecaJobs Curated Job Board",
@@ -61,6 +63,9 @@ export default async function JobsPage() {
                         </Link>
                     </div>
                 </div>
+
+                {/* Instant Telegram & WhatsApp Community Alerts */}
+                <InstantAlertsBanner className="mb-8" />
 
                 {/* Search & Filter Component */}
                 <section className="mb-12">
@@ -109,6 +114,36 @@ export default async function JobsPage() {
                                 <span className="text-2xl">🏙️</span>
                                 <p className="mt-2 text-sm font-semibold text-neutral-900 group-hover:text-primary-600">
                                     {city.name}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Company quick links */}
+                <section id="companies" className="mb-12">
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 className="text-xl font-bold text-neutral-900">Browse Jobs by Top Tech Employers</h2>
+                            <p className="text-xs text-neutral-500 mt-0.5">Explore salary benchmarks, tech stacks, and live openings</p>
+                        </div>
+                        <span className="text-xs font-semibold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-full">
+                            12 Global Companies
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                        {COMPANIES.map((company) => (
+                            <Link
+                                key={company.slug}
+                                href={`/jobs/company/${company.slug}`}
+                                className="group rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:shadow-md hover:border-primary-200"
+                            >
+                                <span className="text-2xl">{company.logoEmoji}</span>
+                                <p className="mt-2 text-sm font-semibold text-neutral-900 group-hover:text-primary-600">
+                                    {company.name}
+                                </p>
+                                <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+                                    {company.industry.split(",")[0]}
                                 </p>
                             </Link>
                         ))}

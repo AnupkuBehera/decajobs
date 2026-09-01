@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Generate high-converting LinkedIn headlines designed for LinkedIn SEO. Increase recruiter views and profile clicks with role-tailored headline formulas.",
   alternates: {
-    canonical: "/tools/linkedin-headline",
+    canonical: "https://decajob.com/tools/linkedin-headline",
   },
   openGraph: {
     title: "Free AI LinkedIn Headline Generator & Profile Optimizer | DecaJobs",

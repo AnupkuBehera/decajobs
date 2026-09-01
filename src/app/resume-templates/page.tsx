@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description:
         "Download free ATS-friendly resume templates optimized for 2026 hiring algorithms. Tailor software engineer, data analyst, product manager, and designer resumes in 1-click with DecaJobs AI.",
     alternates: {
-        canonical: "/resume-templates",
+        canonical: "https://decajob.com/resume-templates",
     },
     openGraph: {
         title: "Free ATS Resume Templates 2026 | DecaJobs",
@@ -187,10 +187,10 @@ export default function ResumeTemplatesPage() {
                                     View & Use Template →
                                 </Link>
                                 <Link
-                                    href={`/resume-tools?tab=builder&role=${encodeURIComponent(tpl.title)}`}
+                                    href={`/resume-tools?tab=builder&template=${tpl.slug}&role=${encodeURIComponent(tpl.title)}`}
                                     className="block text-center rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
                                 >
-                                    ✨ Generate with AI
+                                    ✨ Customize in AI Builder
                                 </Link>
                             </div>
                         </div>

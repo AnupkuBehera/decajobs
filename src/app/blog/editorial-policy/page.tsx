@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Learn about DecaJobs editorial standards, research methodology, fact-checking policies, and how our career experts curate high-quality job search advice.",
   alternates: {
-    canonical: "/blog/editorial-policy",
+    canonical: "https://decajob.com/blog/editorial-policy",
   },
 };
 

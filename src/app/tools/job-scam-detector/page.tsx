@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Check if a job posting or offer is legitimate or a scam. Detect fake job offers, phishing attempts, upfront payment demands, and suspicious communications.",
   alternates: {
-    canonical: "/tools/job-scam-detector",
+    canonical: "https://decajob.com/tools/job-scam-detector",
   },
   openGraph: {
     title: "Free AI Job Scam Detector & Legitimacy Checker | DecaJobs",

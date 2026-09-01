@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Check your resume ATS score instantly for free. Get detailed feedback on formatting, keyword density, section readability, and action verbs to pass recruiter screeners.",
   alternates: {
-    canonical: "/tools/resume-checker",
+    canonical: "https://decajob.com/tools/resume-checker",
   },
   openGraph: {
     title: "Free AI Resume Checker & ATS Score Calculator | DecaJobs",

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
         "Browse the latest remote jobs in software engineering, design, marketing, data, and more. Curated work-from-anywhere opportunities with salary insights and tips to land remote roles.",
     alternates: {
-        canonical: "/jobs/remote",
+        canonical: "https://decajob.com/jobs/remote",
     },
     openGraph: {
         title: "Remote Jobs 2026 | DecaJobs",

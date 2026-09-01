@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Check tech salary benchmarks by job role and city (Bangalore, Mumbai, Delhi, Hyderabad, Remote, USA). Compare entry, mid, and senior level compensation packages.",
   alternates: {
-    canonical: "/tools/salary-calculator",
+    canonical: "https://decajob.com/tools/salary-calculator",
   },
   openGraph: {
     title: "Free Tech Salary Calculator & CTC Benchmarking (2026) | DecaJobs",

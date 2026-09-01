@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Compare your resume against any job description. Get an instant match percentage score, missing ATS keywords list, and custom bullet recommendations.",
   alternates: {
-    canonical: "/tools/resume-matcher",
+    canonical: "https://decajob.com/tools/resume-matcher",
   },
   openGraph: {
     title: "Free AI Resume-to-Job Matcher & Keyword Compare | DecaJobs",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DailyAlertForm } from "@/components/daily-alert-form";
+import { getHreflangAlternates } from "@/lib/i18n/utils";
 
 export const metadata: Metadata = {
   title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    languages: getHreflangAlternates("/"),
   },
 };
 

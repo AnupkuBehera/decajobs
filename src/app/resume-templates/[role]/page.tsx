@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: `${template.title} ATS Resume Template 2026 - Free Download & AI Generator | DecaJobs`,
         description: `Download the recruiter-approved ${template.title} ATS resume template for 2026. Includes battle-tested achievement bullets, top industry keywords, and 1-click AI customization.`,
         alternates: {
-            canonical: `/resume-templates/${template.slug}`,
+            canonical: `https://decajob.com/resume-templates/${template.slug}`,
         },
         openGraph: {
             title: `${template.title} Resume Template (ATS 98% Score) | DecaJobs`,
@@ -40,7 +40,7 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
         notFound();
     }
 
-    const builderUrl = `/resume-tools?tab=builder&role=${encodeURIComponent(template.title)}`;
+    const builderUrl = `/resume-tools?tab=builder&template=${template.slug}&role=${encodeURIComponent(template.title)}`;
 
     const breadcrumbSchema = {
         "@context": "https://schema.org",
@@ -184,6 +184,75 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
                         >
                             Load into AI Builder ✨
                         </Link>
+                    </div>
+                </div>
+
+                {/* Related Career Resources & Live Jobs internal linking block */}
+                <div className="mt-10 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8">
+                    <h3 className="text-lg font-bold text-neutral-900">
+                        Next Steps: Supercharge Your {template.title} Job Search
+                    </h3>
+                    <p className="mt-1 text-sm text-neutral-600">
+                        Use our free AI tools and explore active openings tailored to your target career path.
+                    </p>
+
+                    <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                        <Link
+                            href="/tools/resume-checker"
+                            className="group flex flex-col rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:border-primary-300 hover:shadow-sm"
+                        >
+                            <span className="text-xl mb-1">📄</span>
+                            <span className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600">
+                                Check ATS Score
+                            </span>
+                            <span className="mt-1 text-xs text-neutral-500">
+                                Score your customized resume out of 100 with free instant feedback.
+                            </span>
+                        </Link>
+
+                        <Link
+                            href="/tools/salary-calculator"
+                            className="group flex flex-col rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:border-primary-300 hover:shadow-sm"
+                        >
+                            <span className="text-xl mb-1">💰</span>
+                            <span className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600">
+                                Salary Benchmarks
+                            </span>
+                            <span className="mt-1 text-xs text-neutral-500">
+                                Explore compensation for {template.title} roles across global markets.
+                            </span>
+                        </Link>
+
+                        <Link
+                            href="/jobs"
+                            className="group flex flex-col rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:border-primary-300 hover:shadow-sm"
+                        >
+                            <span className="text-xl mb-1">💼</span>
+                            <span className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600">
+                                Browse Active Jobs
+                            </span>
+                            <span className="mt-1 text-xs text-neutral-500">
+                                Discover curated live openings and get 10 matched jobs daily.
+                            </span>
+                        </Link>
+                    </div>
+
+                    {/* Other templates */}
+                    <div className="mt-6 pt-5 border-t border-neutral-200">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 block mb-2">
+                            Other Popular Resume Templates:
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                            {TEMPLATE_ROLES.filter((t) => t.slug !== template.slug).map((t) => (
+                                <Link
+                                    key={t.slug}
+                                    href={`/resume-templates/${t.slug}`}
+                                    className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-700 hover:border-primary-300 hover:text-primary-600 transition-colors"
+                                >
+                                    {t.title} Resume
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
 

@@ -122,14 +122,51 @@ export function scoreLocationMatch(
   const normalizedCandidate = candidateLocation.trim().toLowerCase();
   const normalizedJob = jobLocation.trim().toLowerCase();
 
-  // Remote jobs match all candidates
-  if (normalizedJob === "remote") {
+  // Remote jobs match all candidates globally
+  const isJobRemote =
+    normalizedJob === "remote" ||
+    normalizedJob.includes("remote") ||
+    normalizedJob.includes("worldwide") ||
+    normalizedJob.includes("global") ||
+    normalizedJob.includes("anywhere") ||
+    normalizedJob.includes("work from home");
+
+  const isCandidateRemote =
+    normalizedCandidate === "remote" ||
+    normalizedCandidate.includes("remote") ||
+    normalizedCandidate.includes("anywhere") ||
+    normalizedCandidate.includes("worldwide");
+
+  if (isJobRemote || isCandidateRemote) {
     return 15;
   }
 
   // Exact location match
   if (normalizedCandidate === normalizedJob) {
     return 15;
+  }
+
+  // Segment matching: check city or country match (e.g. "Madrid, Spain" <-> "Madrid")
+  const candidateParts = normalizedCandidate
+    .split(/[,/|-]/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 2);
+
+  const jobParts = normalizedJob
+    .split(/[,/|-]/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 2);
+
+  for (const cPart of candidateParts) {
+    if (normalizedJob.includes(cPart)) {
+      return 15;
+    }
+  }
+
+  for (const jPart of jobParts) {
+    if (normalizedCandidate.includes(jPart)) {
+      return 15;
+    }
   }
 
   return 0;

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
         title: `${cat.name} Jobs 2026 - ${cat.name} Careers & Openings | DecaJobs`,
         description: `${cat.name} jobs and career guide. Browse live ${cat.name.toLowerCase()} openings, salaries, skills, and career paths. Sign up free to get matched ${cat.name.toLowerCase()} jobs daily.`,
         alternates: {
-            canonical: `/jobs/category/${cat.slug}`,
+            canonical: `https://decajob.com/jobs/category/${cat.slug}`,
         },
         openGraph: {
             title: `${cat.name} Jobs 2026 | DecaJobs`,

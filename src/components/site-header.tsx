@@ -3,6 +3,7 @@ import { createClient as createServiceClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { checkSubscription } from "@/lib/subscription/check";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export async function SiteHeader() {
   let user = null;
@@ -217,6 +218,7 @@ export async function SiteHeader() {
               </Link>
             </>
           )}
+          <LanguageSwitcher variant="header" />
         </nav>
       </div>
     </header>

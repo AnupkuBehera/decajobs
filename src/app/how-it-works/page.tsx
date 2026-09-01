@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "How DecaJobs Works - AI Job Matching Explained | DecaJobs",
   description: "Learn exactly how DecaJobs finds and delivers 10 perfect job matches to your inbox every morning. Step-by-step guide to our AI matching technology.",
   alternates: {
-    canonical: "/how-it-works",
+    canonical: "https://decajob.com/how-it-works",
   },
 };
 
@@ -141,6 +141,46 @@ export default function HowItWorksPage() {
           </Link>
         </div>
       </div>
+
+      {/* HowTo JSON-LD structured data for Google rich snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How DecaJobs Works: Getting 10 Curated Job Matches Every Morning",
+            description:
+              "Step-by-step guide on how DecaJobs matches your skills and location against 20+ job sources to deliver 10 curated jobs to your inbox every morning.",
+            step: [
+              {
+                "@type": "HowToStep",
+                position: 1,
+                name: "Create Your Profile",
+                text: "Add your target job titles, key skills, and location preferences in under 2 minutes.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 2,
+                name: "AI Scans 20+ Job Sources",
+                text: "Our algorithm scans listings from LinkedIn, Indeed, Remotive, RemoteOK, and Arbeitnow, deduplicating and removing spam.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 3,
+                name: "AI Scoring & Matching",
+                text: "Each job is scored based on title match (40%), skills (35%), location (15%), and description keywords (10%).",
+              },
+              {
+                "@type": "HowToStep",
+                position: 4,
+                name: "Receive Your Daily 10 Digest",
+                text: "Wake up to a clean email digest with 1-click apply links at 8:00 AM every morning.",
+              },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

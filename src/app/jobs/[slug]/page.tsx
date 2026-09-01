@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
                 follow: true,
             },
             alternates: {
-                canonical: `/jobs/${slug}`,
+                canonical: `https://decajob.com/jobs/${slug}`,
             },
         };
     }
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
         title: `${job.title} at ${job.company} - Apply Now | DecaJobs`,
         description: `${job.title} at ${job.company} (${job.location}). ${truncate(job.description, 150)} Apply directly or sign up free to get AI-matched jobs daily.`,
         alternates: {
-            canonical: `/jobs/${slug}`,
+            canonical: `https://decajob.com/jobs/${slug}`,
         },
         openGraph: {
             title: `${job.title} at ${job.company} | DecaJobs`,

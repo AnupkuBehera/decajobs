@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { updateSession } from "@/lib/supabase/middleware";
+import { cleanPathname } from "@/lib/i18n/utils";
 
 /**
  * Protected routes that require authentication.
@@ -31,10 +32,12 @@ const _publicRoutes = ["/", "/login", "/employer/register", "/auth/callback"];
 
 /**
  * Check if a pathname matches any of the given route prefixes.
+ * Strips any locale prefix first (e.g., /es/dashboard -> /dashboard).
  */
 function matchesRoute(pathname: string, routes: string[]): boolean {
+  const clean = cleanPathname(pathname);
   return routes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => clean === route || clean.startsWith(`${route}/`)
   );
 }
 
@@ -95,7 +98,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect authenticated users away from login page to dashboard
-  if (user && pathname === "/login") {
+  if (user && (cleanPathname(pathname) === "/login" || pathname === "/login")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
