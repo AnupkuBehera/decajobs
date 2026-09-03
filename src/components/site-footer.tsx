@@ -102,6 +102,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog/author/anup-behera" className="text-neutral-400 hover:text-white transition-colors">
+                  Founder &amp; Author
+                </Link>
+              </li>
+              <li>
                 <Link href="/employer/register" className="text-neutral-400 hover:text-white transition-colors">
                   Post Jobs (Free)
                 </Link>

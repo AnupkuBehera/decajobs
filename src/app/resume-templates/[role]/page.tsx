@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { TEMPLATE_ROLES } from "../page";
+import { TEMPLATE_ROLES } from "@/lib/resume/template-roles";
 
 interface Props {
     params: Promise<{ role: string }>;

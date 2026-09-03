@@ -77,6 +77,14 @@ export default function EditorialPolicyPage() {
             </a>
             . We review feedback promptly and publish corrections transparently.
           </p>
+          <h2>6. Editorial Leadership &amp; Authors</h2>
+          <p>
+            DecaJobs content is curated under the direction of founder and lead software architect{" "}
+            <Link href="/blog/author/anup-behera" className="text-primary-600 font-semibold underline">
+              Anup Behera
+            </Link>
+            . Our editorial contributors consist of seasoned engineering mentors, recruiters, and career strategists who adhere strictly to our fact-checking standards and real-world hiring data methodologies.
+          </p>
 
           <div className="mt-10 rounded-xl bg-neutral-50 border border-neutral-200 p-6 not-prose">
             <h3 className="font-semibold text-neutral-900 text-lg mb-2">Have Questions About Our Content?</h3>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Get in touch with the DecaJobs team. Contact us for candidate support, employer partnerships, editorial inquiries, or privacy questions.",
   alternates: {
-    canonical: "/contact",
+    canonical: "https://decajob.com/contact",
   },
 };
 
@@ -22,6 +22,14 @@ export default function ContactPage() {
       "name": "DecaJobs",
       "url": "https://decajob.com",
       "email": "support@decajob.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Infocity, Patia",
+        "addressLocality": "Bhubaneswar",
+        "addressRegion": "Odisha",
+        "postalCode": "751024",
+        "addressCountry": "IN"
+      },
       "contactPoint": [
         {
           "@type": "ContactPoint",
@@ -114,6 +122,19 @@ export default function ContactPage() {
                   <a href="mailto:privacy@decajob.com" className="text-primary-600 hover:underline">privacy@decajob.com</a>
                 </li>
               </ul>
+            </div>
+            <div className="rounded-xl border border-neutral-200 bg-white p-6">
+              <h2 className="text-lg font-semibold text-neutral-900 mb-4">
+                Registered Office &amp; Operations
+              </h2>
+              <div className="space-y-2 text-sm text-neutral-600">
+                <p className="font-semibold text-neutral-900">DecaJobs Technologies</p>
+                <p>Infocity, Patia, Chandaka Industrial Estate</p>
+                <p>Bhubaneswar, Odisha 751024, India</p>
+                <p className="pt-2 text-xs text-neutral-500">
+                  Business Hours: Monday – Saturday, 9:00 AM – 6:00 PM IST
+                </p>
+              </div>
             </div>
           </div>
 

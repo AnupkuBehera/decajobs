@@ -11,6 +11,7 @@ import {
     COMPANIES,
     formatPostedDate,
 } from "@/lib/public-jobs";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const revalidate = 3600;
 
@@ -56,16 +57,19 @@ export default async function JobsPage() {
                             {jobs.length} genuine active listings · Verified {newestDate}
                         </span>
                         <Link
-                            href="/resume-tools"
+                            href="/tools/resume-checker"
                             className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3.5 py-1.5 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors"
                         >
-                            <span>✨</span> Build ATS Resume For Free
+                            <span>✨</span> Check ATS Resume Score Free
                         </Link>
                     </div>
                 </div>
 
                 {/* Instant Telegram & WhatsApp Community Alerts */}
                 <InstantAlertsBanner className="mb-8" />
+
+                {/* AdSense In-feed Display Unit */}
+                <AdSenseUnit label="Featured Career Opportunity Partner" className="mb-8" />
 
                 {/* Search & Filter Component */}
                 <section className="mb-12">

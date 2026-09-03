@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Disclaimer - DecaJobs",
   description: "Read the DecaJobs disclaimer regarding job listings, AI tools, career advice, editorial content, and external links on our platform.",
   alternates: {
-    canonical: "/disclaimer",
+    canonical: "https://decajob.com/disclaimer",
   },
 };
 

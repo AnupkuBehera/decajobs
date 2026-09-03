@@ -16,6 +16,7 @@ import {
     type ExternalJob,
 } from "@/lib/public-jobs";
 import { buildJobPostingSchema } from "@/lib/job-schema";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const revalidate = 3600;
 
@@ -179,7 +180,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
     const categoriesForJob = JOB_CATEGORIES.filter((cat) => jobMatchesCategory(job, cat));
 
-    const tailorResumeUrl = `/resume-tools?tab=builder&role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1200))}`;
+    const tailorResumeUrl = `/tools/resume-matcher?role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1200))}`;
 
     const breadcrumbSchema = {
         "@context": "https://schema.org",
@@ -354,6 +355,58 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                         </div>
                     )}
                 </article>
+
+                {/* Unique Editorial Content: Application & Interview Strategy */}
+                <section className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
+                    <h2 className="text-xl font-bold text-neutral-900 mb-2">
+                        Application &amp; Interview Strategy for {job.title}
+                    </h2>
+                    <p className="text-sm text-neutral-600 mb-6 leading-relaxed">
+                        To maximize your interview callback rate for this position at {job.company}, align your resume and screening answers with current 2026 hiring benchmarks:
+                    </p>
+
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <div className="rounded-xl border border-neutral-100 bg-neutral-50 p-5">
+                            <h3 className="text-sm font-bold text-neutral-900 mb-2 flex items-center gap-1.5">
+                                <span>🎯</span> ATS Keyword Optimization
+                            </h3>
+                            <p className="text-xs text-neutral-700 leading-relaxed mb-3">
+                                Recruiters screening for {job.title} prioritize candidates with verified hands-on proficiency in core workflow tools. Ensure your resume explicitly highlights relevant technical competencies and measurable outcomes.
+                            </p>
+                            <Link
+                                href={`/tools/resume-checker?role=${encodeURIComponent(job.title)}`}
+                                className="text-xs font-semibold text-primary-600 hover:text-primary-800 underline"
+                            >
+                                Run ATS Resume Check for this role →
+                            </Link>
+                        </div>
+
+                        <div className="rounded-xl border border-neutral-100 bg-neutral-50 p-5">
+                            <h3 className="text-sm font-bold text-neutral-900 mb-2 flex items-center gap-1.5">
+                                <span>💡</span> Behavioral Interview Tip
+                            </h3>
+                            <p className="text-xs text-neutral-700 leading-relaxed mb-3">
+                                When interviewing for roles like this, use the STAR framework (Situation, Task, Action, Result). Quantify your past business results with concrete metrics (percentage efficiency gained, latency reduced, or revenue driven).
+                            </p>
+                            <Link
+                                href={`/tools/interview-questions?role=${encodeURIComponent(job.title)}`}
+                                className="text-xs font-semibold text-primary-600 hover:text-primary-800 underline"
+                            >
+                                Practice interview questions for {job.title} →
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 border-t border-neutral-100 pt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-500">
+                        <span>Curated by DecaJobs Career Research Team</span>
+                        <Link href="/blog/editorial-policy" className="hover:text-primary-600 underline">
+                            Editorial Standards
+                        </Link>
+                    </div>
+                </section>
+
+                {/* In-job listing AdSense display banner */}
+                <AdSenseUnit label="Sponsored Job Partner" className="my-8" />
 
                 {/* Similar jobs */}
                 {similar.length > 0 && (

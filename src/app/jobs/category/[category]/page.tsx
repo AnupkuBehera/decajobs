@@ -8,6 +8,7 @@ import {
     getPublicJobsFiltered,
     JOB_CATEGORIES,
 } from "@/lib/public-jobs";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const revalidate = 3600;
 
@@ -166,6 +167,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         </p>
                     </div>
                 </article>
+
+                {/* AdSense In-Category Display Unit */}
+                <AdSenseUnit label="Sponsored Career Partner" className="my-8" />
 
                 {/* Frequently Asked Questions */}
                 {cat.faqs && cat.faqs.length > 0 && (

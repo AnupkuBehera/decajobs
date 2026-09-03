@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 /**
  * Renders ad scripts only for non-Pro users.
@@ -90,7 +91,9 @@ export async function AdBanner() {
 
   if (isPro) return null;
 
-  // Adsterra banner container — disabled
-  return null;
-  // return <div id="container-71208afc22515d4d1e47d44012c8ffdd" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" />;
+  return (
+    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <AdSenseUnit label="Sponsored Partner" className="my-6" />
+    </div>
+  );
 }

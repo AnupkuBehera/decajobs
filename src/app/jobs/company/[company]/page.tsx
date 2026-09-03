@@ -8,6 +8,7 @@ import {
     getPublicJobsFiltered,
     COMPANIES,
 } from "@/lib/public-jobs";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const revalidate = 3600;
 
@@ -218,6 +219,9 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
                             </div>
                         )}
                     </div>
+
+                    {/* AdSense In-Company Display Unit */}
+                    <AdSenseUnit label="Sponsored Employer Partner" className="my-8" />
 
                     {/* ── FAQ Section ── */}
                     {companyInfo.faqs && companyInfo.faqs.length > 0 && (

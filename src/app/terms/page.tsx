@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Read the DecaJobs terms and conditions. Understand your rights and responsibilities when using our AI-powered job portal.",
   alternates: {
-    canonical: "/terms",
+    canonical: "https://decajob.com/terms",
   },
 };
 
@@ -92,7 +92,7 @@ export default function TermsPage() {
         <h2>11. Contact</h2>
         <p>
           For questions about these Terms, contact us at{" "}
-          <a href="mailto:legal@decajobs.com">legal@decajobs.com</a>.
+          <a href="mailto:legal@decajob.com">legal@decajob.com</a>.
         </p>
         </div>
       </div>

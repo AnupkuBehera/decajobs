@@ -1,218 +1,110 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { AdSenseUnit } from "@/components/adsense-unit";
+import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 export const metadata: Metadata = {
-  title: "Career Blog - Job Search Tips, Interview Guides & Resume Advice | DecaJobs",
-  description: "Expert career advice, job search tips, interview preparation guides, resume writing tips, and salary negotiation strategies from the DecaJobs editorial team. Updated for 2026.",
+  title: "Career Blog - Job Search Tips, Interview Guides & Salary Playbooks | DecaJobs",
+  description:
+    "In-depth career blueprints, ATS resume optimization strategies, behavioral interview guides (STAR method), and salary negotiation frameworks from Anup Behera and the DecaJobs editorial team.",
   alternates: {
     canonical: "https://decajob.com/blog",
   },
 };
 
-const articles = [
-  {
-    slug: "top-10-resume-mistakes",
-    title: "Top 10 Resume Mistakes That Get You Rejected (And How to Fix Them)",
-    excerpt: "Recruiters spend just 7 seconds on your resume. Here are the 10 most common mistakes that get resumes instantly rejected, and exactly how to fix each one.",
-    category: "Resume Tips",
-    date: "June 12, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "how-to-crack-any-interview",
-    title: "How to Crack Any Job Interview: The STAR Method + 50 Questions",
-    excerpt: "Master the STAR method and practice with the 50 most-asked interview questions across tech, finance, and management roles.",
-    category: "Interview Prep",
-    date: "June 10, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "remote-jobs-guide-india",
-    title: "Complete Guide to Finding Remote Jobs in India (2026)",
-    excerpt: "Where to find remote jobs, how to stand out, salary expectations, and the best companies hiring remote workers in India right now.",
-    category: "Remote Work",
-    date: "June 8, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "salary-negotiation-tips",
-    title: "Salary Negotiation: How to Get 20-40% More Than the Initial Offer",
-    excerpt: "Proven scripts and strategies to negotiate a higher salary, backed by data from 10,000+ job offers. Works for freshers and experienced professionals.",
-    category: "Salary",
-    date: "June 5, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "freshers-job-search-guide",
-    title: "Job Search Guide for Freshers: Land Your First Job in 30 Days",
-    excerpt: "Step-by-step action plan for fresh graduates. Where to apply, how to build a resume with no experience, and the secret to getting callbacks.",
-    category: "Freshers",
-    date: "June 3, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "linkedin-profile-optimization",
-    title: "LinkedIn Profile Optimization: Get 10x More Recruiter Views",
-    excerpt: "The exact formula used by top candidates to optimize their LinkedIn profile. Includes headline templates, summary examples, and keyword strategies.",
-    category: "LinkedIn",
-    date: "June 1, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "ats-resume-secrets",
-    title: "How to Beat the ATS (Applicant Tracking System): Secrets from Recruiters",
-    excerpt: "More than 95% of major employers use Applicant Tracking Systems (ATS) to filter resumes. Learn the formatting and keyword secrets to beat the scanners.",
-    category: "Resume Tips",
-    date: "May 28, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "artificial-intelligence-careers",
-    title: "How AI is Changing the Job Market: Top Skills to Learn in 2026",
-    excerpt: "Artificial Intelligence is reshaping careers. Learn the top AI literacy, prompt engineering, and soft skills needed to remain competitive in 2026.",
-    category: "Career Growth",
-    date: "May 25, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "remote-job-interview-prep",
-    title: "Remote Job Interviews: 10 Tips to Ace Your Video and Tech Rounds",
-    excerpt: "Remote interviews require different skills. Learn how to optimize your setup, background, lighting, and communication style to stand out.",
-    category: "Interview Prep",
-    date: "May 22, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "career-gaps-explanation",
-    title: "How to Explain Career Gaps in a Job Interview (With Examples)",
-    excerpt: "Career gaps are common. Learn how to explain career gaps for upskilling, family care, or health reasons with confidence and clear scripts.",
-    category: "Interview Prep",
-    date: "May 20, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "linkedin-networking-guide",
-    title: "The Art of LinkedIn Cold Messaging: How to Get Referrals Without Being Annoying",
-    excerpt: "Cold outreach on LinkedIn has high leverage. Learn the exact template, strategies, and etiquette to connect with peers and request referrals.",
-    category: "LinkedIn",
-    date: "May 18, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "negotiating-first-salary",
-    title: "Fresher Salary Negotiation: Yes, You Can (And Should) Ask For More",
-    excerpt: "Many freshers accept their first offer without negotiating. Learn the data, tactics, and scripts to politely ask for a 10-15% increase as a graduate.",
-    category: "Salary",
-    date: "May 15, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "how-to-answer-salary-expectations",
-    title: "How to Answer \"What Are Your Salary Expectations?\" (Scripts Included)",
-    excerpt: "The most dreaded interview question — answered. Learn to delay your number, use research-backed ranges, and negotiate like a pro with exact scripts.",
-    category: "Salary",
-    date: "July 10, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "best-skills-to-learn-2026",
-    title: "The Best Skills to Learn in 2026 to Future-Proof Your Career",
-    excerpt: "AI literacy, prompt engineering, data interpretation, and more — discover the skills that give you the strongest career leverage this year.",
-    category: "Career Growth",
-    date: "July 8, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "how-to-write-resume-summary",
-    title: "How to Write a Resume Summary That Gets Interviews (10 Examples)",
-    excerpt: "Your resume summary is the first thing recruiters read. Learn the formula and see 10 real examples — for freshers, career changers, and leaders.",
-    category: "Resume Tips",
-    date: "July 5, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "remote-work-tools-guide",
-    title: "The Essential Remote Work Tools Guide: Software & Gadgets for 2026",
-    excerpt: "Slack, Notion, Jira, hardware essentials, and home office setup — the complete toolkit every remote professional needs to thrive.",
-    category: "Remote Work",
-    date: "July 2, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "job-application-follow-up-guide",
-    title: "The Perfect Job Application Follow-Up: Timing, Templates & Etiquette",
-    excerpt: "Stop waiting in silence. Learn the exact follow-up timeline, ready-to-send email templates, and etiquette rules that get you noticed.",
-    category: "Job Search Tips",
-    date: "June 28, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "how-to-build-professional-network",
-    title: "How to Build a Professional Network That Gets You Hired",
-    excerpt: "Referred candidates are 3-5x more likely to get hired. Here's a sustainable 5-day plan to build a network that actually works.",
-    category: "LinkedIn",
-    date: "June 25, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "switching-careers-guide",
-    title: "How to Switch Careers in 2026: A Step-by-Step Pivot Guide",
-    excerpt: "From marketing to data, teaching to tech, or finance to product — a proven 7-step process for a successful career pivot.",
-    category: "Career Growth",
-    date: "June 22, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-  {
-    slug: "how-to-negotiate-remote-salary",
-    title: "How to Negotiate a Remote Salary: Global Pay & Geo-Bands Explained",
-    excerpt: "Remote pay is different. Understand geo-bands, location-agnostic pay, and exactly what to ask to maximize your international salary.",
-    category: "Salary",
-    date: "June 19, 2026",
-    author: "DecaJobs Editorial Team",
-  },
-];
-
 export default function BlogPage() {
+  const articles = Object.values(BLOG_ARTICLES);
+
   return (
     <div className="py-10 sm:py-16">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <Breadcrumbs items={[{ label: "Career Blog" }]} />
 
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">Career Blog</h1>
-          <p className="mt-3 text-neutral-600 max-w-xl mx-auto">
-            Expert career advice from the DecaJobs editorial team. Job search tips,
-            interview guides, resume writing, and salary negotiation strategies.
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-3.5 py-1 text-xs font-semibold text-primary-700 mb-3 border border-primary-100">
+            <span>📚</span> Expert Career Blueprints &amp; Hiring Telemetry
+          </div>
+          <h1 className="text-3xl font-black text-neutral-900 sm:text-4xl lg:text-5xl">
+            DecaJobs Career Blog
+          </h1>
+          <p className="mt-4 text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
+            Data-backed career guides, ATS parsing secrets, proven salary negotiation scripts, and behavioral interview strategies to accelerate your career.
           </p>
+
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-neutral-500">
+            <span>Editor-in-Chief: <Link href="/blog/author/anup-behera" className="text-primary-600 font-semibold hover:underline">Anup Behera</Link></span>
+            <span>·</span>
+            <Link href="/blog/editorial-policy" className="hover:text-primary-600 underline">Editorial &amp; Fact-Checking Standards</Link>
+          </div>
         </div>
 
+        {/* Top AdSense Display Unit */}
+        <AdSenseUnit label="Featured Career Resources" className="mb-10" />
+
+        {/* Article Grid */}
         <div className="grid gap-6 sm:grid-cols-2">
           {articles.map((article) => (
-            <Link key={article.slug} href={`/blog/${article.slug}`} className="group">
-              <article className="h-full rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:shadow-lg hover:border-primary-200">
-                <span className="inline-block rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-700 mb-3">
-                  {article.category}
-                </span>
-                <h2 className="text-lg font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors">
+            <Link
+              key={article.slug}
+              href={`/blog/${article.slug}`}
+              className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 transition-all hover:shadow-lg hover:border-primary-300"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="inline-block rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
+                    {article.category}
+                  </span>
+                  <span className="text-xs text-neutral-400">
+                    {article.readingTime}
+                  </span>
+                </div>
+                <h2 className="text-lg font-bold text-neutral-900 group-hover:text-primary-600 transition-colors leading-snug">
                   {article.title}
                 </h2>
-                <p className="mt-2 text-sm text-neutral-600 line-clamp-3">{article.excerpt}</p>
-                <div className="mt-3 flex items-center gap-2 text-xs text-neutral-400">
-                  <span>{article.author}</span>
-                  <span>·</span>
-                  <time>{article.date}</time>
+                <p className="mt-2.5 text-sm text-neutral-600 line-clamp-3 leading-relaxed">
+                  {article.excerpt}
+                </p>
+              </div>
+
+              <div className="mt-5 border-t border-neutral-100 pt-3 flex items-center justify-between text-xs text-neutral-500">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm">{article.author.avatarEmoji}</span>
+                  <span className="font-medium text-neutral-700">{article.author.name}</span>
                 </div>
-              </article>
+                <time dateTime={article.dateISO}>{article.date}</time>
+              </div>
             </Link>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <p className="text-neutral-600">Stop searching. Let AI match you with perfect jobs daily.</p>
-          <Link href="/login" className="mt-3 inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]">
-            Get 10 Matched Jobs Daily — Free →
-          </Link>
+        {/* Mid-page AdSense banner */}
+        <AdSenseUnit label="Sponsored Educational Links" className="my-12" />
+
+        {/* E-E-A-T Editorial Commitment Banner */}
+        <div className="mt-8 rounded-3xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-xl">
+            <h3 className="text-base font-bold text-neutral-900">
+              Our Editorial Quality Guarantee
+            </h3>
+            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+              Every guide published on DecaJobs is crafted by experienced technologists and hiring experts. We never publish auto-generated, thin regurgitations. All salary figures and market statistics are cross-referenced with verified compensation disclosures and recruiter feedback.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <Link
+              href="/blog/author/anup-behera"
+              className="rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 transition-colors text-center"
+            >
+              Meet the Author →
+            </Link>
+            <Link
+              href="/blog/editorial-policy"
+              className="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors text-center"
+            >
+              Editorial Policy →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "DecaJobs is committed to digital accessibility. Learn about our WCAG 2.1 AA compliance efforts and how to report accessibility issues.",
   alternates: {
-    canonical: "/accessibility",
+    canonical: "https://decajob.com/accessibility",
   },
 };
 

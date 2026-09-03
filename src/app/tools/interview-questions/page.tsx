@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { InterviewQuestionsClient } from "./interview-questions-client";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const metadata: Metadata = {
   title: "Free AI Interview Question & Answer Generator | DecaJobs",
@@ -74,6 +75,8 @@ export default function InterviewQuestionsPage() {
         </div>
 
         <InterviewQuestionsClient />
+
+        <AdSenseUnit label="Sponsored Interview Prep Partner" className="my-10" />
 
         <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
           <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Crack Your Next Job Interview</h2>

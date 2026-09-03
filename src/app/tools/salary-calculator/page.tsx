@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SalaryCalculatorClient } from "./salary-calculator-client";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const metadata: Metadata = {
   title: "Free Tech Salary Calculator & CTC Benchmarking (2026) | DecaJobs",
@@ -78,6 +79,8 @@ export default function SalaryCalculatorPage() {
         </div>
 
         <SalaryCalculatorClient />
+
+        <AdSenseUnit label="Sponsored Compensation Partner" className="my-10" />
 
         <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
           <h2 className="text-2xl font-bold text-neutral-900 mb-6">Understanding Salary Benchmarking &amp; Negotiation</h2>

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Read the DecaJobs privacy policy. Learn how we collect, use, and protect your personal data on our AI-powered job portal.",
   alternates: {
-    canonical: "/privacy",
+    canonical: "https://decajob.com/privacy",
   },
 };
 
@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
 
         <h2>1. Introduction</h2>
         <p>
-          DecaJobs (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered online job portal at decajobs.com.
+          DecaJobs (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered online job portal at decajob.com.
         </p>
 
         <h2>2. Information We Collect</h2>
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
         <h2>9. Contact Us</h2>
         <p>
           If you have questions about this Privacy Policy, please contact us at{" "}
-          <a href="mailto:privacy@decajobs.com">privacy@decajobs.com</a>.
+          <a href="mailto:privacy@decajob.com">privacy@decajob.com</a>.
         </p>
         </div>
       </div>

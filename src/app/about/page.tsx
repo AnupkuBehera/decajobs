@@ -44,7 +44,11 @@ export default function AboutPage() {
 
           <h2>Who We Are</h2>
           <p>
-            DecaJobs was founded by <strong>Anup Behera</strong>, a technology professional based in
+            DecaJobs was founded by{" "}
+            <Link href="/blog/author/anup-behera" className="text-primary-600 font-semibold hover:underline">
+              Anup Behera
+            </Link>
+            , a technology professional and full-stack software architect based in
             India who experienced firsthand the frustration of traditional job portals. After spending
             hours every day sifting through irrelevant job listings and receiving no meaningful
             matches, Anup decided to build a better solution — one that uses artificial intelligence
@@ -52,9 +56,13 @@ export default function AboutPage() {
           </p>
           <p>
             What started as a personal project in 2025 has grown into a platform trusted by
-            thousands of job seekers across India. DecaJobs is built on the belief that technology
+            thousands of job seekers across India and worldwide. DecaJobs is built on the belief that technology
             should simplify your life, not complicate it. Every feature we build is designed to
-            save you time and reduce the stress of finding your next role.
+            save you time and reduce the stress of finding your next role. (Read{" "}
+            <Link href="/blog/author/anup-behera" className="text-primary-600 font-medium hover:underline">
+              Anup&apos;s full biography and published career research
+            </Link>
+            ).
           </p>
 
           <h2>Our Values</h2>

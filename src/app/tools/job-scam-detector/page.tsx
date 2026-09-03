@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JobScamClient } from "./job-scam-client";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const metadata: Metadata = {
   title: "Free AI Job Scam Detector & Legitimacy Checker | DecaJobs",
@@ -65,6 +66,8 @@ export default function JobScamDetectorPage() {
         </div>
 
         <JobScamClient />
+
+        <AdSenseUnit label="Sponsored Safety Partner" className="my-10" />
 
         <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
           <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Identify and Avoid Online Job Scams</h2>

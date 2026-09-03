@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://decajob.com",
     languages: getHreflangAlternates("/"),
   },
 };

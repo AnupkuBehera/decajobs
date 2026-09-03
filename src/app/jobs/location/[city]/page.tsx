@@ -8,6 +8,7 @@ import {
     getPublicJobsFiltered,
     CITIES,
 } from "@/lib/public-jobs";
+import { AdSenseUnit } from "@/components/adsense-unit";
 
 export const revalidate = 3600;
 
@@ -170,6 +171,9 @@ export default async function LocationPage({ params }: LocationPageProps) {
                         </div>
                     </div>
                 </article>
+
+                {/* AdSense In-Location Display Unit */}
+                <AdSenseUnit label="Sponsored Location Partner" className="my-8" />
 
                 {/* Frequently Asked Questions */}
                 {cityInfo.faqs && cityInfo.faqs.length > 0 && (

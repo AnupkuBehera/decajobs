@@ -58,7 +58,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/employer/register`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.6 },
     // Resume Templates & Tools
     { url: `${baseUrl}/tools`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/resume-tools`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/resume-templates`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/resume-templates/software-engineer`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/resume-templates/data-analyst`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.9 },
@@ -101,6 +100,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog
     { url: `${baseUrl}/blog`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/blog/editorial-policy`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/blog/author/anup-behera`, lastModified: new Date("2026-09-03"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/top-10-resume-mistakes`, lastModified: new Date("2026-06-12"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/how-to-crack-any-interview`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/remote-jobs-guide-india`, lastModified: new Date("2026-06-08"), changeFrequency: "monthly", priority: 0.7 },
