@@ -165,8 +165,8 @@ export default async function AuthorProfilePage({
         <Breadcrumbs
           items={[
             { label: "Career Blog", href: "/blog" },
-            { label: "Authors" },
-            { label: author.name },
+            { label: "Authors", href: "/blog" },
+            { label: author.name, href: `/blog/author/${author.slug}` },
           ]}
         />
 

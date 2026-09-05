@@ -157,7 +157,7 @@ export function calculateAtsScore(resume: ResumeContent | null | undefined): Ats
   const totalSkills = skillCategories.flatMap((sc) => sc.skills || []).length;
   let skillsEduPts = 0;
 
-  if (education.length >= 1 && education[0].degree) skillsEduPts += 5;
+  if (education[0]?.degree) skillsEduPts += 5;
   if (skillCategories.length >= 1 && totalSkills >= 5) skillsEduPts += 5;
   if (skillCategories.length >= 2 || totalSkills >= 10) skillsEduPts += 5;
 

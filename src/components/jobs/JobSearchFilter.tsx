@@ -22,7 +22,7 @@ export function JobSearchFilter({ allJobs, curatedTop10 }: JobSearchFilterProps)
         const set = new Set<string>();
         for (const j of allJobs) {
             if (j.location) {
-                const loc = j.location.split(",")[0].trim();
+                const loc = (j.location.split(",")[0] ?? "").trim();
                 if (loc.length > 2 && !loc.toLowerCase().includes("remote")) {
                     set.add(loc);
                 }

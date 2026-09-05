@@ -25,7 +25,8 @@ export function getTranslations(locale?: string): TranslationDictionary {
  */
 export function cleanPathname(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments.length > 0 && isValidLocale(segments[0])) {
+  const firstSegment = segments[0];
+  if (firstSegment && isValidLocale(firstSegment)) {
     const remaining = segments.slice(1).join("/");
     return remaining ? `/${remaining}` : "/";
   }

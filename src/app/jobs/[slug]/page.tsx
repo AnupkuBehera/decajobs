@@ -182,31 +182,6 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
     const tailorResumeUrl = `/tools/resume-matcher?role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1200))}`;
 
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://decajob.com",
-            },
-            {
-                "@type": "ListItem",
-                position: 2,
-                name: "Jobs",
-                item: "https://decajob.com/jobs",
-            },
-            {
-                "@type": "ListItem",
-                position: 3,
-                name: job.title,
-                item: `https://decajob.com/jobs/${slug}`,
-            },
-        ],
-    };
-
     return (
         <div className="pt-10 pb-24 sm:pt-16 sm:pb-28">
             <div className="mx-auto max-w-4xl">
@@ -454,14 +429,6 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(buildJobPostingSchema(job, slug)),
-                }}
-            />
-
-            {/* BreadcrumbList JSON-LD structured data */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbSchema),
                 }}
             />
 

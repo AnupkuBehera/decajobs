@@ -59,7 +59,7 @@ describe("ATS Scorer", () => {
   });
 
   it("detects missing LinkedIn and warns with a tip", () => {
-    const template = PREFILLED_TEMPLATES[0];
+    const template = PREFILLED_TEMPLATES[0]!;
     const resumeWithoutLinkedin = {
       ...template.data,
       personalInfo: {
@@ -73,7 +73,7 @@ describe("ATS Scorer", () => {
 
   it("detects lack of quantifiable metrics in bullet points", () => {
     const weakResume = {
-      ...PREFILLED_TEMPLATES[0].data,
+      ...PREFILLED_TEMPLATES[0]!.data,
       workExperience: [
         {
           company: "Acme Corp",

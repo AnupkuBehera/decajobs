@@ -42,16 +42,6 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
 
     const builderUrl = `/resume-tools?tab=builder&template=${template.slug}&role=${encodeURIComponent(template.title)}`;
 
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://decajob.com" },
-            { "@type": "ListItem", position: 2, name: "Resume Templates", item: "https://decajob.com/resume-templates" },
-            { "@type": "ListItem", position: 3, name: template.title, item: `https://decajob.com/resume-templates/${template.slug}` },
-        ],
-    };
-
     return (
         <div className="py-10 sm:py-16">
             <div className="mx-auto max-w-4xl px-4 sm:px-6">
@@ -256,11 +246,6 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
                     </div>
                 </div>
 
-                {/* Google Search Breadcrumbs */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-                />
             </div>
         </div>
     );

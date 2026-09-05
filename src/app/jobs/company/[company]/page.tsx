@@ -48,17 +48,6 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
     const jobs = await getPublicJobsFiltered({ company: companyInfo });
     const displayJobs = jobs.slice(0, 24);
 
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://decajob.com" },
-            { "@type": "ListItem", position: 2, name: "Jobs", item: "https://decajob.com/jobs" },
-            { "@type": "ListItem", position: 3, name: "Companies", item: "https://decajob.com/jobs#companies" },
-            { "@type": "ListItem", position: 4, name: companyInfo.name, item: `https://decajob.com/jobs/company/${companyInfo.slug}` },
-        ],
-    };
-
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -81,10 +70,6 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

@@ -44,7 +44,7 @@ export default function ResumeBuilder() {
 
   // Resume state - pre-initialized with the default template
   const [resumeData, setResumeData] = useState<ResumeContent>(
-    PREFILLED_TEMPLATES[0].data
+    PREFILLED_TEMPLATES[0]!.data
   );
 
   // Form fields for AI generation prompt
@@ -576,8 +576,10 @@ export default function ResumeBuilder() {
                             value={exp.jobTitle}
                             onChange={(e) => {
                               const updated = [...resumeData.workExperience];
-                              updated[expIdx].jobTitle = e.target.value;
-                              setResumeData({ ...resumeData, workExperience: updated });
+                              if (updated[expIdx]) {
+                                updated[expIdx] = { ...updated[expIdx]!, jobTitle: e.target.value };
+                                setResumeData({ ...resumeData, workExperience: updated });
+                              }
                             }}
                             className="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-xs text-neutral-900"
                           />
@@ -589,8 +591,10 @@ export default function ResumeBuilder() {
                             value={exp.company}
                             onChange={(e) => {
                               const updated = [...resumeData.workExperience];
-                              updated[expIdx].company = e.target.value;
-                              setResumeData({ ...resumeData, workExperience: updated });
+                              if (updated[expIdx]) {
+                                updated[expIdx] = { ...updated[expIdx]!, company: e.target.value };
+                                setResumeData({ ...resumeData, workExperience: updated });
+                              }
                             }}
                             className="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-xs text-neutral-900"
                           />
@@ -611,8 +615,12 @@ export default function ResumeBuilder() {
                                 value={bullet}
                                 onChange={(e) => {
                                   const updatedExp = [...resumeData.workExperience];
-                                  updatedExp[expIdx].highlights[bulletIdx] = e.target.value;
-                                  setResumeData({ ...resumeData, workExperience: updatedExp });
+                                  if (updatedExp[expIdx]) {
+                                    const highlights = [...updatedExp[expIdx]!.highlights];
+                                    highlights[bulletIdx] = e.target.value;
+                                    updatedExp[expIdx] = { ...updatedExp[expIdx]!, highlights };
+                                    setResumeData({ ...resumeData, workExperience: updatedExp });
+                                  }
                                 }}
                                 className="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-xs text-neutral-900"
                               />
@@ -639,8 +647,10 @@ export default function ResumeBuilder() {
                         value={sc.skills.join(", ")}
                         onChange={(e) => {
                           const updatedSc = [...resumeData.skillCategories];
-                          updatedSc[scIdx].skills = e.target.value.split(",").map((s) => s.trim()).filter(Boolean);
-                          setResumeData({ ...resumeData, skillCategories: updatedSc });
+                          if (updatedSc[scIdx]) {
+                            updatedSc[scIdx] = { ...updatedSc[scIdx]!, skills: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) };
+                            setResumeData({ ...resumeData, skillCategories: updatedSc });
+                          }
                         }}
                         className="w-full rounded border border-neutral-300 px-2 py-1 text-xs text-neutral-700"
                       />
@@ -782,7 +792,7 @@ export default function ResumeBuilder() {
                   Your resume matches 80+ live jobs today
                 </h3>
                 <p className="text-xs text-primary-100 mt-0.5">
-                  Wake up to 10 curated matches tailored to {resumeData.personalInfo.headline.split("|")[0].trim() || "your role"} at 8:00 AM.
+                  Wake up to 10 curated matches tailored to {resumeData.personalInfo.headline.split("|")[0]?.trim() || "your role"} at 8:00 AM.
                 </p>
               </div>
               <Link

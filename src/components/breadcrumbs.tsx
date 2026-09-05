@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface BreadcrumbItem {
   label: string;
@@ -14,6 +17,7 @@ interface BreadcrumbsProps {
  * Google uses breadcrumbs as a quality signal for site navigation.
  */
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
+  const pathname = usePathname();
   const breadcrumbItems = [{ label: "Home", href: "/" }, ...items];
 
   return (
@@ -54,17 +58,22 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
-            itemListElement: breadcrumbItems.map((item, index) => ({
-              "@type": "ListItem",
-              position: index + 1,
-              name: item.label,
-              ...(item.href
-                ? { item: `https://decajob.com${item.href}` }
-                : {}),
-            })),
+            itemListElement: breadcrumbItems.map((item, index) => {
+              const rawHref = item.href || (index === breadcrumbItems.length - 1 ? pathname : undefined);
+              const itemUrl = rawHref
+                ? (rawHref.startsWith("http") ? rawHref : `https://decajob.com${rawHref}`)
+                : `https://decajob.com${pathname || ""}`;
+              return {
+                "@type": "ListItem",
+                position: index + 1,
+                name: item.label,
+                item: itemUrl,
+              };
+            }),
           }),
         }}
       />
     </>
   );
 }
+

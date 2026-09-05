@@ -658,7 +658,7 @@ export function getTemplateByRole(roleName: string): PrefilledTemplateMeta {
 
   // Keyword token score
   let bestScore = 0;
-  let bestTemplate = PREFILLED_TEMPLATES[0];
+  let bestTemplate = PREFILLED_TEMPLATES[0]!;
 
   for (const t of PREFILLED_TEMPLATES) {
     const haystack = `${t.slug} ${t.title} ${t.category} ${t.description}`.toLowerCase();
