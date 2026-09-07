@@ -74,6 +74,7 @@ export function JobCard({ job }: JobCardProps) {
                     <time>{formatPostedDate(job.postedAt)}</time>
                     <Link
                         href={`/resume-tools?tab=builder&role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}`}
+                        rel="nofollow"
                         className="rounded border border-primary-200 bg-primary-50/70 px-2 py-0.5 text-[11px] font-medium text-primary-700 hover:bg-primary-100 transition-colors"
                         title="Generate ATS resume tailored to this role"
                     >
