@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import * as gtag from "@/lib/gtag";
 
 export function JobScamClient() {
   const [jobTitle, setJobTitle] = useState("");
@@ -27,6 +28,11 @@ export function JobScamClient() {
       const data = await res.json();
       if (!res.ok) { setError(data.error); return; }
       setResult(data);
+      gtag.event("tool_scam_check", {
+        event_category: "career_tools",
+        event_label: data.verdict || "Scam Check",
+        safety_score: data.safetyScore,
+      });
     } catch { setError("Network error."); }
     finally { setIsLoading(false); }
   }

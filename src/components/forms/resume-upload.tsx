@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, type DragEvent, type ChangeEvent } from "react";
 import { Button } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+import * as gtag from "@/lib/gtag";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_EXTENSIONS = [".pdf", ".docx"];
@@ -112,6 +113,10 @@ export function ResumeUpload({
 
         setStatus("success");
         setUploadedUrl(resumeUrl);
+        gtag.event("resume_upload_success", {
+          event_category: "candidate_onboarding",
+          event_label: file.name.split(".").pop()?.toUpperCase() || "FILE",
+        });
         onUploadComplete?.(resumeUrl);
       } catch (err) {
         setStatus("error");

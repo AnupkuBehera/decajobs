@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { ShareScoreModal } from "@/components/share-score-modal";
+import * as gtag from "@/lib/gtag";
 
 export function ResumeCheckerClient() {
   const [resumeText, setResumeText] = useState("");
@@ -48,6 +49,11 @@ export function ResumeCheckerClient() {
         }
       } else {
         setResult(data);
+        gtag.event("tool_resume_check", {
+          event_category: "career_tools",
+          event_label: "Resume ATS Check",
+          score: data.score,
+        });
       }
     } catch {
       setError("Network error or connection timeout. Please check your connection and try again.");
