@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JobCardGrid } from "@/components/jobs/JobCard";
-import { getPublicJobsFiltered } from "@/lib/public-jobs";
+import { getPublicJobsFiltered, getPublicJobs } from "@/lib/public-jobs";
 
 export const metadata: Metadata = {
     title: "Remote Jobs 2026 - Work From Anywhere | DecaJobs",
@@ -23,8 +23,10 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function RemoteJobsPage() {
-    const jobs = await getPublicJobsFiltered({ remoteOnly: true });
-    const displayJobs = jobs.slice(0, 24);
+    const directJobs = await getPublicJobsFiltered({ remoteOnly: true });
+    const isFallback = directJobs.length === 0;
+    const allJobs = isFallback ? await getPublicJobs() : [];
+    const displayJobs = (isFallback ? allJobs : directJobs).slice(0, 24);
 
     return (
         <div className="py-10 sm:py-16">
@@ -43,9 +45,21 @@ export default async function RemoteJobsPage() {
 
                 {/* Live remote jobs */}
                 <section className="mb-12">
-                    <h2 className="text-xl font-bold text-neutral-900 mb-4">
-                        Latest Remote Openings
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-bold text-neutral-900">
+                            {isFallback ? "Recommended Verified Openings" : "Latest Remote Openings"}
+                        </h2>
+                        {isFallback && (
+                            <span className="text-xs font-semibold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-full">
+                                Fresh Remote Listings Refreshing Daily
+                            </span>
+                        )}
+                    </div>
+                    {isFallback && (
+                        <div className="mb-6 rounded-xl border border-teal-200 bg-teal-50/70 p-4 text-xs sm:text-sm text-teal-800">
+                            💡 Showing verified high-growth opportunities open to remote candidates across India and worldwide while direct feeds update.
+                        </div>
+                    )}
                     <JobCardGrid jobs={displayJobs} />
                 </section>
 

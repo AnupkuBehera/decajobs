@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: "Decajobs",
   },
+  other: {
+    "google-adsense-account": "ca-pub-7950314044956492",
+  },
 };
 
 /*
