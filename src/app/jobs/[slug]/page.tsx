@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect, RedirectType } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StickyApplyBar } from "@/components/sticky-apply-bar";
 import {
@@ -31,17 +31,168 @@ export async function generateStaticParams() {
     return jobs.slice(0, 40).map((job) => ({ slug: jobSlug(job) }));
 }
 
-/** Parse a human-readable title from a job slug (e.g. senior-software-engineer-erlin-119055 -> Senior Software Engineer Erlin). */
-function parseTitleFromSlug(slug: string): string {
-    const parts = slug.split("-").filter(Boolean);
-    const lastPart = parts[parts.length - 1];
-    if (parts.length > 1 && lastPart && (/^\d+$/.test(lastPart) || /^otive/i.test(lastPart))) {
-        parts.pop();
+/**
+ * Map an expired or missing job slug to the most relevant live category hub or /jobs.
+ * This turns dead 404 / soft-404 URLs into permanent 301/308 redirects to active listings,
+ * satisfying Google Search Console indexing validation and preserving link equity.
+ */
+function getExpiredJobRedirectUrl(slug: string): string {
+    const s = slug.toLowerCase();
+
+    // DevOps & Cloud
+    if (
+        s.includes("devops") ||
+        s.includes("cloud") ||
+        s.includes("aws") ||
+        s.includes("azure") ||
+        s.includes("gcp") ||
+        s.includes("kubernetes") ||
+        s.includes("docker") ||
+        s.includes("sre") ||
+        s.includes("site-reliability") ||
+        s.includes("infrastructure") ||
+        s.includes("terraform") ||
+        s.includes("sysadmin") ||
+        s.includes("devtools")
+    ) {
+        return "/jobs/category/devops-cloud";
     }
-    if (parts.length === 0) return "Job Position";
-    return parts
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ");
+
+    // Data & Analytics
+    if (
+        s.includes("data") ||
+        s.includes("analyst") ||
+        s.includes("analytics") ||
+        s.includes("scientist") ||
+        s.includes("machine-learning") ||
+        s.includes("bi-") ||
+        s.includes("business-intelligence") ||
+        s.includes("tableau") ||
+        s.includes("power-bi") ||
+        s.includes("databricks") ||
+        s.includes("spark")
+    ) {
+        return "/jobs/category/data-analytics";
+    }
+
+    // Customer Support / Experience
+    if (
+        s.includes("support") ||
+        s.includes("customer-success") ||
+        s.includes("customer-experience") ||
+        s.includes("helpdesk") ||
+        s.includes("client-success") ||
+        s.includes("onboarding")
+    ) {
+        return "/jobs/category/customer-support";
+    }
+
+    // Product & Design
+    if (
+        s.includes("produktmanager") ||
+        s.includes("product-manager") ||
+        s.includes("product-owner") ||
+        s.includes("designer") ||
+        s.includes("design") ||
+        s.includes("ux") ||
+        s.includes("ui") ||
+        s.includes("figma") ||
+        s.includes("creative")
+    ) {
+        return "/jobs/category/product-design";
+    }
+
+    // Human Resources & Recruiting
+    if (
+        s.includes("recruiter") ||
+        s.includes("recruiting") ||
+        s.includes("personalvermittlung") ||
+        s.includes("talent") ||
+        s.includes("people-operations") ||
+        s.includes("human-resources") ||
+        s.includes("hr-") ||
+        s.includes("-hr")
+    ) {
+        return "/jobs/category/human-resources";
+    }
+
+    // Finance & Accounting
+    if (
+        s.includes("finance") ||
+        s.includes("finanz") ||
+        s.includes("accounting") ||
+        s.includes("accountant") ||
+        s.includes("banking") ||
+        s.includes("kaufmnnisch") ||
+        s.includes("kaufmaennisch") ||
+        s.includes("fp-a") ||
+        s.includes("audit") ||
+        s.includes("tax") ||
+        s.includes("steuer") ||
+        s.includes("bookkeeping") ||
+        s.includes("controller") ||
+        s.includes("investment")
+    ) {
+        return "/jobs/category/finance-accounting";
+    }
+
+    // Marketing & Sales
+    if (
+        s.includes("sales") ||
+        s.includes("vertrieb") ||
+        s.includes("marketing") ||
+        s.includes("seo") ||
+        s.includes("growth") ||
+        s.includes("content") ||
+        s.includes("redakteur") ||
+        s.includes("social-media") ||
+        s.includes("influencer") ||
+        s.includes("account-executive") ||
+        s.includes("business-developer") ||
+        s.includes("business-development") ||
+        s.includes("bdm") ||
+        s.includes("brand")
+    ) {
+        return "/jobs/category/marketing-sales";
+    }
+
+    // Software Engineering
+    if (
+        s.includes("software") ||
+        s.includes("engineer") ||
+        s.includes("developer") ||
+        s.includes("entwickler") ||
+        s.includes("frontend") ||
+        s.includes("front-end") ||
+        s.includes("backend") ||
+        s.includes("back-end") ||
+        s.includes("fullstack") ||
+        s.includes("full-stack") ||
+        s.includes("programmer") ||
+        s.includes("coding") ||
+        s.includes("react") ||
+        s.includes("node") ||
+        s.includes("python") ||
+        s.includes("javascript") ||
+        s.includes("typescript") ||
+        s.includes("golang") ||
+        s.includes("middleware") ||
+        s.includes("elektroniker") ||
+        s.includes("hpc") ||
+        s.includes("gpu") ||
+        s.includes("agentic") ||
+        s.includes("postgresql")
+    ) {
+        return "/jobs/category/software-engineering";
+    }
+
+    // Remote
+    if (s.includes("remote") || s.includes("freelance")) {
+        return "/jobs/remote";
+    }
+
+    // Default to main jobs board
+    return "/jobs";
 }
 
 export async function generateMetadata({ params }: JobDetailPageProps): Promise<Metadata> {
@@ -50,18 +201,8 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
     const job = jobs.find((j) => jobSlug(j) === slug);
 
     if (!job) {
-        const title = parseTitleFromSlug(slug);
-        return {
-            title: `${title} (Job Expired) | DecaJobs`,
-            description: `This job posting for ${title} has expired or is no longer accepting applications. Browse hundreds of active tech, remote, and engineering job openings on DecaJobs.`,
-            robots: {
-                index: false,
-                follow: true,
-            },
-            alternates: {
-                canonical: `https://decajob.com/jobs/${slug}`,
-            },
-        };
+        const targetUrl = getExpiredJobRedirectUrl(slug);
+        permanentRedirect(targetUrl);
     }
 
     return {
@@ -85,78 +226,8 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const job = jobs.find((j) => jobSlug(j) === slug);
 
     if (!job) {
-        const expiredTitle = parseTitleFromSlug(slug);
-        const activeJobs = jobs.slice(0, 6);
-
-        return (
-            <div className="py-10 sm:py-16">
-                <div className="mx-auto max-w-4xl px-4 sm:px-6">
-                    <Breadcrumbs
-                        items={[
-                            { label: "Jobs", href: "/jobs" },
-                            { label: "Expired Job" },
-                        ]}
-                    />
-
-                    {/* Expired Job Notice Card */}
-                    <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-6 sm:p-8">
-                        <div className="flex items-start gap-4">
-                            <span className="text-3xl" role="img" aria-label="warning">⚡</span>
-                            <div>
-                                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
-                                    Listing Expired
-                                </span>
-                                <h1 className="mt-2 text-xl font-bold text-neutral-900 sm:text-2xl">
-                                    {expiredTitle}
-                                </h1>
-                                <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-                                    This job posting is no longer active or accepting new applications. Don't worry — we have hundreds of active job openings waiting for you!
-                                </p>
-                                <div className="mt-5 flex flex-wrap items-center gap-3">
-                                    <Link
-                                        href="/jobs"
-                                        className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 transition-colors min-h-[44px]"
-                                    >
-                                        Browse All Active Jobs →
-                                    </Link>
-                                    <Link
-                                        href="/jobs/remote"
-                                        className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors min-h-[44px]"
-                                    >
-                                        Explore Remote Jobs
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Active Recommended Jobs */}
-                    {activeJobs.length > 0 && (
-                        <section className="mt-10">
-                            <h2 className="text-xl font-bold text-neutral-900 mb-4">
-                                Active Opportunities You Might Like
-                            </h2>
-                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {activeJobs.map((s) => (
-                                    <Link
-                                        key={s.id}
-                                        href={`/jobs/${jobSlug(s)}`}
-                                        className="group block rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-200"
-                                    >
-                                        <h3 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 line-clamp-2">
-                                            {s.title}
-                                        </h3>
-                                        <p className="mt-1 text-xs text-neutral-500">{s.company}</p>
-                                        <p className="mt-2 text-xs text-neutral-500">📍 {s.location}</p>
-                                        <p className="mt-3 text-xs text-neutral-400">{formatPostedDate(s.postedAt)}</p>
-                                    </Link>
-                                ))}
-                            </div>
-                        </section>
-                    )}
-                </div>
-            </div>
-        );
+        const targetUrl = getExpiredJobRedirectUrl(slug);
+        permanentRedirect(targetUrl);
     }
 
     const days = daysSincePosted(job.postedAt);
