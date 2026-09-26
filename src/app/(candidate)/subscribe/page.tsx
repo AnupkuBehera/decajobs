@@ -171,7 +171,7 @@ export default function SubscribePage() {
               <p className="text-sm text-neutral-500">Monthly plan</p>
               <p className="mt-1">
                 <span className="text-4xl font-bold text-neutral-900">₹299</span>
-                <span className="text-neutral-500">/month</span>
+                <span className="text-neutral-500"> per month</span>
               </p>
               <p className="mt-2 text-sm text-green-600 font-medium">
                 🎉 First 7 days FREE — cancel anytime

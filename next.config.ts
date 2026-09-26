@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/month",
+        destination: "/pricing",
+        permanent: true,
+      },
+      {
         source: "/resume-builder",
         destination: "/resume-templates",
         permanent: true,

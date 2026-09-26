@@ -54,6 +54,19 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301);
   }
 
+  // 2. Redirect crawler artifact URLs and malformed symbol paths (301 Permanent Redirect)
+  if (pathname === "/month") {
+    return NextResponse.redirect(new URL("/pricing", request.url), 301);
+  }
+  if (
+    pathname === "/&" ||
+    pathname === "/$" ||
+    pathname === "/%24" ||
+    pathname === "/%26"
+  ) {
+    return NextResponse.redirect(new URL("/", request.url), 301);
+  }
+
   // First, try to refresh the session (handles cookie updates)
   let response: NextResponse;
   try {

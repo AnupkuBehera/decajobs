@@ -126,7 +126,7 @@ export default function PricingPage() {
             </p>
             <p className="mt-6">
               <span className="text-4xl font-bold text-neutral-900">₹299</span>
-              <span className="text-neutral-500 ml-1">/month</span>
+              <span className="text-neutral-500 ml-1"> per month</span>
             </p>
             <Link
               href="/login"
