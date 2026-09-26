@@ -6,6 +6,7 @@ import { JobCardGrid } from "@/components/jobs/JobCard";
 import {
     getCityBySlug,
     getPublicJobsFiltered,
+    getPublicJobs,
     CITIES,
 } from "@/lib/public-jobs";
 import { AdSenseUnit } from "@/components/adsense-unit";
@@ -45,8 +46,15 @@ export default async function LocationPage({ params }: LocationPageProps) {
     const cityInfo = getCityBySlug(city);
     if (!cityInfo) notFound();
 
-    const jobs = await getPublicJobsFiltered({ city: cityInfo });
-    const displayJobs = jobs.slice(0, 24);
+    const directJobs = await getPublicJobsFiltered({ city: cityInfo });
+    let displayJobs = directJobs.slice(0, 24);
+    let isFallback = false;
+
+    if (displayJobs.length === 0) {
+        const allJobs = await getPublicJobs();
+        displayJobs = allJobs.slice(0, 9);
+        isFallback = true;
+    }
 
     const faqSchema = {
         "@context": "https://schema.org",
@@ -122,9 +130,35 @@ export default async function LocationPage({ params }: LocationPageProps) {
 
                 {/* Live jobs */}
                 <section className="mb-12">
-                    <h2 className="text-xl font-bold text-neutral-900 mb-4">
-                        Live Openings in {cityInfo.name} ({jobs.length} Found)
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-bold text-neutral-900">
+                            {isFallback
+                                ? `Featured Remote & Tech Roles Open to Candidates in ${cityInfo.name} (${displayJobs.length})`
+                                : `Live Openings in ${cityInfo.name} (${displayJobs.length} Found)`}
+                        </h2>
+                        <span className="text-xs text-neutral-500">Updated hourly</span>
+                    </div>
+
+                    {isFallback && (
+                        <div className="rounded-xl border border-primary-200 bg-primary-50/70 p-4 text-xs text-primary-900 mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <p className="font-semibold text-neutral-900">
+                                    ⚡ Local in-office listings in {cityInfo.name} are updated continuously.
+                                </p>
+                                <p className="text-neutral-600 mt-0.5">
+                                    Explore these verified global and remote tech openings hiring talent from {cityInfo.name} right now:
+                                </p>
+                            </div>
+                            <Link
+                                href={`/login?city=${encodeURIComponent(cityInfo.name)}`}
+                                rel="nofollow"
+                                className="shrink-0 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors"
+                            >
+                                Get {cityInfo.name} Alerts →
+                            </Link>
+                        </div>
+                    )}
+
                     <JobCardGrid jobs={displayJobs} />
                 </section>
 

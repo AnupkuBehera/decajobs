@@ -153,7 +153,7 @@ export default function EmbedResumeCheckerPage() {
           )}
 
           <a
-            href="https://decajob.com/resume-tools?tab=builder"
+            href="https://decajob.com/resume-templates"
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center rounded-xl bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 text-xs font-bold transition-colors shadow-xs"

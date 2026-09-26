@@ -4,6 +4,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "404 - Page Not Found | DecaJobs",
   description: "The page you're looking for doesn't exist. Return to DecaJobs home page.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function NotFound() {

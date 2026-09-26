@@ -6,6 +6,7 @@ import { JobCardGrid } from "@/components/jobs/JobCard";
 import {
     getCompanyBySlug,
     getPublicJobsFiltered,
+    getPublicJobs,
     COMPANIES,
 } from "@/lib/public-jobs";
 import { AdSenseUnit } from "@/components/adsense-unit";
@@ -45,8 +46,15 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
     const companyInfo = getCompanyBySlug(company);
     if (!companyInfo) notFound();
 
-    const jobs = await getPublicJobsFiltered({ company: companyInfo });
-    const displayJobs = jobs.slice(0, 24);
+    const directJobs = await getPublicJobsFiltered({ company: companyInfo });
+    let displayJobs = directJobs.slice(0, 24);
+    let isFallback = false;
+
+    if (displayJobs.length === 0) {
+        const allJobs = await getPublicJobs();
+        displayJobs = allJobs.slice(0, 9);
+        isFallback = true;
+    }
 
     const faqSchema = {
         "@context": "https://schema.org",
@@ -179,30 +187,34 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-neutral-900">
-                                Live {companyInfo.name} Openings & Tech Roles ({displayJobs.length})
+                                {isFallback
+                                    ? `Featured Tech & Engineering Roles Hiring Now (${displayJobs.length})`
+                                    : `Live ${companyInfo.name} Openings & Tech Roles (${displayJobs.length})`}
                             </h2>
                             <span className="text-xs text-neutral-500">Updated hourly</span>
                         </div>
 
-                        {displayJobs.length > 0 ? (
-                            <JobCardGrid jobs={displayJobs} />
-                        ) : (
-                            <div className="rounded-2xl border-2 border-dashed border-neutral-200 bg-white p-10 text-center space-y-3">
-                                <span className="text-4xl">📬</span>
-                                <h3 className="text-base font-bold text-neutral-800">
-                                    No Direct Public Listings for {companyInfo.name} Today
-                                </h3>
-                                <p className="text-xs text-neutral-500 max-w-md mx-auto">
-                                    {companyInfo.name} roles fill quickly through automated pipelines. Sign up below to get top matching roles delivered directly to your inbox every morning at 8:00 AM.
-                                </p>
+                        {isFallback && (
+                            <div className="rounded-xl border border-primary-200 bg-primary-50/70 p-4 text-xs text-primary-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                                <div>
+                                    <p className="font-semibold text-neutral-900">
+                                        ⚡ Direct {companyInfo.name} postings fill rapidly through private talent networks.
+                                    </p>
+                                    <p className="text-neutral-600 mt-0.5">
+                                        Explore these active verified tech &amp; engineering opportunities open to candidates now:
+                                    </p>
+                                </div>
                                 <Link
-                                    href={`/login?role=${encodeURIComponent(companyInfo.name)}`}
-                                    className="inline-flex items-center justify-center rounded-xl bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-6 text-xs font-bold transition-colors shadow-xs"
+                                    href={`/login?company=${encodeURIComponent(companyInfo.name)}`}
+                                    rel="nofollow"
+                                    className="shrink-0 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors"
                                 >
-                                    Track {companyInfo.name} Jobs Free →
+                                    Get {companyInfo.name} Alerts →
                                 </Link>
                             </div>
                         )}
+
+                        <JobCardGrid jobs={displayJobs} />
                     </div>
 
                     {/* AdSense In-Company Display Unit */}

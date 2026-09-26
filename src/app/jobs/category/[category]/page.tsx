@@ -6,6 +6,7 @@ import { JobCardGrid } from "@/components/jobs/JobCard";
 import {
     getCategoryBySlug,
     getPublicJobsFiltered,
+    getPublicJobs,
     JOB_CATEGORIES,
 } from "@/lib/public-jobs";
 import { AdSenseUnit } from "@/components/adsense-unit";
@@ -45,8 +46,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const cat = getCategoryBySlug(category);
     if (!cat) notFound();
 
-    const jobs = await getPublicJobsFiltered({ category: cat });
-    const displayJobs = jobs.slice(0, 24);
+    const directJobs = await getPublicJobsFiltered({ category: cat });
+    let displayJobs = directJobs.slice(0, 24);
+    let isFallback = false;
+
+    if (displayJobs.length === 0) {
+        const allJobs = await getPublicJobs();
+        displayJobs = allJobs.slice(0, 9);
+        isFallback = true;
+    }
 
     const faqSchema = {
         "@context": "https://schema.org",
@@ -120,9 +128,35 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
                 {/* Live jobs */}
                 <section className="mb-12">
-                    <h2 className="text-xl font-bold text-neutral-900 mb-4">
-                        Live {cat.name} Openings ({jobs.length} Found)
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-bold text-neutral-900">
+                            {isFallback
+                                ? `Featured Tech & Remote Roles Open Now (${displayJobs.length})`
+                                : `Live ${cat.name} Openings (${displayJobs.length} Found)`}
+                        </h2>
+                        <span className="text-xs text-neutral-500">Updated hourly</span>
+                    </div>
+
+                    {isFallback && (
+                        <div className="rounded-xl border border-primary-200 bg-primary-50/70 p-4 text-xs text-primary-900 mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <p className="font-semibold text-neutral-900">
+                                    ⚡ Direct {cat.name} openings are updating continuously.
+                                </p>
+                                <p className="text-neutral-600 mt-0.5">
+                                    Explore these verified opportunities with related skill sets open for applications right now:
+                                </p>
+                            </div>
+                            <Link
+                                href={`/login?role=${encodeURIComponent(cat.name)}`}
+                                rel="nofollow"
+                                className="shrink-0 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors"
+                            >
+                                Get {cat.name} Alerts →
+                            </Link>
+                        </div>
+                    )}
+
                     <JobCardGrid jobs={displayJobs} />
                 </section>
 

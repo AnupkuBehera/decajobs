@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     // Don't fail build on type errors (we validate locally)
     ignoreBuildErrors: true,
   },
+  trailingSlash: false,
   async redirects() {
     return [
       {
@@ -23,13 +24,18 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/en",
+        destination: "/",
+        permanent: true,
+      },
+      {
         source: "/resume-builder",
-        destination: "/resume-tools",
+        destination: "/resume-templates",
         permanent: true,
       },
       {
         source: "/tools/resume-builder",
-        destination: "/resume-tools",
+        destination: "/resume-templates",
         permanent: true,
       },
     ];

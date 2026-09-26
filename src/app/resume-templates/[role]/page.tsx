@@ -75,6 +75,7 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
                         <div className="w-full sm:w-auto">
                             <Link
                                 href={builderUrl}
+                                rel="nofollow"
                                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-colors min-h-[48px]"
                             >
                                 ✨ Customize with AI (Free) →

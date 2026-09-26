@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 import {
   SUPPORTED_LOCALES,
   LOCALES,
@@ -22,6 +22,13 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
+  if (lang === "en") {
+    return {
+      alternates: {
+        canonical: "https://decajob.com",
+      },
+    };
+  }
   if (!isValidLocale(lang)) {
     return {};
   }
@@ -60,7 +67,10 @@ export default async function LocalizedHomePage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  if (!isValidLocale(lang) || lang === "en") {
+  if (lang === "en") {
+    redirect("/", RedirectType.replace);
+  }
+  if (!isValidLocale(lang)) {
     notFound();
   }
 

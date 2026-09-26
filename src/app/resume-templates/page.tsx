@@ -120,6 +120,7 @@ export default function ResumeTemplatesPage() {
                                 </Link>
                                 <Link
                                     href={`/resume-tools?tab=builder&template=${tpl.slug}&role=${encodeURIComponent(tpl.title)}`}
+                                    rel="nofollow"
                                     className="block text-center rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
                                 >
                                     ✨ Customize in AI Builder
