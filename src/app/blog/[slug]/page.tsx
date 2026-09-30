@@ -26,7 +26,12 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://decajob.com/blog/${slug}`,
     },
-    authors: [{ name: article.author.name, url: `https://decajob.com/blog/author/${article.author.slug}` }],
+    authors: [
+      {
+        name: article.author.name,
+        url: `https://decajob.com/blog/author/${article.author.slug}`,
+      },
+    ],
     openGraph: {
       title: article.title,
       description: article.excerpt,
@@ -45,6 +50,36 @@ export async function generateMetadata({
   };
 }
 
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+function renderFormattedText(text: string) {
+  // Simple helper to render **bold** and *italic* within sentences
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={idx} className="font-bold text-neutral-900">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**")) {
+      return (
+        <em key={idx} className="italic text-neutral-800">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return part;
+  });
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const article = BLOG_ARTICLES[slug];
@@ -52,7 +87,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!article) notFound();
 
   const wordCount = article.content.split(/\s+/).length;
+  const calculatedMinutes = Math.max(3, Math.ceil(wordCount / 180));
+  const readingTime = `${calculatedMinutes} min read`;
   const paragraphs = article.content.split("\n\n");
+
+  // Extract headings for Table of Contents
+  const headings: { text: string; id: string }[] = [];
+  paragraphs.forEach((p) => {
+    if (p.startsWith("**") && p.includes("\n")) {
+      const heading = (p.split("\n")[0] || "").replace(/\*\*/g, "").trim();
+      if (heading) {
+        headings.push({ text: heading, id: slugifyHeading(heading) });
+      }
+    } else if (p.startsWith("**") && p.endsWith("**")) {
+      const heading = p.replace(/\*\*/g, "").trim();
+      if (heading) {
+        headings.push({ text: heading, id: slugifyHeading(heading) });
+      }
+    }
+  });
+
+  // Related articles (same category or others, excluding current)
+  const relatedArticles = Object.values(BLOG_ARTICLES)
+    .filter((a) => a.slug !== slug)
+    .sort((a, b) => {
+      if (a.category === article.category && b.category !== article.category)
+        return -1;
+      if (b.category === article.category && a.category !== article.category)
+        return 1;
+      return 0;
+    })
+    .slice(0, 3);
 
   // Schema for Article and FAQPage
   const articleSchema = {
@@ -123,7 +188,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ]}
         />
 
-        <article className="mt-6" itemScope itemType="https://schema.org/Article">
+        <article
+          className="mt-6"
+          itemScope
+          itemType="https://schema.org/Article"
+        >
           <header>
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <span className="inline-block rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-800">
@@ -155,16 +224,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <p className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors">
                     {article.author.name}
                   </p>
-                  <p className="text-xs text-neutral-500">{article.author.role}</p>
+                  <p className="text-xs text-neutral-500">
+                    {article.author.role}
+                  </p>
                 </div>
               </Link>
 
               <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
                 <time dateTime={article.dateISO}>{article.date}</time>
                 <span>·</span>
-                <span>{article.readingTime}</span>
+                <span>{readingTime}</span>
                 <span>·</span>
-                <span className="font-medium text-neutral-700">{wordCount.toLocaleString()} words</span>
+                <span className="font-medium text-neutral-700">
+                  {wordCount.toLocaleString()} words
+                </span>
               </div>
             </div>
           </header>
@@ -174,50 +247,111 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {article.excerpt}
           </div>
 
+          {/* Table of Contents jump box if article has headings */}
+          {headings.length > 2 && (
+            <nav className="my-8 rounded-2xl border border-neutral-200 bg-neutral-50/70 p-5">
+              <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3 flex items-center gap-1.5">
+                <span>📑</span> In This Guide
+              </p>
+              <ul className="space-y-2 text-sm">
+                {headings.map((h, idx) => (
+                  <li key={idx}>
+                    <a
+                      href={`#${h.id}`}
+                      className="text-primary-600 hover:text-primary-800 hover:underline transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-neutral-400 text-xs">
+                        {idx + 1}.
+                      </span>
+                      <span>{h.text}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+
           {/* Article Body with Responsive Typography */}
-          <div className="mt-8 text-neutral-800 space-y-6 text-base leading-relaxed" itemProp="articleBody">
+          <div
+            className="mt-8 text-neutral-800 space-y-6 text-base leading-relaxed"
+            itemProp="articleBody"
+          >
             {paragraphs.map((paragraph, i) => {
-              // Inject AdSense unit after paragraph 3 (ideal reading flow)
-              const showAdHere = i === 3;
+              // Inject compliant AdSense unit after paragraph 4
+              const showAdHere = i === 4;
 
               if (paragraph.startsWith("**") && paragraph.includes("\n")) {
                 const lines = paragraph.split("\n");
-                const heading = (lines[0] || "").replace(/\*\*/g, "");
+                const headingText = (lines[0] || "").replace(/\*\*/g, "").trim();
+                const headingId = slugifyHeading(headingText);
                 const rest = lines.slice(1).join("\n");
                 return (
                   <div key={i} className="pt-2">
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mt-6 mb-3">
-                      {heading}
+                    <h2
+                      id={headingId}
+                      className="text-xl sm:text-2xl font-bold text-neutral-900 mt-8 mb-3 scroll-mt-20"
+                    >
+                      {headingText}
                     </h2>
-                    {rest && <p className="text-neutral-700 leading-relaxed whitespace-pre-line">{rest}</p>}
-                    {showAdHere && <AdSenseUnit label="Sponsored Guide Resource" />}
+                    {rest && (
+                      <p className="text-neutral-700 leading-relaxed whitespace-pre-line">
+                        {renderFormattedText(rest)}
+                      </p>
+                    )}
+                    {showAdHere && (
+                      <AdSenseUnit label="Advertisement" className="my-8" />
+                    )}
                   </div>
                 );
               }
 
               if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
+                const headingText = paragraph.replace(/\*\*/g, "").trim();
+                const headingId = slugifyHeading(headingText);
                 return (
                   <div key={i}>
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mt-8 mb-3">
-                      {paragraph.replace(/\*\*/g, "")}
+                    <h2
+                      id={headingId}
+                      className="text-xl sm:text-2xl font-bold text-neutral-900 mt-8 mb-3 scroll-mt-20"
+                    >
+                      {headingText}
                     </h2>
-                    {showAdHere && <AdSenseUnit label="Sponsored Guide Resource" />}
+                    {showAdHere && (
+                      <AdSenseUnit label="Advertisement" className="my-8" />
+                    )}
                   </div>
                 );
               }
 
               if (paragraph.startsWith("- ") || paragraph.startsWith("1. ")) {
                 const items = paragraph.split("\n");
+                const isNumbered = paragraph.startsWith("1. ");
                 return (
                   <div key={i}>
-                    <ul className="list-disc pl-6 space-y-2 text-neutral-700 my-4">
-                      {items.map((item, j) => (
-                        <li key={j} className="leading-relaxed">
-                          {item.replace(/^[-\d.]\s*/, "")}
-                        </li>
-                      ))}
-                    </ul>
-                    {showAdHere && <AdSenseUnit label="Sponsored Guide Resource" />}
+                    {isNumbered ? (
+                      <ol className="list-decimal pl-6 space-y-2 text-neutral-700 my-4">
+                        {items.map((item, j) => (
+                          <li key={j} className="leading-relaxed">
+                            {renderFormattedText(
+                              item.replace(/^\d+\.\s*/, "")
+                            )}
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <ul className="list-disc pl-6 space-y-2 text-neutral-700 my-4">
+                        {items.map((item, j) => (
+                          <li key={j} className="leading-relaxed">
+                            {renderFormattedText(
+                              item.replace(/^-\s*/, "")
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {showAdHere && (
+                      <AdSenseUnit label="Advertisement" className="my-8" />
+                    )}
                   </div>
                 );
               }
@@ -225,16 +359,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               return (
                 <div key={i}>
                   <p className="leading-relaxed whitespace-pre-line text-neutral-700">
-                    {paragraph}
+                    {renderFormattedText(paragraph)}
                   </p>
-                  {showAdHere && <AdSenseUnit label="Sponsored Guide Resource" />}
+                  {showAdHere && (
+                    <AdSenseUnit label="Advertisement" className="my-8" />
+                  )}
                 </div>
               );
             })}
           </div>
 
           {/* Secondary AdSense Unit before FAQs */}
-          <AdSenseUnit label="Recommended Career Links" className="my-10" />
+          <AdSenseUnit label="Advertisement" className="my-10" />
 
           {/* FAQs Section */}
           {article.faqs && article.faqs.length > 0 && (
@@ -244,7 +380,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </h2>
               <div className="space-y-4">
                 {article.faqs.map((faq, idx) => (
-                  <div key={idx} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-xs">
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-xs"
+                  >
                     <h3 className="text-base font-bold text-neutral-900 mb-2">
                       {faq.q}
                     </h3>
@@ -276,27 +415,70 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   {article.author.role}
                 </p>
                 <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-                  Specialist in algorithmic matching, engineering career navigation, and Applicant Tracking Systems. DecaJobs publishes vetted career blueprints grounded in real-world hiring telemetry.
+                  Specialist in algorithmic matching, engineering career
+                  navigation, and Applicant Tracking Systems. DecaJobs publishes
+                  vetted career blueprints grounded in real-world hiring
+                  telemetry.
                 </p>
                 <div className="pt-2">
                   <Link
                     href={`/blog/author/${article.author.slug}`}
                     className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 hover:text-primary-800 underline"
                   >
-                    View Full Author Profile &amp; Published Guides →
+                    View Full Author Profile &amp; All 24 Published Guides →
                   </Link>
                 </div>
               </div>
             </div>
           </section>
 
+          {/* Related Career Guides */}
+          {relatedArticles.length > 0 && (
+            <section className="mt-12 pt-8 border-t border-neutral-200">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-neutral-900">
+                  Related Career Guides
+                </h3>
+                <Link
+                  href="/blog"
+                  className="text-xs font-semibold text-primary-600 hover:underline"
+                >
+                  View All Guides →
+                </Link>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {relatedArticles.map((rel) => (
+                  <Link
+                    key={rel.slug}
+                    href={`/blog/${rel.slug}`}
+                    className="group rounded-2xl border border-neutral-200 bg-white p-4 transition-all hover:shadow-md hover:border-primary-300 flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="inline-block rounded-full bg-primary-50 px-2 py-0.5 text-[10px] font-semibold text-primary-700 mb-2">
+                        {rel.category}
+                      </span>
+                      <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                        {rel.title}
+                      </h4>
+                    </div>
+                    <p className="mt-3 text-[11px] text-neutral-400">
+                      {rel.readingTime}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Conversion CTA */}
-          <div className="mt-8 rounded-3xl bg-primary-600 p-8 text-center text-white shadow-lg">
+          <div className="mt-12 rounded-3xl bg-primary-600 p-8 text-center text-white shadow-lg">
             <h3 className="text-xl sm:text-2xl font-bold">
               Stop Scrolling Through 10,000 Unvetted Jobs
             </h3>
             <p className="mt-2 text-sm sm:text-base text-primary-100 max-w-xl mx-auto">
-              DecaJobs algorithmically matches your skills with top verified openings and delivers exactly 10 genuine roles to your inbox every morning.
+              DecaJobs algorithmically matches your skills with top verified
+              openings and delivers exactly 10 genuine roles to your inbox every
+              morning.
             </p>
             <Link
               href="/login"

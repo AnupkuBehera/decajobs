@@ -123,7 +123,7 @@ export default function ToolsPage() {
         </div>
 
         {/* Top AdSense Display Unit */}
-        <AdSenseUnit label="Sponsored Career Tools Partner" className="mb-10" />
+        <AdSenseUnit label="Advertisement" className="mb-10" />
 
         {/* Tool Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2">
@@ -188,7 +188,7 @@ export default function ToolsPage() {
         </section>
 
         {/* Mid-page AdSense banner */}
-        <AdSenseUnit label="Sponsored Educational Resources" className="my-10" />
+        <AdSenseUnit label="Advertisement" className="my-10" />
 
         {/* Frequently Asked Questions */}
         <section className="mt-10 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-6 sm:p-8">

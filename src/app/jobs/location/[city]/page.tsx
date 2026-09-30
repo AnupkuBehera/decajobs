@@ -207,7 +207,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
                 </article>
 
                 {/* AdSense In-Location Display Unit */}
-                <AdSenseUnit label="Sponsored Location Partner" className="my-8" />
+                <AdSenseUnit label="Advertisement" className="my-8" />
 
                 {/* Frequently Asked Questions */}
                 {cityInfo.faqs && cityInfo.faqs.length > 0 && (

@@ -452,7 +452,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 </section>
 
                 {/* In-job listing AdSense display banner */}
-                <AdSenseUnit label="Sponsored Job Partner" className="my-8" />
+                <AdSenseUnit label="Advertisement" className="my-8" />
 
                 {/* Similar jobs */}
                 {similar.length > 0 && (

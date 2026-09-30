@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 interface Author {
   slug: string;
@@ -139,6 +140,11 @@ export default async function AuthorProfilePage({
 
   if (!author) notFound();
 
+  // Load all articles authored by this author from BLOG_ARTICLES
+  const authorArticles = Object.values(BLOG_ARTICLES).filter(
+    (art) => art.author.slug === author.slug
+  );
+
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -265,24 +271,32 @@ export default async function AuthorProfilePage({
               Articles by {author.name}
             </h2>
             <span className="text-xs text-neutral-500 font-medium">
-              {author.articles.length} in-depth guides published
+              {authorArticles.length} in-depth guides published
             </span>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            {author.articles.map((art) => (
+            {authorArticles.map((art) => (
               <Link
                 key={art.slug}
                 href={`/blog/${art.slug}`}
                 className="group rounded-2xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-300"
               >
-                <span className="inline-block rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700 mb-2">
-                  {art.category}
-                </span>
-                <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="inline-block rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
+                    {art.category}
+                  </span>
+                  <span className="text-[11px] text-neutral-400">
+                    {art.readingTime}
+                  </span>
+                </div>
+                <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                   {art.title}
                 </h3>
-                <p className="mt-3 text-xs text-neutral-400">
+                <p className="mt-2 text-xs text-neutral-500 line-clamp-2">
+                  {art.excerpt}
+                </p>
+                <p className="mt-3 text-[11px] text-neutral-400">
                   Published {art.date}
                 </p>
               </Link>

@@ -40,7 +40,7 @@ export default function BlogPage() {
         </div>
 
         {/* Top AdSense Display Unit */}
-        <AdSenseUnit label="Featured Career Resources" className="mb-10" />
+        <AdSenseUnit label="Advertisement" className="mb-10" />
 
         {/* Article Grid */}
         <div className="grid gap-6 sm:grid-cols-2">
@@ -79,7 +79,7 @@ export default function BlogPage() {
         </div>
 
         {/* Mid-page AdSense banner */}
-        <AdSenseUnit label="Sponsored Educational Links" className="my-12" />
+        <AdSenseUnit label="Advertisement" className="my-12" />
 
         {/* E-E-A-T Editorial Commitment Banner */}
         <div className="mt-8 rounded-3xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">

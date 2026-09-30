@@ -7,6 +7,7 @@ import {
   JOB_CATEGORIES,
   COMPANIES,
 } from "@/lib/public-jobs";
+import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
@@ -95,31 +96,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.85,
     })),
-    // Blog
+    // Blog Hub & Core
     { url: `${baseUrl}/blog`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/blog/editorial-policy`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/author/anup-behera`, lastModified: new Date("2026-09-03"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/top-10-resume-mistakes`, lastModified: new Date("2026-06-12"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/how-to-crack-any-interview`, lastModified: new Date("2026-06-10"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/remote-jobs-guide-india`, lastModified: new Date("2026-06-08"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/salary-negotiation-tips`, lastModified: new Date("2026-06-05"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/freshers-job-search-guide`, lastModified: new Date("2026-06-03"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/linkedin-profile-optimization`, lastModified: new Date("2026-06-01"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/ats-resume-secrets`, lastModified: new Date("2026-05-28"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/artificial-intelligence-careers`, lastModified: new Date("2026-05-25"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/remote-job-interview-prep`, lastModified: new Date("2026-05-22"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/career-gaps-explanation`, lastModified: new Date("2026-05-20"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/linkedin-networking-guide`, lastModified: new Date("2026-05-18"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/negotiating-first-salary`, lastModified: new Date("2026-05-15"), changeFrequency: "monthly", priority: 0.7 },
-    // New blog articles
-    { url: `${baseUrl}/blog/how-to-answer-salary-expectations`, lastModified: new Date("2026-07-10"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/best-skills-to-learn-2026`, lastModified: new Date("2026-07-08"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/how-to-write-resume-summary`, lastModified: new Date("2026-07-05"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/remote-work-tools-guide`, lastModified: new Date("2026-07-02"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/job-application-follow-up-guide`, lastModified: new Date("2026-06-28"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/how-to-build-professional-network`, lastModified: new Date("2026-06-25"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/switching-careers-guide`, lastModified: new Date("2026-06-22"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/blog/how-to-negotiate-remote-salary`, lastModified: new Date("2026-06-19"), changeFrequency: "monthly", priority: 0.7 },
+    // All 24 in-depth career guides dynamically included
+    ...Object.values(BLOG_ARTICLES).map((article) => ({
+      url: `${baseUrl}/blog/${article.slug}`,
+      lastModified: new Date(article.dateISO),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
   ];
 
   const jobEntries: MetadataRoute.Sitemap = jobs.map((job) => ({

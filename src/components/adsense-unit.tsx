@@ -27,6 +27,10 @@ export function AdSenseUnit({
   const isLoadedRef = useRef(false);
   const [hasAdFilled, setHasAdFilled] = useState(false);
 
+  // Google AdSense policies strictly allow ONLY "Advertisement" or "Sponsored Links"
+  const safeLabel =
+    label === "Sponsored Links" ? "Sponsored Links" : "Advertisement";
+
   useEffect(() => {
     try {
       if (typeof window !== "undefined" && !isLoadedRef.current) {
@@ -57,9 +61,9 @@ export function AdSenseUnit({
 
   return (
     <div className={`text-center overflow-hidden transition-all ${hasAdFilled ? "my-4" : "my-0"} ${className}`}>
-      {hasAdFilled && label && (
+      {hasAdFilled && (
         <span className="block text-[10px] font-semibold tracking-wider text-neutral-400 uppercase mb-1">
-          {label}
+          {safeLabel}
         </span>
       )}
       <ins

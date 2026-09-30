@@ -89,7 +89,7 @@ export default function ResumeCheckerPage() {
 
         <ResumeCheckerClient />
 
-        <AdSenseUnit label="Sponsored Career Tool Partner" className="my-10" />
+        <AdSenseUnit label="Advertisement" className="my-10" />
 
         <div className="mt-16 border-t border-neutral-200 pt-12 prose prose-neutral max-w-none">
           <h2 className="text-2xl font-bold text-neutral-900 mb-6">Complete Guide: How to Pass the ATS Resume Test</h2>

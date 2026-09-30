@@ -203,7 +203,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 </article>
 
                 {/* AdSense In-Category Display Unit */}
-                <AdSenseUnit label="Sponsored Career Partner" className="my-8" />
+                <AdSenseUnit label="Advertisement" className="my-8" />
 
                 {/* Frequently Asked Questions */}
                 {cat.faqs && cat.faqs.length > 0 && (

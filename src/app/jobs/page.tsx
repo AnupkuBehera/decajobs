@@ -69,7 +69,7 @@ export default async function JobsPage() {
                 <InstantAlertsBanner className="mb-8" />
 
                 {/* AdSense In-feed Display Unit */}
-                <AdSenseUnit label="Featured Career Opportunity Partner" className="mb-8" />
+                <AdSenseUnit label="Advertisement" className="mb-8" />
 
                 {/* Search & Filter Component */}
                 <section className="mb-12">
