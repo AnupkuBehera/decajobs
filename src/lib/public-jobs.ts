@@ -470,17 +470,21 @@ export const CITIES: CityInfo[] = [
     {
         slug: "london",
         name: "London",
-        aliases: ["london", "uk", "united kingdom", "greater london"],
+        aliases: ["london", "uk", "united kingdom", "greater london", "great britain", "england"],
         blurb:
-            "London is Europe's leading tech capital and global financial hub. Home to world-class fintech, AI labs (like Google DeepMind), and thousands of venture-backed scaleups, London offers Europe's highest software engineering packages.",
-        techParks: ["Silicon Roundabout (Old Street)", "King's Cross Knowledge Quarter", "Canary Wharf Financial District", "Paddington Tech Cluster"],
-        salaryInsight: "Software Engineers in London earn £65,000 to £120,000+ per year, with senior fintech architects commanding £150,000+.",
-        topIndustries: ["Fintech & Banking Technology", "Artificial Intelligence & Deep Tech", "E-Commerce & Digital Marketplaces", "Cybersecurity & Regtech"],
-        costOfLiving: "High. Monthly rent for 1-bedroom apartments in Zones 1-3 ranges from £1,800 to £2,600.",
+            "London is Europe's undisputed technology and FinTech capital. Home to Revolut, Monzo, DeepMind, and European engineering headquarters for Google, Meta, and Amazon, the city offers high GBP packages and Skilled Worker Visa sponsorship.",
+        techParks: ["Silicon Roundabout (Old Street / Shoreditch)", "Canary Wharf FinTech Hub", "King's Cross Tech Cluster", "City of London Financial District"],
+        salaryInsight: "Software Engineers in London earn £55,000 to £120,000+ per year, with senior fintech architects commanding £150,000+.",
+        topIndustries: ["Fintech & Banking Technology", "Artificial Intelligence & Deep Tech", "Cybersecurity & RegTech", "Enterprise SaaS & Cloud"],
+        costOfLiving: "High. Monthly rent for 1-bedroom apartments in Zones 1-3 ranges from £1,600 to £2,300.",
         faqs: [
             {
-                q: "Why is London a premier global tech destination?",
-                a: "London combines access to global capital, top universities, a vibrant startup ecosystem, and European headquarters for Google, Meta, and Stripe."
+                q: "Do tech companies in London sponsor Skilled Worker Visas for foreign engineers?",
+                a: "Yes. London has the highest concentration of A-rated Home Office sponsor licensed employers in Europe, actively issuing Certificates of Sponsorship (CoS) to international software developers and data specialists."
+            },
+            {
+                q: "What are the best neighborhoods for tech workers in London?",
+                a: "Shoreditch, Islington, Canary Wharf, Stratford, Clapham, and Bermondsey offer great transit links and proximity to major tech and financial districts."
             }
         ],
     },
@@ -668,27 +672,6 @@ export const CITIES: CityInfo[] = [
             {
                 q: "Why do multinational tech companies set up in Singapore?",
                 a: "Singapore offers political stability, low corporate taxes, English proficiency, and immediate access to the 650M+ Southeast Asian consumer market."
-            }
-        ],
-    },
-    {
-        slug: "london",
-        name: "London",
-        aliases: ["london", "uk", "united kingdom", "great britain", "england"],
-        blurb:
-            "London is Europe's undisputed technology and FinTech capital. Home to Revolut, Monzo, DeepMind, and European engineering headquarters for Google, Meta, and Amazon, the city offers high GBP packages and Skilled Worker Visa sponsorship.",
-        techParks: ["Silicon Roundabout (Old Street / Shoreditch)", "Canary Wharf FinTech Hub", "King's Cross Tech Cluster", "City of London Financial District"],
-        salaryInsight: "Software Engineers in London earn an average of £55,000 to £110,000+ per year, with senior architects and quant developers commanding £140,000 to £200,000+.",
-        topIndustries: ["Fintech & Digital Banking", "Artificial Intelligence & ML", "Cybersecurity & RegTech", "Enterprise SaaS & Cloud"],
-        costOfLiving: "High. Monthly rent for 1-bedroom apartments in Zones 2-3 ranges from £1,600 to £2,300.",
-        faqs: [
-            {
-                q: "Do tech companies in London sponsor Skilled Worker Visas for foreign engineers?",
-                a: "Yes. London has the highest concentration of A-rated Home Office sponsor licensed employers in Europe, actively issuing Certificates of Sponsorship (CoS) to international software developers and data specialists."
-            },
-            {
-                q: "What are the best neighborhoods for tech workers in London?",
-                a: "Shoreditch, Islington, Canary Wharf, Stratford, Clapham, and Bermondsey offer great transit links and proximity to major tech and financial districts."
             }
         ],
     },

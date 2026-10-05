@@ -31,7 +31,8 @@ export async function generateStaticParams() {
     // Pre-render job detail pages using the sample dataset so pages exist
     // even before the first external fetch. Live jobs are generated on demand.
     const jobs = await getPublicJobs();
-    return jobs.slice(0, 40).map((job) => ({ slug: jobSlug(job) }));
+    const uniqueSlugs = Array.from(new Set(jobs.slice(0, 40).map((job) => jobSlug(job))));
+    return uniqueSlugs.map((slug) => ({ slug }));
 }
 
 /**

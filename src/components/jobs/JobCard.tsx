@@ -120,4 +120,6 @@ export function JobCardGrid({ jobs }: { jobs: ExternalJob[] }) {
     );
 }
 
+export default JobCard;
+
 
