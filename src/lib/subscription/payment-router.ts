@@ -96,6 +96,9 @@ export async function createStripeSubscriptionSession(params: {
   const body = new URLSearchParams({
     mode: "subscription",
     customer_email: params.userEmail,
+    client_reference_id: params.userId,
+    "metadata[user_id]": params.userId,
+    "metadata[country]": params.config.countryCode,
     "subscription_data[trial_period_days]": String(params.config.trialDays),
     "subscription_data[metadata][user_id]": params.userId,
     "subscription_data[metadata][country]": params.config.countryCode,

@@ -21,7 +21,14 @@ const CAREER_TIPS = [
   "💡 Skill Mapping: Review your match scores daily to see which skills you should add next to land high-paying roles."
 ];
 
-export default async function CandidateDashboardPage() {
+export default async function CandidateDashboardPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ subscribed?: string; session_id?: string }>;
+}) {
+  const params = await searchParams;
+  const isSubscribedJustNow = params?.subscribed === "true" || !!params?.session_id;
+
   const supabase = await createClient();
 
   const {
@@ -42,9 +49,21 @@ export default async function CandidateDashboardPage() {
   // Fetch candidate record for matching status and referral code
   const { data: candidate } = await supabase
     .from("candidates")
-    .select("is_active, referral_code, referral_bonus_days")
+    .select("is_active, referral_code, referral_bonus_days, subscription_status")
     .eq("id", user.id)
     .maybeSingle();
+
+  // If returning from Stripe Checkout, ensure status is active immediately
+  if (isSubscribedJustNow && candidate?.subscription_status !== "active") {
+    await supabase
+      .from("candidates")
+      .update({
+        subscription_status: "active",
+        subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+  }
 
   // Fetch profile for completeness check
   const { data: profile } = await supabase
@@ -122,6 +141,29 @@ export default async function CandidateDashboardPage() {
   return (
     <div className="py-6 sm:py-10">
       <div className="mx-auto max-w-6xl">
+        {/* Post-Checkout Success Banner */}
+        {isSubscribedJustNow && (
+          <div className="mb-6 rounded-2xl border border-emerald-300 bg-gradient-to-r from-emerald-50 via-teal-50 to-white p-4 sm:p-5 text-emerald-900 shadow-sm flex items-start sm:items-center justify-between gap-3">
+            <div className="flex items-start sm:items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white text-lg font-bold shadow-xs">
+                🎉
+              </span>
+              <div>
+                <h3 className="text-sm font-bold sm:text-base">Payment Confirmed — Welcome to DecaJobs Pro!</h3>
+                <p className="text-xs text-emerald-700 mt-0.5 leading-relaxed">
+                  Your Pro subscription is fully active. You now have full access to all 10 morning match listings, direct contact details, and ATS resume tools.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/my-daily-10"
+              className="hidden sm:inline-flex items-center rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 shadow-2xs whitespace-nowrap"
+            >
+              View Daily 10 →
+            </Link>
+          </div>
+        )}
+
         {/* Welcome Header */}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
