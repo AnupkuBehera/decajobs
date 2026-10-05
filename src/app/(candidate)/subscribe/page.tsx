@@ -65,12 +65,18 @@ export default function SubscribePage() {
         return;
       }
 
-      // Open Razorpay checkout
+      // If Stripe international checkout, redirect to Stripe Checkout
+      if (data.provider === "stripe" && data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
+      // Open Razorpay checkout for India
       const options = {
         key: data.razorpayKeyId,
         subscription_id: data.subscriptionId,
         name: "DecaJobs",
-        description: "DecaJobs Pro - ₹299/month",
+        description: `DecaJobs Pro - ${data.displayPrice || "₹299/month"}`,
         theme: { color: "#2563eb" },
         handler: async function () {
           // Immediately activate Pro status (fallback for webhook delay)

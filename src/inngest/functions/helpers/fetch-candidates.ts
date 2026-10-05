@@ -7,11 +7,58 @@ export interface ActiveCandidateWithProfile {
   id: string;
   email: string;
   preferred_delivery_time: string;
+  timeZone: string;
   profile: {
     target_titles: string[];
     skills: string[];
     location: string;
   };
+}
+
+/**
+ * Infer regional timezone based on profile location (India, UAE, UK, Global).
+ */
+export function inferCandidateTimeZone(location: string): string {
+  const loc = (location || "").toLowerCase();
+  if (
+    loc.includes("dubai") ||
+    loc.includes("uae") ||
+    loc.includes("abu dhabi") ||
+    loc.includes("sharjah") ||
+    loc.includes("gulf") ||
+    loc.includes("qatar") ||
+    loc.includes("saudi")
+  ) {
+    return "Asia/Dubai"; // GST (UTC+4)
+  }
+  if (
+    loc.includes("london") ||
+    loc.includes("uk") ||
+    loc.includes("united kingdom") ||
+    loc.includes("manchester") ||
+    loc.includes("cambridge") ||
+    loc.includes("bristol")
+  ) {
+    return "Europe/London"; // GMT / BST
+  }
+  return "Asia/Kolkata"; // IST (UTC+5:30) default
+}
+
+/**
+ * Checks if the candidate's current local hour matches the 7:00 AM delivery window.
+ */
+export function isCandidateInDeliveryWindow(timeZone: string, targetHour: number = 7): boolean {
+  try {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      hour: "numeric",
+      hour12: false,
+    });
+    const currentHour = parseInt(formatter.format(new Date()), 10);
+    return currentHour === targetHour;
+  } catch {
+    return true; // Fallback to allow delivery
+  }
 }
 
 /**
@@ -33,15 +80,14 @@ function createServiceRoleClient() {
 
 /**
  * Fetches all active candidates with complete profiles from the database.
- * A complete profile has non-empty target_titles, skills, and location.
+ * Optionally filters to candidates whose local time is currently 7:00 AM.
  *
- * Only candidates where is_active = true are included.
- *
+ * @param filterByLocalTime - When true, only returns candidates where local time is 7:00 AM
  * @returns Array of active candidates with their profile data
  */
-export async function fetchActiveCandidates(): Promise<
-  ActiveCandidateWithProfile[]
-> {
+export async function fetchActiveCandidates(
+  filterByLocalTime: boolean = false
+): Promise<ActiveCandidateWithProfile[]> {
   const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
@@ -70,28 +116,35 @@ export async function fetchActiveCandidates(): Promise<
     return [];
   }
 
-  // Filter to only candidates with complete profiles (non-empty target_titles, skills, location)
+  // Filter to candidates with complete profiles and in 7:00 AM local delivery window
   const candidates: ActiveCandidateWithProfile[] = [];
 
   for (const row of data) {
-    // candidate_profiles is joined as inner, so it always exists
-    // but we cast and validate the shape
     const profile = row.candidate_profiles as unknown as {
       target_titles: string[];
       skills: string[];
       location: string;
     };
 
-    // Skip candidates with incomplete profiles
+    // Skip candidates with incomplete profiles (must have at least target titles and location)
     if (
       !profile ||
       !Array.isArray(profile.target_titles) ||
       profile.target_titles.length === 0 ||
-      !Array.isArray(profile.skills) ||
-      profile.skills.length === 0 ||
       !profile.location ||
       profile.location.trim() === ""
     ) {
+      continue;
+    }
+
+    const effectiveSkills =
+      Array.isArray(profile.skills) && profile.skills.length > 0
+        ? profile.skills
+        : profile.target_titles;
+
+    const timeZone = inferCandidateTimeZone(profile.location);
+
+    if (filterByLocalTime && !isCandidateInDeliveryWindow(timeZone, 7)) {
       continue;
     }
 
@@ -99,9 +152,10 @@ export async function fetchActiveCandidates(): Promise<
       id: row.id,
       email: row.email,
       preferred_delivery_time: row.preferred_delivery_time,
+      timeZone,
       profile: {
         target_titles: profile.target_titles,
-        skills: profile.skills,
+        skills: effectiveSkills,
         location: profile.location,
       },
     });

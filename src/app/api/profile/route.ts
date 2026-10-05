@@ -83,6 +83,7 @@ export async function PUT(request: Request) {
   }
 
   const { target_titles, skills, location, resume_url, designation, expected_salary } = validation.data;
+  const effectiveSkills = (skills && skills.length > 0) ? skills : [target_titles[0]];
 
   // Upsert profile (INSERT or UPDATE on conflict with candidate_id)
   const { data: profile, error: upsertError } = await supabase
@@ -91,7 +92,7 @@ export async function PUT(request: Request) {
       {
         candidate_id: user.id,
         target_titles,
-        skills,
+        skills: effectiveSkills,
         location,
         designation: designation || "",
         expected_salary: expected_salary || "",

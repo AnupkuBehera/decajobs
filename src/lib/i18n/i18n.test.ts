@@ -15,8 +15,8 @@ import {
 import { scoreLocationMatch } from "../matching/scorer";
 
 describe("i18n Config & Locales", () => {
-  it("includes all 8 required languages plus English default", () => {
-    const required = ["en", "es", "ja", "fr", "de", "pt", "ko", "it"];
+  it("includes all required languages plus English default and Hindi", () => {
+    const required = ["en", "hi", "es", "ja", "fr", "de", "pt", "ko", "it"];
     for (const req of required) {
       expect(SUPPORTED_LOCALES).toContain(req);
       expect(isValidLocale(req)).toBe(true);

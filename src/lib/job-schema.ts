@@ -110,7 +110,9 @@ export function parseLocation(locationStr?: string) {
     lower.includes("pune") ||
     lower.includes("india") ||
     lower.includes("gurgaon") ||
-    lower.includes("noida")
+    lower.includes("noida") ||
+    lower.includes("bhubaneswar") ||
+    lower.includes("bbsr")
   ) {
     addressCountry = "IN";
     if (addressRegion === "Remote" || addressRegion === addressLocality) {
@@ -119,6 +121,7 @@ export function parseLocation(locationStr?: string) {
       else if (lower.includes("delhi") || lower.includes("gurgaon") || lower.includes("noida")) addressRegion = "Delhi NCR";
       else if (lower.includes("hyderabad")) addressRegion = "Telangana";
       else if (lower.includes("chennai")) addressRegion = "Tamil Nadu";
+      else if (lower.includes("bhubaneswar") || lower.includes("bbsr")) addressRegion = "Odisha";
     }
   } else if (
     lower.includes("london") ||
@@ -162,8 +165,10 @@ export function parseLocation(locationStr?: string) {
 /**
  * Helper to parse salary from description/title or generate a realistic fallback base salary.
  */
-export function parseOrEstimateSalary(title: string, description: string) {
+export function parseOrEstimateSalary(title: string, description: string, locationStr?: string) {
   const text = `${title} ${description}`;
+  const loc = (locationStr || "").toLowerCase();
+  const isIndia = /india|bangalore|bengaluru|mumbai|pune|delhi|hyderabad|chennai|noida|gurgaon|bhubaneswar|bbsr|kolkata/i.test(loc);
 
   // Match patterns like $90k - $120k, $90,000 - $120,000, €60k - €80k, ₹10L - ₹15L
   const rangeMatch = text.match(
@@ -171,11 +176,11 @@ export function parseOrEstimateSalary(title: string, description: string) {
   );
 
   if (rangeMatch) {
-    const symbol = rangeMatch[1] || rangeMatch[4] || "$";
-    let currency = "USD";
+    const symbol = rangeMatch[1] || rangeMatch[4] || (isIndia ? "₹" : "$");
+    let currency = isIndia ? "INR" : "USD";
     if (symbol === "€") currency = "EUR";
     else if (symbol === "£") currency = "GBP";
-    else if (symbol === "₹") currency = "INR";
+    else if (symbol === "₹" || symbol === "l" || symbol === "lakh") currency = "INR";
 
     const parseVal = (numStr: string, unitStr?: string) => {
       let val = parseFloat(numStr.replace(/,/g, ""));
@@ -199,6 +204,35 @@ export function parseOrEstimateSalary(title: string, description: string) {
     if (!isNaN(min) && !isNaN(max) && min > 10000 && max >= min) {
       return { currency, minValue: min, maxValue: max, unitText: "YEAR" as const };
     }
+  }
+
+  // India estimation
+  if (isIndia) {
+    const t = title.toLowerCase();
+    let minValue = 600000;
+    let maxValue = 1400000;
+
+    if (
+      t.includes("senior") ||
+      t.includes("lead") ||
+      t.includes("principal") ||
+      t.includes("architect") ||
+      t.includes("manager") ||
+      t.includes("head")
+    ) {
+      minValue = 1800000;
+      maxValue = 3500000;
+    } else if (t.includes("intern") || t.includes("junior") || t.includes("fresher") || t.includes("entry")) {
+      minValue = 400000;
+      maxValue = 800000;
+    }
+
+    return {
+      currency: "INR",
+      minValue,
+      maxValue,
+      unitText: "YEAR" as const,
+    };
   }
 
   // Infer estimated base salary by title level
@@ -249,7 +283,7 @@ export function buildJobPostingSchema(job: ExternalJob, slug: string): JobPostin
   const validThroughIso = validThroughDate.toISOString();
 
   const locInfo = parseLocation(job.location);
-  const salary = parseOrEstimateSalary(job.title, job.description);
+  const salary = parseOrEstimateSalary(job.title, job.description, job.location);
 
   // Infer employment type if specified
   const descLower = `${job.title} ${job.description}`.toLowerCase();

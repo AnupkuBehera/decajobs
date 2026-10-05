@@ -189,42 +189,50 @@ export default function PricingPage() {
 
         {/* Feature Comparison Table */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-neutral-900 text-center mb-8">
-            Feature Comparison
-          </h2>
-          <div className="overflow-x-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+              Free vs Pro Feature Comparison
+            </h2>
+            <p className="mt-2 text-sm text-neutral-500">
+              See exactly why serious job seekers upgrade to DecaJobs Pro for ₹299/month
+            </p>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white shadow-sm">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="border-b border-neutral-200">
-                  <th className="text-left py-3 px-4 font-semibold text-neutral-900">Feature</th>
-                  <th className="text-center py-3 px-4 font-semibold text-neutral-900">Free Trial (7 days)</th>
-                  <th className="text-center py-3 px-4 font-semibold text-primary-600">Pro (₹299/mo)</th>
+                <tr className="border-b border-neutral-200 bg-neutral-50/70">
+                  <th className="text-left py-4 px-5 font-bold text-neutral-900">Platform Capabilities</th>
+                  <th className="text-center py-4 px-4 font-semibold text-neutral-600">Free Public Tier</th>
+                  <th className="text-center py-4 px-4 font-bold text-primary-700 bg-primary-50/60 border-l border-r border-primary-200">
+                    DecaJobs Pro (₹299/mo)
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-neutral-100">
                 {[
-                  ["Daily 10 AI-Matched Jobs", true, true],
-                  ["AI Resume Checker", true, true],
-                  ["Salary Calculator", true, true],
-                  ["AI Interview Prep", true, true],
-                  ["Cover Letter Generator", true, true],
-                  ["Job Scam Detector", true, true],
-                  ["LinkedIn Headline Generator", true, true],
-                  ["Resume Optimizer (Job-Specific)", true, true],
-                  ["AI Career Coach", true, true],
-                  ["Skill Gap Analyzer", true, true],
-                  ["Career Path Visualizer", true, true],
-                  ["Cold Email Generator", true, true],
-                  ["Ad-Free Experience", true, true],
-                  ["Priority Support", false, true],
-                ].map(([feature, free, pro], i) => (
-                  <tr key={i} className="border-b border-neutral-100">
-                    <td className="py-3 px-4 text-neutral-700">{feature as string}</td>
-                    <td className="py-3 px-4 text-center">
-                      {free ? <span className="text-green-500">✓</span> : <span className="text-neutral-300">—</span>}
+                  ["Public Job Board Browsing & Search", true, true, "Standard keyword search"],
+                  ["Free Public Tools (In-Hand Salary & Notice Calc)", true, true, "No account needed"],
+                  ["Daily 10 Curated Jobs Delivered at 7:00 AM", false, true, "Personalized to exact skills & experience"],
+                  ["WhatsApp Morning Digest Delivery", false, true, "Read & 1-click apply before morning commute"],
+                  ["Email Dispatch with Direct Apply Links", false, true, "Direct to recruiter portal"],
+                  ["Urgent 90+ Match Instant Notifications", false, true, "Catch fresh roles before 200+ apply"],
+                  ["Job Trust Score™ & Ghost Job Detection", false, true, "Scam filters, salary verified, hiring status"],
+                  ["1-Click Resume-to-Job Tailorer & ATS Matcher", false, true, "Customized keywords & bullets per job"],
+                  ["Direct Hiring Manager & Recruiter Contact Details", false, true, "Verified LinkedIn & corporate email"],
+                  ["Application Tracker CRM with 5-Day Recruiter Nudges", false, true, "Automated follow-up templates"],
+                  ["Ad-Free Browsing Experience", false, true, "100% clean interface with no ads"],
+                  ["100% Quality Match Guarantee (70 jobs or full refund)", false, true, "Risk-free trial & money-back promise"],
+                ].map(([feature, free, pro, note], i) => (
+                  <tr key={i} className="hover:bg-neutral-50/50 transition-colors">
+                    <td className="py-3.5 px-5 text-neutral-800">
+                      <div className="font-medium">{feature as string}</div>
+                      <div className="text-xs text-neutral-400 mt-0.5">{note as string}</div>
                     </td>
-                    <td className="py-3 px-4 text-center">
-                      {pro ? <span className="text-green-500">✓</span> : <span className="text-neutral-300">—</span>}
+                    <td className="py-3.5 px-4 text-center">
+                      {free ? <span className="text-green-600 font-bold">✓</span> : <span className="text-neutral-300 font-bold">—</span>}
+                    </td>
+                    <td className="py-3.5 px-4 text-center bg-primary-50/30 border-l border-r border-primary-100">
+                      {pro ? <span className="text-primary-700 font-bold">✓ Yes</span> : <span className="text-neutral-300 font-bold">—</span>}
                     </td>
                   </tr>
                 ))}
@@ -233,10 +241,36 @@ export default function PricingPage() {
           </div>
         </div>
 
+        {/* 100% Quality Match Guarantee / Trust Box */}
+        <div className="mb-16 rounded-3xl bg-gradient-to-br from-neutral-900 via-neutral-900 to-primary-950 p-8 sm:p-12 text-white shadow-xl border border-neutral-800">
+          <div className="max-w-3xl mx-auto text-center space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+              <span>🛡️</span> 100% Quality Match Guarantee
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+              No Match, No Pay Guarantee
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed">
+              We stand behind our curation algorithm. If DecaJobs does not deliver at least <strong>70 verified, high-relevance jobs</strong> matching your target title and experience during your 30-day Pro membership, simply email us at <span className="text-primary-300 font-mono">support@decajob.com</span> within 30 days and we will refund your ₹299 immediately. No questions asked.
+            </p>
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/login"
+                className="w-full sm:w-auto bg-primary-600 hover:bg-primary-500 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all"
+              >
+                Claim Your 7-Day Free Trial (₹0 Today) →
+              </Link>
+            </div>
+            <p className="text-xs text-neutral-500 pt-2">
+              Cancel anytime with 1 click in your account settings. Zero lock-in contracts.
+            </p>
+          </div>
+        </div>
+
         {/* Pricing FAQ */}
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-neutral-900 text-center mb-8">
-            Pricing Questions
+            Frequently Asked Questions
           </h2>
           <div className="space-y-4 max-w-3xl mx-auto">
             {pricingFaqs.map((faq, i) => (
@@ -256,27 +290,6 @@ export default function PricingPage() {
               </details>
             ))}
           </div>
-        </div>
-
-        {/* Money-back guarantee / Trust signals */}
-        <div className="text-center rounded-2xl bg-primary-50 border border-primary-200 p-8">
-          <h2 className="text-xl font-bold text-neutral-900">
-            Risk-Free Guarantee
-          </h2>
-          <p className="mt-3 text-neutral-600 max-w-xl mx-auto">
-            Try DecaJobs Pro completely free for 7 days. No credit card required.
-            If it doesn&apos;t transform your job search, simply don&apos;t subscribe.
-            Cancel anytime with zero hassle.
-          </p>
-          <Link
-            href="/login"
-            className="mt-6 inline-flex items-center justify-center rounded-lg bg-primary-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-primary-700 transition-colors min-h-[52px]"
-          >
-            Start Your Free Trial →
-          </Link>
-          <p className="mt-3 text-xs text-neutral-500">
-            Join 5,000+ job seekers already using DecaJobs
-          </p>
         </div>
       </div>
 

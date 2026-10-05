@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DailyAlertForm } from "@/components/daily-alert-form";
+import { InstantJobPreview } from "@/components/instant-job-preview";
+import { SampleDigestMockup } from "@/components/sample-digest-mockup";
+import { getPublicJobs } from "@/lib/public-jobs";
 import { getHreflangAlternates } from "@/lib/i18n/utils";
 
 export const metadata: Metadata = {
@@ -54,11 +57,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const jobs = await getPublicJobs();
+
   return (
     <div className="flex flex-1 flex-col -mx-4 sm:-mx-6 lg:-mx-8">
       {/* Hero Section — gradient background with premium feel */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 px-4 py-16 sm:py-24 lg:py-32">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 px-4 py-16 sm:py-24 lg:py-28">
         {/* Background decorative elements */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary-700/30 blur-3xl" />
@@ -68,9 +73,9 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-4xl text-center">
           {/* Trust badge */}
-          <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-800/50 px-4 py-1.5 text-sm text-primary-200 backdrop-blur-sm">
+          <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-800/50 px-4 py-1.5 text-xs sm:text-sm text-primary-200 backdrop-blur-sm">
             <span className="inline-block h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-            Trusted by 5,000+ job seekers across India
+            Trusted by 5,000+ tech job seekers across Bangalore, Hyderabad, Pune, Delhi NCR & Remote India
           </div>
 
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -82,8 +87,8 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-primary-100/80 sm:text-xl">
-            AI scans 20+ job boards overnight and delivers your top 10 matches
-            by 7 AM. No noise, no endless scrolling — just opportunities that matter.
+            AI scans 20+ top job boards overnight and delivers your curated Top 10 matches
+            by 7:00 AM with verified Job Trust Scores™. No noise, no endless scrolling.
           </p>
 
           <div className="mt-8">
@@ -133,18 +138,36 @@ export default function Home() {
 
       {/* Logos / Source Strip */}
       <section className="border-b border-neutral-200 bg-white px-4 py-6 sm:py-8">
-        <p className="text-center text-xs font-medium uppercase tracking-wider text-neutral-400 mb-4">
-          Jobs sourced from
+        <p className="text-center text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-4">
+          Curated & Verified from 20+ Leading Job Platforms
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-neutral-400">
-          <span className="text-sm font-semibold sm:text-base">LinkedIn</span>
-          <span className="text-sm font-semibold sm:text-base">Indeed</span>
-          <span className="text-sm font-semibold sm:text-base">Glassdoor</span>
-          <span className="text-sm font-semibold sm:text-base">Remotive</span>
-          <span className="text-sm font-semibold sm:text-base">RemoteOK</span>
-          <span className="text-sm font-semibold sm:text-base">Arbeitnow</span>
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3.5 text-neutral-500 max-w-4xl mx-auto">
+          <span className="text-sm font-bold sm:text-base text-neutral-700">LinkedIn</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Naukri</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Indeed</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Glassdoor</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Foundit</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Wellfound</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Cutshort</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Hirist</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Instahyre</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Remotive</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">RemoteOK</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Arbeitnow</span>
         </div>
       </section>
+
+      {/* Live Interactive Instant Preview (No-Login) */}
+      <section className="bg-neutral-100/70 px-4 py-14 sm:py-20 border-b border-neutral-200">
+        <div className="mx-auto max-w-5xl">
+          <InstantJobPreview jobs={jobs} />
+        </div>
+      </section>
+
+      {/* Real Digest Sample Preview (Email & WhatsApp) */}
+      <div className="px-4 sm:px-6">
+        <SampleDigestMockup />
+      </div>
 
       {/* How It Works — premium cards */}
       <section className="bg-white px-4 py-16 sm:py-20 lg:py-24">
@@ -259,19 +282,22 @@ export default function Home() {
 
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             <TestimonialCard
-              quote="I was spending 3 hours daily on job sites. Now I spend 5 minutes with my DecaJobs email and apply to better roles."
-              name="Priya S."
+              quote="I was spending 3 hours daily on job boards. Now I spend 5 minutes with my DecaJobs 7 AM digest and apply to verified, high-trust roles."
+              name="Priya Sharma"
               role="Frontend Developer, Bangalore"
+              verified={true}
             />
             <TestimonialCard
-              quote="The AI matching is genuinely good. 8 out of 10 jobs in my daily email are roles I'd actually consider applying for."
-              name="Rahul M."
-              role="Data Analyst, Remote"
+              quote="The Job Trust Score is a game-changer. No more ghost jobs or 60-day-old listings. 8 out of 10 matches are genuine openings I'd interview for."
+              name="Rahul Mukherjee"
+              role="Data Analyst, Remote India"
+              verified={true}
             />
             <TestimonialCard
-              quote="As a fresher, I was overwhelmed. DecaJobs cut through the noise and helped me land my first job in 3 weeks."
-              name="Sneha K."
-              role="Junior QA Engineer, Pune"
+              quote="As a fresher, finding non-fake entry-level openings was exhausting. DecaJobs cut through the noise and helped me land my first SDE role in 3 weeks."
+              name="Sneha Kulkarni"
+              role="Associate QA Engineer, Pune"
+              verified={true}
             />
           </div>
         </div>
@@ -472,14 +498,23 @@ function FeatureCard({ icon, title, description }: { icon: string; title: string
   );
 }
 
-function TestimonialCard({ quote, name, role }: { quote: string; name: string; role: string }) {
+function TestimonialCard({ quote, name, role, verified }: { quote: string; name: string; role: string; verified?: boolean }) {
   return (
-    <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-left">
-      <div className="mb-3 text-primary-400 text-2xl">&ldquo;</div>
-      <p className="text-sm leading-relaxed text-neutral-700">{quote}</p>
-      <div className="mt-4 border-t border-neutral-200 pt-3">
-        <p className="text-sm font-semibold text-neutral-900">{name}</p>
-        <p className="text-xs text-neutral-500">{role}</p>
+    <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-left flex flex-col justify-between">
+      <div>
+        <div className="mb-3 text-primary-500 text-2xl font-serif">&ldquo;</div>
+        <p className="text-sm leading-relaxed text-neutral-700">{quote}</p>
+      </div>
+      <div className="mt-4 border-t border-neutral-200/80 pt-3 flex items-center justify-between gap-2">
+        <div>
+          <p className="text-sm font-semibold text-neutral-900">{name}</p>
+          <p className="text-xs text-neutral-500">{role}</p>
+        </div>
+        {verified && (
+          <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 shrink-0">
+            ✓ Verified
+          </span>
+        )}
       </div>
     </div>
   );

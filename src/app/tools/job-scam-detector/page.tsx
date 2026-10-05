@@ -75,19 +75,33 @@ export default function JobScamDetectorPage() {
             As the number of remote job opportunities has grown, so has the incidence of fraudulent job listings. Scammers use sophisticated tactics to trick job seekers into revealing personal information, transferring money, or performing unpaid work under the guise of a real job opening.
           </p>
 
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">5 Major Red Flags of a Fake Job Posting</h3>
+          <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">Common Scam Patterns by Region</h3>
           <div className="space-y-4 my-6">
-            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
-              <h4 className="font-semibold text-neutral-900">1. Asking for money or fees up front</h4>
-              <p className="text-sm text-neutral-600 mt-1">Legitimate employers will never charge you for applying, training, training materials, laptop fees, or system setup. If they ask you to send money via UPI, wire transfer, or crypto, it is 100% a scam.</p>
+            <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
+              <h4 className="font-semibold text-neutral-900 flex items-center gap-2">
+                <span>🇦🇪</span> UAE &amp; Gulf Visa &amp; Relocation Scams
+              </h4>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
+                The most prevalent Gulf scam involves a lavish offer letter (e.g. 20,000+ AED/month) without a proper technical interview, followed by an urgent request to pay 1,500 - 3,000 AED to a specific &quot;approved travel agency&quot; for visa processing or medical insurance. <strong>Under UAE Labour Law (Ministerial Resolution 275/2006, Article 6), the employer is legally mandated to bear 100% of all visa, medical, and Emirates ID costs.</strong> Any demand for payment from the candidate is 100% fraudulent.
+              </p>
             </div>
-            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
-              <h4 className="font-semibold text-neutral-900">2. Communications via messaging apps only</h4>
-              <p className="text-sm text-neutral-600 mt-1">Be highly suspicious if the entire recruitment process (including interviews and offers) happens strictly over Telegram, WhatsApp, or Signal. Real companies schedule video interviews via Zoom, Teams, or Google Meet.</p>
+
+            <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
+              <h4 className="font-semibold text-neutral-900 flex items-center gap-2">
+                <span>🇮🇳</span> India Laptop Deposit &amp; Registration Fee Scams
+              </h4>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
+                Targeting freshers and remote job seekers, scammers pose as HR from TCS, Cognizant, or fast-growing startups. After an automated email &quot;selection,&quot; candidates are asked to transfer ₹2,000 to ₹5,000 via UPI as a refundable courier fee or security deposit for a company MacBook/laptop. Legitimate corporate entities in India never request money before or after onboarding.
+              </p>
             </div>
-            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100">
-              <h4 className="font-semibold text-neutral-900">3. Unrealistic pay for minimal work</h4>
-              <p className="text-sm text-neutral-600 mt-1">If a job promises ₹5,000/day for 1 hour of &quot;data entry&quot; or &quot;liking videos,&quot; it is almost certainly a task-scam designed to drain your bank account.</p>
+
+            <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
+              <h4 className="font-semibold text-neutral-900 flex items-center gap-2">
+                <span>🌍</span> Remote Task &amp; Telegram Crypto Schemes
+              </h4>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
+                Common in US, UK, and international remote positions, these scams offer $200–$500/day for minimal work like rating apps or liking videos. They pay a small nominal reward at first to build trust, then lock the funds behind a &quot;VIP recharge&quot; requiring you to deposit cryptocurrency into their wallet.
+              </p>
             </div>
           </div>
         </div>

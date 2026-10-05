@@ -66,15 +66,29 @@ export default function PrivacyPolicyPage() {
           Your data is stored on Supabase servers with encryption at rest. We use Row Level Security (RLS) to ensure users can only access their own data. Resume files are stored in encrypted private storage buckets.
         </p>
 
-        <h2>6. Your Rights</h2>
-        <p>You have the right to:</p>
+        <h2>6. Your Rights & Regional Data Protection Compliance</h2>
+        <p>You have the right to access, rectify, port, and erase your personal data, or withdraw consent at any time.</p>
+
+        <h3>United Kingdom &amp; EU Residents (UK GDPR / EU GDPR)</h3>
+        <p>
+          Under the UK General Data Protection Regulation and the UK Data Protection Act 2018, candidates residing in the United Kingdom and EEA enjoy statutory rights including:
+        </p>
         <ul>
-          <li>Access your personal data</li>
-          <li>Correct inaccurate data</li>
-          <li>Delete your account and all associated data</li>
-          <li>Unsubscribe from daily digest emails at any time</li>
-          <li>Export your data</li>
+          <li><strong>Right of Access &amp; Portability (SAR):</strong> Obtain confirmation and copies of personal data processed.</li>
+          <li><strong>Right to Erasure (&ldquo;Right to be Forgotten&rdquo;):</strong> Delete your resume, profile, and subscription history.</li>
+          <li><strong>Right to Restrict or Object to Processing:</strong> Stop automated profiling or job matching.</li>
+          <li><strong>Supervisory Authority:</strong> You have the right to lodge a complaint with the UK Information Commissioner&apos;s Office (<a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer">ico.org.uk</a>).</li>
         </ul>
+
+        <h3>United Arab Emirates Residents (UAE PDPL)</h3>
+        <p>
+          In compliance with UAE Federal Decree-Law No. 45/2021 on Personal Data Protection, candidates in the UAE have the right to restrict processing, request data erasure, and lodge inquiries with the UAE Data Office.
+        </p>
+
+        <h3>Indian Residents (DPDP Act 2023)</h3>
+        <p>
+          In accordance with the Digital Personal Data Protection Act 2023, data is processed solely for lawful employment discovery upon explicit consent, with readily accessible grievance redressal mechanisms.
+        </p>
 
         <h2>7. Cookies and Advertising</h2>
         <p>

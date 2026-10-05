@@ -83,14 +83,20 @@ export async function sendDigestEmail(to: string, jobs: JobDigestItem[], candida
     ? `Your DecaJobs Daily 10 — ${date}`
     : `Your DecaJobs Daily Digest — ${date}`;
 
+  const unsubscribeUrl = buildUnsubscribeUrl(candidateId, appUrl);
+
   await sendWithRetry({
     from: FROM_EMAIL,
     to,
     subject,
+    headers: {
+      "List-Unsubscribe": `<${unsubscribeUrl}>, <mailto:unsubscribe@decajob.com?subject=unsubscribe-${candidateId}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
     react: React.createElement(DailyDigestEmail, {
       jobs: digestJobs,
       date,
-      unsubscribeUrl: buildUnsubscribeUrl(candidateId, appUrl),
+      unsubscribeUrl,
       preferencesUrl: `${appUrl}/settings`,
     }),
   });

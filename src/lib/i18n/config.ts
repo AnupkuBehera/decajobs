@@ -7,6 +7,7 @@
 
 export const SUPPORTED_LOCALES = [
   "en",
+  "hi",
   "es",
   "ja",
   "fr",
@@ -48,6 +49,16 @@ export const LOCALES: Record<SupportedLocale, LocaleInfo> = {
     hreflang: "en",
     defaultCurrency: "USD",
     country: "Global",
+  },
+  hi: {
+    code: "hi",
+    label: "Hindi",
+    nativeName: "हिन्दी",
+    flag: "🇮🇳",
+    dir: "ltr",
+    hreflang: "hi",
+    defaultCurrency: "INR",
+    country: "भारत (India)",
   },
   es: {
     code: "es",

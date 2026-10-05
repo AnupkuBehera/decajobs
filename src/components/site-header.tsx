@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { checkSubscription } from "@/lib/subscription/check";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { CountrySelector } from "@/components/country-selector";
 
 export async function SiteHeader() {
   let user = null;
@@ -218,6 +219,7 @@ export async function SiteHeader() {
               </Link>
             </>
           )}
+          <CountrySelector variant="header" />
           <LanguageSwitcher variant="header" />
         </nav>
       </div>

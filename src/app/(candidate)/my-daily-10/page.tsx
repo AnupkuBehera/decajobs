@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { calculateJobTrustScore } from "@/lib/trust-score";
+import { extractSkillsFromJob } from "@/lib/public-jobs";
+import { trackFunnelEvent } from "@/lib/gtag";
 
 interface MatchedJob {
   rank: number;
@@ -41,6 +44,25 @@ export default function MyDaily10Page() {
   const [error, setError] = useState("");
   const [needsProfile, setNeedsProfile] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
+  const [feedbackState, setFeedbackState] = useState<Record<string, "relevant" | "irrelevant">>({});
+
+  async function handleFeedback(
+    jobId: string,
+    rating: "relevant" | "irrelevant",
+    jobTitle: string,
+    company: string
+  ) {
+    setFeedbackState((prev) => ({ ...prev, [jobId]: rating }));
+    try {
+      await fetch("/api/jobs/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, rating, jobTitle, company }),
+      });
+    } catch (err) {
+      console.error("Feedback failed:", err);
+    }
+  }
 
   useEffect(() => {
     fetchPreview();
@@ -69,6 +91,9 @@ export default function MyDaily10Page() {
       }
 
       setData(json);
+      if (json.jobs?.length > 0) {
+        trackFunnelEvent("funnel_instant_matches_viewed", { count: json.jobs.length });
+      }
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -195,42 +220,58 @@ export default function MyDaily10Page() {
 
         {/* Job List */}
         <div className="space-y-4">
-          {data?.jobs.map((job) => (
-            <Card key={job.id} className={`relative overflow-hidden ${job.isLocked ? "border-dashed border-neutral-300 bg-neutral-50/50" : ""}`}>
-              <div className="flex items-start gap-4">
-                {/* Rank Badge */}
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
-                  {job.rank}
-                </div>
+          {data?.jobs.map((job) => {
+            const trust = calculateJobTrustScore({
+              title: job.title,
+              company: job.company,
+              description: job.description,
+              location: job.location,
+              applicationLink: job.applicationLink,
+            });
 
-                {/* Job Info */}
-                <div className="min-w-0 flex-1">
-                  {job.isLocked ? (
-                    <div className="text-base font-semibold text-neutral-700 sm:text-lg flex items-center gap-2">
-                      <span>{job.title}</span>
-                      <span className="text-sm font-normal text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
-                        {job.company}
+            return (
+              <Card key={job.id} className={`relative overflow-hidden ${job.isLocked ? "border-dashed border-neutral-300 bg-neutral-50/50" : ""}`}>
+                <div className="flex items-start gap-4">
+                  {/* Rank Badge */}
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
+                    {job.rank}
+                  </div>
+
+                  {/* Job Info */}
+                  <div className="min-w-0 flex-1">
+                    {job.isLocked ? (
+                      <div className="text-base font-semibold text-neutral-700 sm:text-lg flex items-center gap-2">
+                        <span>{job.title}</span>
+                        <span className="text-sm font-normal text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
+                          {job.company}
+                        </span>
+                      </div>
+                    ) : (
+                      <a
+                        href={job.applicationLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline sm:text-lg"
+                      >
+                        {job.title} <span className="text-sm font-normal text-neutral-500">at {job.company}</span>
+                      </a>
+                    )}
+
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                      <Badge variant="default">
+                        📍 {job.location}
+                      </Badge>
+                      <Badge variant={job.matchScore >= 60 ? "success" : "warning"}>
+                        {job.matchScore}% match
+                      </Badge>
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold border ${trust.badgeBg} ${trust.badgeBorder} ${trust.badgeText}`}
+                        title={trust.reasons.join(" · ")}
+                      >
+                        <span>{trust.icon}</span>
+                        Trust {trust.score}/100
                       </span>
                     </div>
-                  ) : (
-                    <a
-                      href={job.applicationLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline sm:text-lg"
-                    >
-                      {job.title} <span className="text-sm font-normal text-neutral-500">at {job.company}</span>
-                    </a>
-                  )}
-
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <Badge variant="default">
-                      📍 {job.location}
-                    </Badge>
-                    <Badge variant={job.matchScore >= 60 ? "success" : "warning"}>
-                      {job.matchScore}% match
-                    </Badge>
-                  </div>
 
                   <p className={`mt-2 text-sm leading-relaxed ${job.isLocked ? "text-neutral-400 italic" : "text-neutral-600"}`}>
                     {job.isLocked ? job.description : (job.description.length > 200
@@ -238,20 +279,51 @@ export default function MyDaily10Page() {
                       : job.description)}
                   </p>
 
-                  {/* Score Breakdown (collapsed) */}
-                  {!job.isLocked && (
-                    <details className="mt-2">
-                      <summary className="cursor-pointer text-xs text-neutral-400 hover:text-neutral-600">
-                        Score breakdown
-                      </summary>
-                      <div className="mt-1 grid grid-cols-2 gap-1 text-xs text-neutral-500 sm:grid-cols-4">
-                        <span>Title: {Math.round(job.breakdown.titleScore)}/40</span>
-                        <span>Skills: {Math.round(job.breakdown.skillScore)}/35</span>
-                        <span>Location: {Math.round(job.breakdown.locationScore)}/15</span>
-                        <span>Desc: {Math.round(job.breakdown.descriptionScore)}/10</span>
+                  {/* Why this matched & Skill Breakdown */}
+                  {!job.isLocked && (() => {
+                    const jobSkills = extractSkillsFromJob(`${job.title} ${job.description}`, 8);
+                    const candidateSkills = (data?.profile?.skills || []).map((s) => s.toLowerCase());
+                    const matchedSkills = jobSkills.filter((s) =>
+                      candidateSkills.some((cs) => cs.includes(s.toLowerCase()) || s.toLowerCase().includes(cs))
+                    );
+                    const missingSkills = jobSkills
+                      .filter((s) => !candidateSkills.some((cs) => cs.includes(s.toLowerCase()) || s.toLowerCase().includes(cs)))
+                      .slice(0, 3);
+
+                    return (
+                      <div className="mt-3 rounded-xl border border-primary-200/80 bg-primary-50/50 p-3 text-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-1 font-semibold text-primary-950 mb-1.5">
+                          <span className="flex items-center gap-1">🎯 Why this matched ({job.matchScore}%)</span>
+                          <span className="text-[11px] font-normal text-primary-700">
+                            Title: {Math.round(job.breakdown.titleScore)}/40 · Skills: {Math.round(job.breakdown.skillScore)}/35
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                          {matchedSkills.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-1">
+                              <span className="text-emerald-700 font-semibold">Matched:</span>
+                              {matchedSkills.map((s) => (
+                                <span key={s} className="rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-800">
+                                  ✓ {s}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          {missingSkills.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-1">
+                              <span className="text-amber-800 font-medium">Skill Gap:</span>
+                              {missingSkills.map((s) => (
+                                <span key={s} className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                                  + {s}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </details>
-                  )}
+                    );
+                  })()}
 
                   {/* Action Buttons */}
                   <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -268,22 +340,65 @@ export default function MyDaily10Page() {
                           href={job.applicationLink}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() =>
+                            trackFunnelEvent("funnel_job_clicked", {
+                              jobId: job.id,
+                              role: job.title,
+                              company: job.company,
+                            })
+                          }
                           className="inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 min-h-[44px]"
                         >
                           Apply Now →
                         </a>
+                        <Link
+                          href={`/tools/resume-matcher?role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                          className="inline-flex items-center rounded-md border border-primary-300 bg-primary-50 px-3.5 py-2 text-xs sm:text-sm font-semibold text-primary-700 hover:bg-primary-100 min-h-[44px] gap-1"
+                          title="Generate targeted ATS resume & cover letter tailored to this specific job"
+                        >
+                          ✨ 1-Click Tailor Application
+                        </Link>
                         <a
                           href={`/job-prep?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}&location=${encodeURIComponent(job.location)}&company=`}
-                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
                         >
-                          🎤 Prepare
+                          🎤 Prep
                         </a>
                         <a
                           href={`/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
-                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
+                          className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
                         >
-                          🤖 Practice
+                          🤖 Mock
                         </a>
+
+                        {/* Thumbs up / down feedback */}
+                        <div className="flex items-center gap-1.5 ml-auto border-t sm:border-t-0 pt-2 sm:pt-0 w-full sm:w-auto">
+                          <span className="text-[11px] text-neutral-400 font-medium">Was this match relevant?</span>
+                          <button
+                            type="button"
+                            onClick={() => handleFeedback(job.id, "relevant", job.title, job.company)}
+                            className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                              feedbackState[job.id] === "relevant"
+                                ? "bg-emerald-100 text-emerald-800 font-bold border border-emerald-300"
+                                : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+                            }`}
+                            title="Relevant match"
+                          >
+                            👍 {feedbackState[job.id] === "relevant" ? "Relevant ✓" : "Yes"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleFeedback(job.id, "irrelevant", job.title, job.company)}
+                            className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                              feedbackState[job.id] === "irrelevant"
+                                ? "bg-red-100 text-red-800 font-bold border border-red-300"
+                                : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+                            }`}
+                            title="Not relevant for me"
+                          >
+                            👎 {feedbackState[job.id] === "irrelevant" ? "Tuned ✓" : "No"}
+                          </button>
+                        </div>
                       </>
                     )}
                   </div>

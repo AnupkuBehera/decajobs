@@ -77,6 +77,26 @@ export default function ApplicationsPage() {
   }
 
   function generateColdEmail(app: Application) {
+    if (app.status === "applied") {
+      return `Subject: Following up on application for ${app.job_title} - [Your Name]
+
+Hi [Hiring Manager / Recruiter Name],
+
+I hope you are having a great week!
+
+I submitted my application for the ${app.job_title} role at ${app.company} recently and wanted to follow up to reiterate my enthusiasm for joining your team.
+
+Given ${app.company}'s current focus and growth, I am very eager to contribute my background and solve key challenges with your engineering team.
+
+I would love to connect for a brief 10-minute introductory conversation to learn more about the role and discuss how I can add immediate value.
+
+Thank you very much for your time and consideration!
+
+Best regards,
+[Your Name]
+[Your LinkedIn / Portfolio Link]`;
+    }
+
     return `Subject: Expressing interest in ${app.job_title} role at ${app.company}
 
 Hi [Hiring Manager / Recruiter Name],
@@ -106,6 +126,12 @@ Best regards,
     interview: applications.filter((a) => a.status === "interview").length,
     offer: applications.filter((a) => a.status === "offer").length,
   };
+
+  const followUpsDue = applications.filter((a) => {
+    if (a.status !== "applied") return false;
+    const days = Math.floor((Date.now() - new Date(a.applied_at).getTime()) / (1000 * 60 * 60 * 24));
+    return days >= 5;
+  });
 
   if (isLoading) return <div className="py-16 text-center text-neutral-500">Loading your job tracker...</div>;
 
@@ -146,6 +172,33 @@ Best regards,
             </Button>
           </div>
         </div>
+
+        {/* Follow-up Reminder Banner */}
+        {followUpsDue.length > 0 && (
+          <div className="mb-6 rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 shadow-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white text-lg">
+                  ⏰
+                </span>
+                <div>
+                  <h4 className="text-sm font-bold text-amber-950">
+                    {followUpsDue.length} Application{followUpsDue.length > 1 ? "s" : ""} Due for Follow-up (5+ Days)
+                  </h4>
+                  <p className="text-xs text-amber-800 mt-0.5">
+                    Job seekers who send a polite follow-up within 5–7 days see a 40% higher recruiter response rate.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedAppForEmail(followUpsDue[0])}
+                className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-amber-700 transition-colors shrink-0 shadow-xs"
+              >
+                Send Follow-up Email →
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Top Summary Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -242,57 +295,76 @@ Best regards,
                         No jobs in {column.label}
                       </div>
                     ) : (
-                      columnApps.map((app) => (
-                        <div
-                          key={app.id}
-                          className="rounded-lg border border-neutral-200 bg-white p-3 shadow-sm hover:shadow transition-shadow flex flex-col justify-between gap-2"
-                        >
-                          <div>
-                            <div className="flex items-start justify-between gap-1">
-                              <h4 className="font-semibold text-neutral-900 text-sm leading-tight">{app.job_title}</h4>
-                              <button
-                                onClick={() => deleteApp(app.id)}
-                                className="text-neutral-300 hover:text-red-500 text-xs shrink-0"
-                                title="Delete"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                            <p className="text-xs text-neutral-600 font-medium mt-0.5">{app.company}</p>
+                      columnApps.map((app) => {
+                        const daysSinceApplied = Math.floor((Date.now() - new Date(app.applied_at).getTime()) / (1000 * 60 * 60 * 24));
+                        const isFollowUpDue = app.status === "applied" && daysSinceApplied >= 5;
 
-                            {app.notes && (
-                              <p className="text-[11px] text-neutral-500 bg-neutral-50 p-1.5 rounded mt-2 line-clamp-2">
-                                📝 {app.notes}
+                        return (
+                          <div
+                            key={app.id}
+                            className={`rounded-lg border bg-white p-3 shadow-sm hover:shadow transition-shadow flex flex-col justify-between gap-2 ${
+                              isFollowUpDue ? "border-amber-300 ring-1 ring-amber-200" : "border-neutral-200"
+                            }`}
+                          >
+                            <div>
+                              <div className="flex items-start justify-between gap-1">
+                                <h4 className="font-semibold text-neutral-900 text-sm leading-tight">{app.job_title}</h4>
+                                <button
+                                  onClick={() => deleteApp(app.id)}
+                                  className="text-neutral-300 hover:text-red-500 text-xs shrink-0"
+                                  title="Delete"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                              <p className="text-xs text-neutral-600 font-medium mt-0.5">{app.company}</p>
+
+                              {isFollowUpDue && (
+                                <div className="mt-2">
+                                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 text-[10px] font-bold">
+                                    ⏰ Follow-up Due ({daysSinceApplied}d ago)
+                                  </span>
+                                </div>
+                              )}
+
+                              {app.notes && (
+                                <p className="text-[11px] text-neutral-500 bg-neutral-50 p-1.5 rounded mt-2 line-clamp-2">
+                                  📝 {app.notes}
+                                </p>
+                              )}
+
+                              <p className="text-[10px] text-neutral-400 mt-2">
+                                Added {new Date(app.applied_at).toLocaleDateString()}
                               </p>
-                            )}
+                            </div>
 
-                            <p className="text-[10px] text-neutral-400 mt-2">
-                              Added {new Date(app.applied_at).toLocaleDateString()}
-                            </p>
+                            <div className="border-t border-neutral-100 pt-2 flex items-center justify-between gap-1 flex-wrap">
+                              <button
+                                onClick={() => setSelectedAppForEmail(app)}
+                                className={`text-[11px] font-semibold flex items-center gap-1 ${
+                                  isFollowUpDue
+                                    ? "text-amber-800 underline font-bold hover:text-amber-900"
+                                    : "text-primary-600 hover:underline font-medium"
+                                }`}
+                              >
+                                {isFollowUpDue ? "⏰ Send Follow-up" : "✉️ Outreach"}
+                              </button>
+
+                              <select
+                                value={app.status}
+                                onChange={(e) => updateStatus(app.id, e.target.value)}
+                                className="rounded border border-neutral-200 px-1.5 py-0.5 text-[10px] text-neutral-700 bg-neutral-50 hover:bg-white"
+                              >
+                                {KANBAN_COLUMNS.map((col) => (
+                                  <option key={col.value} value={col.value}>
+                                    Move to: {col.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
                           </div>
-
-                          <div className="border-t border-neutral-100 pt-2 flex items-center justify-between gap-1 flex-wrap">
-                            <button
-                              onClick={() => setSelectedAppForEmail(app)}
-                              className="text-[11px] text-primary-600 hover:underline font-medium flex items-center gap-1"
-                            >
-                              ✉️ Cold Email
-                            </button>
-
-                            <select
-                              value={app.status}
-                              onChange={(e) => updateStatus(app.id, e.target.value)}
-                              className="rounded border border-neutral-200 px-1.5 py-0.5 text-[10px] text-neutral-700 bg-neutral-50 hover:bg-white"
-                            >
-                              {KANBAN_COLUMNS.map((col) => (
-                                <option key={col.value} value={col.value}>
-                                  Move to: {col.label}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      ))
+                        );
+                      })
                     )}
                   </div>
                 </div>
@@ -307,40 +379,53 @@ Best regards,
                 <p className="text-neutral-600">No applications tracked yet. Click "+ Add Job" to start tracking.</p>
               </Card>
             ) : (
-              applications.map((app) => (
-                <Card key={app.id} padding="md">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-neutral-900 truncate">{app.job_title}</h3>
-                        <Badge variant={KANBAN_COLUMNS.find((s) => s.value === app.status)?.badgeVariant || "default"}>
-                          {KANBAN_COLUMNS.find((s) => s.value === app.status)?.label || app.status}
-                        </Badge>
+              applications.map((app) => {
+                const daysSinceApplied = Math.floor((Date.now() - new Date(app.applied_at).getTime()) / (1000 * 60 * 60 * 24));
+                const isFollowUpDue = app.status === "applied" && daysSinceApplied >= 5;
+
+                return (
+                  <Card key={app.id} padding="md" className={isFollowUpDue ? "border-amber-300 bg-amber-50/10" : ""}>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="font-semibold text-neutral-900 truncate">{app.job_title}</h3>
+                          <Badge variant={KANBAN_COLUMNS.find((s) => s.value === app.status)?.badgeVariant || "default"}>
+                            {KANBAN_COLUMNS.find((s) => s.value === app.status)?.label || app.status}
+                          </Badge>
+                          {isFollowUpDue && (
+                            <span className="rounded-full bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 text-[10px] font-bold">
+                              ⏰ Follow-up Due ({daysSinceApplied}d ago)
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-neutral-600">{app.company}</p>
+                        {app.notes && <p className="text-xs text-neutral-500 mt-1">{app.notes}</p>}
+                        <p className="text-xs text-neutral-400 mt-1">Added {new Date(app.applied_at).toLocaleDateString()}</p>
                       </div>
-                      <p className="text-sm text-neutral-600">{app.company}</p>
-                      {app.notes && <p className="text-xs text-neutral-500 mt-1">{app.notes}</p>}
-                      <p className="text-xs text-neutral-400 mt-1">Added {new Date(app.applied_at).toLocaleDateString()}</p>
-                    </div>
 
-                    <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                      <button
-                        onClick={() => setSelectedAppForEmail(app)}
-                        className="text-xs font-medium text-primary-600 hover:bg-primary-50 px-2 py-1 rounded border border-primary-200 min-h-[36px] flex items-center gap-1"
-                      >
-                        ✉️ Cold Email
-                      </button>
+                      <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                        <button
+                          onClick={() => setSelectedAppForEmail(app)}
+                          className={`text-xs font-semibold px-2.5 py-1 rounded min-h-[36px] flex items-center gap-1 transition-colors ${
+                            isFollowUpDue
+                              ? "bg-amber-600 text-white hover:bg-amber-700 shadow-xs"
+                              : "text-primary-600 hover:bg-primary-50 border border-primary-200"
+                          }`}
+                        >
+                          {isFollowUpDue ? "⏰ Send Follow-up" : "✉️ Cold Email"}
+                        </button>
 
-                      <select
-                        value={app.status}
-                        onChange={(e) => updateStatus(app.id, e.target.value)}
-                        className="rounded border border-neutral-300 px-2 py-1 text-xs min-h-[36px]"
-                      >
-                        {KANBAN_COLUMNS.map((s) => (
-                          <option key={s.value} value={s.value}>
-                            {s.emoji} {s.label}
-                          </option>
-                        ))}
-                      </select>
+                        <select
+                          value={app.status}
+                          onChange={(e) => updateStatus(app.id, e.target.value)}
+                          className="rounded border border-neutral-300 px-2 py-1 text-xs min-h-[36px]"
+                        >
+                          {KANBAN_COLUMNS.map((s) => (
+                            <option key={s.value} value={s.value}>
+                              {s.emoji} {s.label}
+                            </option>
+                          ))}
+                        </select>
 
                       {app.job_url && (
                         <a

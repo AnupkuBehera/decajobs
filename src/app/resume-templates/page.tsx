@@ -130,6 +130,73 @@ export default function ResumeTemplatesPage() {
                     ))}
                 </div>
 
+                {/* Regional Resume Standards Guide (US vs UAE vs UK vs India) */}
+                <section className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 mb-12 shadow-xs">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="text-xl">🌍</span>
+                        <h2 className="text-xl font-bold text-neutral-900">
+                            Regional Resume Standards: What to Include by Country
+                        </h2>
+                    </div>
+                    <p className="text-xs sm:text-sm text-neutral-600 mb-6 leading-relaxed">
+                        Submitting the wrong format can cause automatic rejection by applicant tracking systems or recruiters. Here is how expectations differ across international job markets:
+                    </p>
+
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {/* India */}
+                        <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="font-bold text-sm text-neutral-900">🇮🇳 India</span>
+                                <span className="rounded-full bg-neutral-200 px-2 py-0.5 text-[10px] font-bold text-neutral-700">1–2 Pages</span>
+                            </div>
+                            <ul className="space-y-1.5 text-xs text-neutral-600">
+                                <li>• <strong>Photo:</strong> Optional (not recommended for tech).</li>
+                                <li>• <strong>Notice Period:</strong> Essential to state upfront (e.g. &ldquo;Immediate&rdquo; or &ldquo;30 Days&rdquo;).</li>
+                                <li>• <strong>Key Focus:</strong> Tech stack depth, project links, GitHub, and quantified team impact.</li>
+                            </ul>
+                        </div>
+
+                        {/* UAE & Gulf */}
+                        <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="font-bold text-sm text-emerald-950">🇦🇪 UAE &amp; Gulf</span>
+                                <span className="rounded-full bg-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-800">2–3 Page CV</span>
+                            </div>
+                            <ul className="space-y-1.5 text-xs text-neutral-700">
+                                <li>• <strong>Visa Status:</strong> Crucial (state &ldquo;Visit Visa&rdquo;, &ldquo;Golden Visa&rdquo;, or &ldquo;Requires Sponsorship&rdquo;).</li>
+                                <li>• <strong>Location:</strong> Mention current city (e.g. &ldquo;Dubai&rdquo; or &ldquo;Relocating from India&rdquo;).</li>
+                                <li>• <strong>Photo:</strong> Accepted in corporate/hospitality, optional for tech.</li>
+                            </ul>
+                        </div>
+
+                        {/* UK & Europe */}
+                        <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="font-bold text-sm text-neutral-900">🇬🇧 UK &amp; Europe</span>
+                                <span className="rounded-full bg-neutral-200 px-2 py-0.5 text-[10px] font-bold text-neutral-700">Strictly 2 Pages</span>
+                            </div>
+                            <ul className="space-y-1.5 text-xs text-neutral-600">
+                                <li>• <strong>Photo:</strong> Strictly prohibited (under UK Equality Act 2010).</li>
+                                <li>• <strong>Personal Details:</strong> No age, marital status, or nationality to avoid bias.</li>
+                                <li>• <strong>Key Focus:</strong> Professional summary, career timeline, and transferable skills.</li>
+                            </ul>
+                        </div>
+
+                        {/* US & Canada */}
+                        <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="font-bold text-sm text-neutral-900">🇺🇸 US &amp; Canada</span>
+                                <span className="rounded-full bg-neutral-200 px-2 py-0.5 text-[10px] font-bold text-neutral-700">Strictly 1 Page</span>
+                            </div>
+                            <ul className="space-y-1.5 text-xs text-neutral-600">
+                                <li>• <strong>Photo:</strong> Strictly forbidden (automatic rejection by EEOC rules).</li>
+                                <li>• <strong>Personal Details:</strong> No date of birth, photo, or home address.</li>
+                                <li>• <strong>Key Focus:</strong> Metrics-first bullet points (&ldquo;XYZ formula: Accomplished [X] by doing [Y], resulting in [Z]&rdquo;).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Informational / SEO Section */}
                 <section className="rounded-2xl border border-neutral-200 bg-neutral-50 p-8 sm:p-10 mb-12">
                     <h2 className="text-2xl font-bold text-neutral-900 mb-4">

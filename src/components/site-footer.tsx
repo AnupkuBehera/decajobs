@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { CountrySelector } from "@/components/country-selector";
 
 export function SiteFooter() {
   return (
@@ -131,6 +132,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/request-removal" className="text-neutral-400 hover:text-white transition-colors">
+                  Removal &amp; Takedown Request
+                </Link>
+              </li>
+              <li>
                 <Link href="/disclaimer" className="text-neutral-400 hover:text-white transition-colors">
                   Disclaimer
                 </Link>
@@ -183,10 +189,11 @@ export function SiteFooter() {
           <p className="text-xs text-neutral-500">
             &copy; {new Date().getFullYear()} DecaJobs. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs text-neutral-500">
-              Serving candidates worldwide in 150+ countries
+              Serving candidates across India, UAE &amp; Gulf, and global remote hubs
             </span>
+            <CountrySelector variant="footer" />
             <LanguageSwitcher variant="footer" />
           </div>
         </div>

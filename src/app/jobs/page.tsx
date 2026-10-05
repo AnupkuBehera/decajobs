@@ -51,16 +51,34 @@ export default async function JobsPage() {
                         Zero spam, zero expired links. Verified opportunities from top tech companies
                         around the world — updated daily with our algorithmic Top 10 curated matches.
                     </p>
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3.5 py-1.5 text-xs font-semibold text-green-800 shadow-sm">
                             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
                             {jobs.length} genuine active listings · Verified {newestDate}
                         </span>
                         <Link
-                            href="/tools/resume-checker"
-                            className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3.5 py-1.5 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors"
+                            href="/ae"
+                            className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition-colors"
                         >
-                            <span>✨</span> Check ATS Resume Score Free
+                            <span>🇦🇪</span> UAE &amp; Dubai Tech Jobs (Tax-Free)
+                        </Link>
+                        <Link
+                            href="/uk"
+                            className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3.5 py-1.5 text-xs font-bold text-blue-900 border border-blue-200 hover:bg-blue-100 transition-colors"
+                        >
+                            <span>🇬🇧</span> UK Tech Jobs (Visa Sponsor)
+                        </Link>
+                        <Link
+                            href="/jobs/fresher"
+                            className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3.5 py-1.5 text-xs font-bold text-amber-900 border border-amber-200 hover:bg-amber-100 transition-colors"
+                        >
+                            <span>🎓</span> Fresher Jobs 2026
+                        </Link>
+                        <Link
+                            href="/jobs/remote"
+                            className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3.5 py-1.5 text-xs font-bold text-purple-800 border border-purple-200 hover:bg-purple-100 transition-colors"
+                        >
+                            <span>🌍</span> Remote Tech
                         </Link>
                     </div>
                 </div>

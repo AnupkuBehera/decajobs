@@ -44,22 +44,31 @@ export async function GET() {
     );
   }
 
-  if (!profile.target_titles?.length || !profile.skills?.length || !profile.location) {
+  const hasTitles = (profile.target_titles && profile.target_titles.length > 0) || !!profile.designation;
+  const hasLocation = !!profile.location;
+
+  if (!hasTitles && !hasLocation) {
     return NextResponse.json(
-      { error: "Profile incomplete. Please add target titles, skills, and location.", needsProfile: true },
+      { error: "Profile incomplete. Please add target titles and location.", needsProfile: true },
       { status: 400 }
     );
   }
 
   // Fetch external jobs
   const searchTitles = profile.designation
-    ? [profile.designation, ...profile.target_titles]
-    : profile.target_titles;
+    ? [profile.designation, ...(profile.target_titles || [])]
+    : (profile.target_titles && profile.target_titles.length > 0 ? profile.target_titles : ["Software Engineer"]);
+
+  const searchSkills = (profile.skills && profile.skills.length > 0)
+    ? profile.skills
+    : searchTitles;
+
+  const searchLocation = profile.location || "Remote";
 
   let externalJobs = await fetchAllExternalJobs(
     searchTitles,
-    profile.skills,
-    profile.location
+    searchSkills,
+    searchLocation
   );
 
   // Fetch internal DB jobs

@@ -7,6 +7,7 @@ import {
     extractSkillsFromJob,
     type ExternalJob,
 } from "@/lib/public-jobs";
+import { calculateJobTrustScore } from "@/lib/trust-score";
 
 interface JobCardProps {
     job: ExternalJob;
@@ -17,6 +18,14 @@ export function JobCard({ job }: JobCardProps) {
     const days = daysSincePosted(job.postedAt);
     const isRemote = job.location.toLowerCase().includes("remote");
     const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 3);
+    const trust = calculateJobTrustScore({
+        title: job.title,
+        company: job.company,
+        description: job.description,
+        location: job.location,
+        postedAt: job.postedAt,
+        applicationLink: job.applicationLink,
+    });
 
     return (
         <div className="group flex flex-col justify-between h-full rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-300">
@@ -28,10 +37,14 @@ export function JobCard({ job }: JobCardProps) {
                                 {job.title}
                             </h3>
                         </Link>
-                        <div className="mt-1 flex items-center gap-1.5 text-sm text-neutral-500">
+                        <div className="mt-1 flex flex-wrap items-center gap-1.5 text-sm text-neutral-500">
                             <span className="font-medium text-neutral-700">{job.company}</span>
-                            <span className="inline-flex items-center text-[11px] text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded font-medium" title="Verified Non-Scam Posting">
-                                ✓ Verified
+                            <span
+                                className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-semibold border ${trust.badgeBg} ${trust.badgeBorder} ${trust.badgeText}`}
+                                title={trust.reasons.join(" · ")}
+                            >
+                                <span>{trust.icon}</span>
+                                Trust {trust.score}/100
                             </span>
                         </div>
                     </div>

@@ -13,11 +13,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const candidates = await fetchActiveCandidates();
+    const force = request.nextUrl.searchParams.get("force") === "true";
+    // Only dispatch to candidates whose local time is currently 7:00 AM (unless admin force overrides)
+    const candidates = await fetchActiveCandidates(!force);
 
     if (!candidates || candidates.length === 0) {
       return NextResponse.json({
-        message: "No active candidates with complete profiles found. Skipping.",
+        message: "No active candidates in the current 7:00 AM delivery window. Skipping.",
         triggered: 0,
       });
     }

@@ -39,7 +39,7 @@ export function InstantAlertsBanner({ className = "" }: InstantAlertsBannerProps
             <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
               <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.674c.458 0 .661-.21.916-.457l2.199-2.138 4.573 3.378c.843.465 1.45.226 1.66-.782l2.997-14.125c.308-1.233-.472-1.792-1.276-1.427z" />
             </svg>
-            Join Telegram Channel
+            Join Main Telegram Channel
           </a>
 
           <Link
@@ -51,6 +51,51 @@ export function InstantAlertsBanner({ className = "" }: InstantAlertsBannerProps
             </svg>
             WhatsApp Digest
           </Link>
+        </div>
+      </div>
+
+      {/* Category-Specific Channels Directory */}
+      <div className="mt-4 pt-4 border-t border-blue-200/80">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-blue-900 block mb-2">
+          Or join curated channels by category:
+        </span>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <a
+            href="https://t.me/decajobs_freshers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 p-2 rounded-xl bg-white/80 hover:bg-white border border-blue-200 text-xs font-semibold text-neutral-800 transition-colors shadow-2xs"
+          >
+            <span>🎓</span>
+            <span className="truncate">Fresher Tech (0-2 Yrs)</span>
+          </a>
+          <a
+            href="https://t.me/decajobs_remote"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 p-2 rounded-xl bg-white/80 hover:bg-white border border-blue-200 text-xs font-semibold text-neutral-800 transition-colors shadow-2xs"
+          >
+            <span>🌍</span>
+            <span className="truncate">Remote &amp; WFH Jobs</span>
+          </a>
+          <a
+            href="https://t.me/decajobs_bengaluru"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 p-2 rounded-xl bg-white/80 hover:bg-white border border-blue-200 text-xs font-semibold text-neutral-800 transition-colors shadow-2xs"
+          >
+            <span>🏙️</span>
+            <span className="truncate">Bengaluru &amp; Tech Hubs</span>
+          </a>
+          <a
+            href="https://t.me/decajobs_govt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 p-2 rounded-xl bg-white/80 hover:bg-white border border-blue-200 text-xs font-semibold text-neutral-800 transition-colors shadow-2xs"
+          >
+            <span>🏛️</span>
+            <span className="truncate">PSU &amp; Govt Tech</span>
+          </a>
         </div>
       </div>
     </div>

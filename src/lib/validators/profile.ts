@@ -13,7 +13,8 @@ export const profileSchema = z.object({
 
   skills: z
     .array(z.string().min(1, { message: "Each skill must not be empty" }))
-    .min(1, { message: "At least one skill is required" }),
+    .optional()
+    .default([]),
 
   location: z.string().min(1, { message: "Location is required" }),
 

@@ -14,6 +14,9 @@ import type { ExternalJob } from "@/lib/external-jobs/types";
 import { fetchRemotiveJobs } from "@/lib/external-jobs/remotive";
 import { fetchRemoteOKJobs } from "@/lib/external-jobs/remoteok";
 import { fetchArbeitnowJobs } from "@/lib/external-jobs/arbeitnow";
+import { fetchJobicyJobs } from "@/lib/external-jobs/jobicy";
+import { fetchHimalayasJobs } from "@/lib/external-jobs/himalayas";
+import { fetchDirectAtsJobs } from "@/lib/external-jobs/ats-boards";
 
 export type { ExternalJob } from "@/lib/external-jobs/types";
 
@@ -423,6 +426,48 @@ export const CITIES: CityInfo[] = [
         ],
     },
     {
+        slug: "bhubaneswar",
+        name: "Bhubaneswar",
+        aliases: ["bhubaneswar", "bbsr", "odisha", "infocity"],
+        blurb:
+            "Bhubaneswar is Eastern India's premier IT, education, and startup hub. Anchored by Infocity, DLF Cybercity, and major tech campuses (TCS, Infosys, Wipro, Tech Mahindra, Mindtree), the city offers rapid career growth, top engineering institutes, and high quality of life.",
+        techParks: ["Infocity (Chandaka Industrial Estate)", "DLF Cybercity (Patia)", "STPI Elite (Gothapatna)", "IDCO Info Valley"],
+        salaryInsight: "Software Engineers and Freshers in Bhubaneswar earn average packages between ₹3.5L and ₹14L per annum, with tier-1 MNC product roles paying up to ₹22L.",
+        topIndustries: ["IT Services & Enterprise Software", "Semiconductors & Hardware", "GovTech & Public Infrastructure", "EdTech & Research", "Healthcare IT"],
+        costOfLiving: "Low-Moderate. Rent in Patia, Chandrasekharpur, and Jayadev Vihar ranges from ₹8,000 to ₹18,000/month.",
+        faqs: [
+            {
+                q: "Why is Bhubaneswar emerging as a major tech hub in Eastern India?",
+                a: "Bhubaneswar combines state government IT incentives, premier institutions (IIT, IIIT, KIIT, SOA, NIT Rourkela feeder), modern infrastructure at Infocity, and peaceful living at a fraction of Tier-1 city costs."
+            },
+            {
+                q: "What companies are hiring tech talent in Bhubaneswar?",
+                a: "Global IT leaders including TCS, Infosys, Tech Mahindra, Wipro, Mindtree, and expanding semiconductor, SaaS, and product firms."
+            }
+        ],
+    },
+    {
+        slug: "dubai",
+        name: "Dubai (UAE)",
+        aliases: ["dubai", "uae", "united arab emirates", "abu dhabi", "sharjah", "dso", "dic"],
+        blurb:
+            "Dubai is the Middle East's premier technology, fintech, and digital business capital. With 100% tax-free income, visionary government backing, and rapid growth in AI, Web3, and logistics tech, Dubai attracts top global tech talent and Indian expat engineers.",
+        techParks: ["Dubai Internet City (DIC)", "Dubai Silicon Oasis (DSO)", "DIFC Innovation Hub", "Dubai Media City", "Abu Dhabi Hub71"],
+        salaryInsight: "Software Engineers in Dubai earn between 15,000 AED and 35,000 AED per month (₹3.4L – ₹8.0L/mo tax-free), with engineering managers exceeding 45,000 AED/mo.",
+        topIndustries: ["Fintech & Digital Payments", "Web3, Crypto & Blockchain", "E-Commerce & Quick Delivery", "Aviation & Logistics Tech", "Smart City & GovTech"],
+        costOfLiving: "Moderate-High. Monthly apartment rent in Business Bay, Dubai Marina, or JLT ranges from 4,500 AED to 9,000 AED.",
+        faqs: [
+            {
+                q: "Do tech employees in Dubai pay income tax?",
+                a: "No. The UAE levies 0% personal income tax, meaning your gross salary is 100% take-home pay."
+            },
+            {
+                q: "Do companies in the UAE provide visa sponsorship?",
+                a: "Yes. Licensed UAE employers are legally required to sponsor employee residence visas, Emirates ID processing, and standard health insurance coverage."
+            }
+        ],
+    },
+    {
         slug: "london",
         name: "London",
         aliases: ["london", "uk", "united kingdom", "greater london"],
@@ -623,6 +668,27 @@ export const CITIES: CityInfo[] = [
             {
                 q: "Why do multinational tech companies set up in Singapore?",
                 a: "Singapore offers political stability, low corporate taxes, English proficiency, and immediate access to the 650M+ Southeast Asian consumer market."
+            }
+        ],
+    },
+    {
+        slug: "london",
+        name: "London",
+        aliases: ["london", "uk", "united kingdom", "great britain", "england"],
+        blurb:
+            "London is Europe's undisputed technology and FinTech capital. Home to Revolut, Monzo, DeepMind, and European engineering headquarters for Google, Meta, and Amazon, the city offers high GBP packages and Skilled Worker Visa sponsorship.",
+        techParks: ["Silicon Roundabout (Old Street / Shoreditch)", "Canary Wharf FinTech Hub", "King's Cross Tech Cluster", "City of London Financial District"],
+        salaryInsight: "Software Engineers in London earn an average of £55,000 to £110,000+ per year, with senior architects and quant developers commanding £140,000 to £200,000+.",
+        topIndustries: ["Fintech & Digital Banking", "Artificial Intelligence & ML", "Cybersecurity & RegTech", "Enterprise SaaS & Cloud"],
+        costOfLiving: "High. Monthly rent for 1-bedroom apartments in Zones 2-3 ranges from £1,600 to £2,300.",
+        faqs: [
+            {
+                q: "Do tech companies in London sponsor Skilled Worker Visas for foreign engineers?",
+                a: "Yes. London has the highest concentration of A-rated Home Office sponsor licensed employers in Europe, actively issuing Certificates of Sponsorship (CoS) to international software developers and data specialists."
+            },
+            {
+                q: "What are the best neighborhoods for tech workers in London?",
+                a: "Shoreditch, Islington, Canary Wharf, Stratford, Clapham, and Bermondsey offer great transit links and proximity to major tech and financial districts."
             }
         ],
     },
@@ -1222,16 +1288,25 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
     }
 
     try {
-        // Try a few seed queries so we get broad coverage, then dedupe.
-        const [remotiveA, remotiveB, remoteok, arbeitnowA, arbeitnowB] = await Promise.all([
+        // Query keyless providers concurrently using Promise.allSettled for maximum resilience
+        const results = await Promise.allSettled([
             fetchRemotiveJobs("developer"),
             fetchRemotiveJobs("product"),
             fetchRemoteOKJobs(["developer", "design", "marketing", "data"]),
             fetchArbeitnowJobs("software"),
             fetchArbeitnowJobs("design"),
+            fetchJobicyJobs("developer"),
+            fetchJobicyJobs("data"),
+            fetchHimalayasJobs("engineer"),
+            fetchDirectAtsJobs("engineer"),
         ]);
 
-        const all = [...remotiveA, ...remotiveB, ...remoteok, ...arbeitnowA, ...arbeitnowB];
+        const all: ExternalJob[] = [];
+        for (const r of results) {
+            if (r.status === "fulfilled" && Array.isArray(r.value)) {
+                all.push(...r.value);
+            }
+        }
 
         // Deduplicate by normalized title + company & filter genuine / non-expired jobs.
         const seen = new Set<string>();

@@ -15,8 +15,11 @@ import {
     truncate,
     type ExternalJob,
 } from "@/lib/public-jobs";
+import { calculateJobTrustScore } from "@/lib/trust-score";
 import { buildJobPostingSchema } from "@/lib/job-schema";
 import { AdSenseUnit } from "@/components/adsense-unit";
+import JobCard from "@/components/jobs/JobCard";
+import { JobTranslatorButton } from "@/components/jobs/JobTranslatorButton";
 
 export const revalidate = 3600;
 
@@ -201,8 +204,21 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
     const job = jobs.find((j) => jobSlug(j) === slug);
 
     if (!job) {
-        const targetUrl = getExpiredJobRedirectUrl(slug);
-        permanentRedirect(targetUrl);
+        const cleanedSlug = slug.replace(/-[a-z0-9]{6,14}$/, "").replace(/-/g, " ");
+        const titleWords = cleanedSlug
+            .split(" ")
+            .filter(Boolean)
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
+
+        return {
+            title: `Position Closed: ${titleWords || "Job"} | DecaJobs`,
+            description: `This position is no longer accepting applications. Browse verified active job openings and get 10 matched jobs daily on DecaJobs.`,
+            robots: {
+                index: false,
+                follow: true,
+            },
+        };
     }
 
     return {
@@ -225,14 +241,131 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const jobs = await getPublicJobs();
     const job = jobs.find((j) => jobSlug(j) === slug);
 
+    // Graceful Expired Job Fallback: Never display dead 404 or sudden jarring redirect.
+    // Instead, inform candidate clearly and offer 6 similar live openings.
     if (!job) {
-        const targetUrl = getExpiredJobRedirectUrl(slug);
-        permanentRedirect(targetUrl);
+        const cleanedSlug = slug.replace(/-[a-z0-9]{6,14}$/, "").replace(/-/g, " ");
+        const closedTitle = cleanedSlug
+            .split(" ")
+            .filter(Boolean)
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
+
+        const targetCategoryUrl = getExpiredJobRedirectUrl(slug);
+        const slugWords = cleanedSlug.toLowerCase().split(" ").filter((w) => w.length > 2);
+
+        const similarActiveJobs = [...jobs]
+            .sort((a, b) => {
+                const textA = `${a.title} ${a.description} ${a.company}`.toLowerCase();
+                const textB = `${b.title} ${b.description} ${b.company}`.toLowerCase();
+                const matchA = slugWords.reduce((acc, word) => acc + (textA.includes(word) ? 1 : 0), 0);
+                const matchB = slugWords.reduce((acc, word) => acc + (textB.includes(word) ? 1 : 0), 0);
+                return matchB - matchA;
+            })
+            .slice(0, 6);
+
+        return (
+            <div className="pt-10 pb-24 sm:pt-16 sm:pb-28">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6">
+                    <Breadcrumbs
+                        items={[
+                            { label: "Jobs", href: "/jobs" },
+                            { label: "Closed Listing" },
+                        ]}
+                    />
+
+                    {/* Prominent Closed Job Notification */}
+                    <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-6 sm:p-8 shadow-sm text-neutral-800 space-y-4">
+                        <div className="flex items-center gap-2">
+                            <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold bg-amber-200/80 text-amber-900 border border-amber-300">
+                                ⚠️ Position Closed / No Longer Accepting Applications
+                            </span>
+                        </div>
+
+                        <div>
+                            <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+                                {closedTitle || "Requested Position"}
+                            </h1>
+                            <p className="mt-2 text-sm text-neutral-600 leading-relaxed max-w-2xl">
+                                This specific position is no longer accepting new applications through DecaJobs.
+                                Fast-growing companies fill roles rapidly. Don&apos;t worry — we found active,
+                                verified opportunities below that match this role profile.
+                            </p>
+                        </div>
+
+                        {/* High-converting 7-day trial action banner */}
+                        <div className="mt-4 pt-4 border-t border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <p className="text-xs text-amber-950 font-medium">
+                                🔔 <strong>Catch urgent roles before they close:</strong> Start your 7-day free trial to get 10 high-match verified jobs delivered every morning at 7:00 AM.
+                            </p>
+                            <Link
+                                href="/login"
+                                className="shrink-0 bg-primary-600 hover:bg-primary-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-colors text-center"
+                            >
+                                Start 7-Day Free Trial →
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Similar Live Openings Grid */}
+                    <div className="mt-12 space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold text-neutral-900">
+                                    Similar Live Job Openings
+                                </h2>
+                                <p className="text-xs text-neutral-500 mt-0.5">
+                                    Active openings matching similar titles, skills, and categories
+                                </p>
+                            </div>
+                            <Link
+                                href={targetCategoryUrl}
+                                className="text-xs font-semibold text-primary-600 hover:text-primary-700 hover:underline"
+                            >
+                                View full category →
+                            </Link>
+                        </div>
+
+                        <div className="space-y-4">
+                            {similarActiveJobs.map((simJob) => (
+                                <JobCard key={simJob.id} job={simJob} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Category Navigation Footer */}
+                    <div className="mt-12 p-6 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-4">
+                        <h3 className="text-sm font-bold text-neutral-900">
+                            Explore Active Roles by Category
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                            {JOB_CATEGORIES.map((cat) => (
+                                <Link
+                                    key={cat.slug}
+                                    href={`/jobs/category/${cat.slug}`}
+                                    className="text-xs px-3 py-1.5 rounded-xl bg-white border border-neutral-200 text-neutral-700 hover:border-primary-300 hover:text-primary-700 transition-colors"
+                                >
+                                    {cat.emoji} {cat.name}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const days = daysSincePosted(job.postedAt);
     const remote = isRemoteJob(job);
     const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 8);
+    const trust = calculateJobTrustScore({
+        title: job.title,
+        company: job.company,
+        description: job.description,
+        location: job.location,
+        postedAt: job.postedAt,
+        applicationLink: job.applicationLink,
+    });
     const similar = jobs
         .filter((j) => j.id !== job.id)
         .sort((a, b) => {
@@ -267,9 +400,13 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                         <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                                <span className="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-700 border border-teal-200">
-                                    ✓ Genuine & Verified
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span
+                                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold border ${trust.badgeBg} ${trust.badgeBorder} ${trust.badgeText}`}
+                                    title={trust.reasons.join(" · ")}
+                                >
+                                    <span>{trust.icon}</span>
+                                    Trust Score {trust.score}/100 · {trust.label.split("·")[1]?.trim() || "Verified"}
                                 </span>
                                 {remote && (
                                     <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
@@ -357,8 +494,16 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
                 {/* Job description */}
                 <article className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
-                    <h2 className="text-xl font-bold text-neutral-900 mb-4">Job Description</h2>
-                    <div className="prose prose-neutral prose-sm sm:prose-base max-w-none leading-relaxed">
+                    <h2 className="text-xl font-bold text-neutral-900 mb-2">Job Description</h2>
+
+                    {/* On-Demand Multilingual Translation Feature */}
+                    <JobTranslatorButton
+                        originalTitle={job.title}
+                        originalDescription={job.description}
+                        location={job.location}
+                    />
+
+                    <div className="prose prose-neutral prose-sm sm:prose-base max-w-none leading-relaxed mt-4">
                         {job.description.split(/\n{2,}/).map((paragraph, i) => (
                             <p key={i} className="mb-4">
                                 {paragraph}

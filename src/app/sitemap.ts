@@ -27,6 +27,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: {
         languages: {
           en: baseUrl,
+          "en-IN": baseUrl,
+          "en-GB": `${baseUrl}/uk`,
+          "en-AE": `${baseUrl}/ae`,
+          hi: `${baseUrl}/hi`,
+          "hi-IN": `${baseUrl}/hi`,
           es: `${baseUrl}/es`,
           ja: `${baseUrl}/ja`,
           fr: `${baseUrl}/fr`,
@@ -37,7 +42,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
       },
     },
+    // Country Expansion Hubs
+    { url: `${baseUrl}/ae`, lastModified: new Date(), changeFrequency: "daily", priority: 0.96 },
+    { url: `${baseUrl}/uk`, lastModified: new Date(), changeFrequency: "daily", priority: 0.96 },
     // Localized Landing Pages for International Indexing
+    { url: `${baseUrl}/hi`, lastModified: new Date(), changeFrequency: "daily", priority: 0.98 },
     { url: `${baseUrl}/es`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
     { url: `${baseUrl}/ja`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
     { url: `${baseUrl}/fr`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.95 },
@@ -53,6 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
+    { url: `${baseUrl}/request-removal`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
     { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     { url: `${baseUrl}/accessibility`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     // Resume Templates & Tools
@@ -71,10 +81,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/tools/interview-questions`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/tools/cover-letter-generator`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/tools/job-scam-detector`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/tools/in-hand-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
+    { url: `${baseUrl}/tools/dubai-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
+    { url: `${baseUrl}/tools/uk-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
+    { url: `${baseUrl}/tools/notice-period-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
+    { url: `${baseUrl}/tools/ats-keyword-scanner`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
     { url: `${baseUrl}/tools/linkedin-headline`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.8 },
     // Jobs
     { url: `${baseUrl}/jobs`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 1.0 },
     { url: `${baseUrl}/jobs/remote`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/jobs/fresher`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/jobs/country/ae`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    // Fresher Job Hubs by City
+    ...CITIES.map((city) => ({
+      url: `${baseUrl}/jobs/fresher/${city.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.85,
+    })),
     // Category Job Hubs
     ...JOB_CATEGORIES.map((cat) => ({
       url: `${baseUrl}/jobs/category/${cat.slug}`,
