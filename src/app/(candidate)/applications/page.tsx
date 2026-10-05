@@ -444,7 +444,8 @@ Best regards,
                     </div>
                   </div>
                 </Card>
-              ))
+                );
+              })
             )}
           </div>
         )}

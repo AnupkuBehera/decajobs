@@ -405,7 +405,8 @@ export default function MyDaily10Page() {
                 </div>
               </div>
             </Card>
-          ))}
+          );
+        })}
         </div>
 
         {/* Bottom CTA */}
