@@ -2,6 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { updateSession } from "@/lib/supabase/middleware";
 import { cleanPathname } from "@/lib/i18n/utils";
+import { isValidLocale } from "@/lib/i18n/config";
+
+/**
+ * Subpaths under /[lang]/ that have dedicated localized page implementations.
+ * e.g., /[lang]/pricing has its own dedicated page.
+ */
+const DEDICATED_LOCALIZED_SUBPATHS = ["pricing"];
 
 /**
  * Protected routes that require authentication.
@@ -113,6 +120,44 @@ export async function middleware(request: NextRequest) {
   // Redirect authenticated users away from login page to dashboard
   if (user && (cleanPathname(pathname) === "/login" || pathname === "/login")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // 3. Internationalization (i18n) Routing & Fallbacks
+  const segments = pathname.split("/").filter(Boolean);
+  const firstSegment = segments[0]?.toLowerCase();
+
+  if (firstSegment && isValidLocale(firstSegment)) {
+    // English (/en or /en/...) permanently redirects to canonical clean URL
+    if (firstSegment === "en") {
+      const clean = cleanPathname(pathname);
+      return NextResponse.redirect(
+        new URL(clean + request.nextUrl.search, request.url),
+        301
+      );
+    }
+
+    // For non-English locales:
+    // - Root locale (e.g. /hi, /es, /ja) is handled by src/app/[lang]/page.tsx
+    // - Dedicated subpaths (e.g. /hi/pricing) are handled by src/app/[lang]/pricing/page.tsx
+    // - Any other subpath without a dedicated [lang] page is transparently rewritten to its clean path
+    const isDedicatedRoute =
+      segments.length === 1 ||
+      (segments.length === 2 && DEDICATED_LOCALIZED_SUBPATHS.includes(segments[1]));
+
+    if (!isDedicatedRoute) {
+      const clean = cleanPathname(pathname);
+      const rewriteUrl = new URL(clean + request.nextUrl.search, request.url);
+      const rewriteResponse = NextResponse.rewrite(rewriteUrl, {
+        request: {
+          headers: request.headers,
+        },
+      });
+      // Preserve any cookies set by session update
+      response.cookies.getAll().forEach((c) => {
+        rewriteResponse.cookies.set(c.name, c.value);
+      });
+      return rewriteResponse;
+    }
   }
 
   return response;

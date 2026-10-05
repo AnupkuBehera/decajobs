@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { getHreflangAlternates } from "@/lib/i18n/utils";
 
 export const metadata: Metadata = {
   title: "Pricing - DecaJobs | Free Trial & Pro Plans for AI Job Matching",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
     "DecaJobs pricing: 7-day free trial with full access, then ₹299/month for Pro. Compare Free Trial vs Pro features. Employers post jobs for free. Cancel anytime.",
   alternates: {
     canonical: "https://decajob.com/pricing",
+    languages: getHreflangAlternates("/pricing"),
   },
 };
 
