@@ -45,7 +45,7 @@ const CURATED_UK_FALLBACK_JOBS: ExternalJob[] = [
     description:
       "Scale mission-critical ledger and foreign-exchange microservices moving billions monthly. Strong expertise in Java, Spring Boot, Kafka, and Kubernetes. Home Office Tier-2 / Skilled Worker Visa sponsor.",
     location: "London, UK (Shoreditch / Hybrid)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.wise.jobs/",
     postedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
     source: "Adzuna UK Partner",
   },
@@ -56,7 +56,7 @@ const CURATED_UK_FALLBACK_JOBS: ExternalJob[] = [
     description:
       "Develop reinforcement learning models and predictive routing engines optimizing delivery ETA algorithms. Python, PyTorch, Ray, AWS SageMaker. Full UK visa sponsorship available.",
     location: "London, UK (City of London)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://careers.deliveroo.co.uk/",
     postedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
     source: "Adzuna UK Partner",
   },
@@ -67,7 +67,7 @@ const CURATED_UK_FALLBACK_JOBS: ExternalJob[] = [
     description:
       "Architect resilient native banking experiences for millions of personal and business accounts. Swift, SwiftUI, Combine, Security & biometric authentication. Salary: £80,000 - £100,000.",
     location: "London, UK / Manchester / Flexible",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.starlingbank.com/careers/",
     postedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
     source: "Adzuna UK Partner",
   },
@@ -78,7 +78,7 @@ const CURATED_UK_FALLBACK_JOBS: ExternalJob[] = [
     description:
       "Develop silicon compiler drivers and neural network graphs for next-generation intelligence processing units. C++, CUDA/OpenCL, LLVM. Relocation and visa support.",
     location: "Bristol & Cambridge, UK",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.graphcore.ai/careers",
     postedAt: new Date(Date.now() - 4 * 86400000).toISOString(),
     source: "Adzuna UK Partner",
   },

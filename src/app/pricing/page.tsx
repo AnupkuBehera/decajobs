@@ -60,8 +60,8 @@ const pricingFaqs = [
     a: "No, employers can post job listings on DecaJobs completely free of charge. There are no per-listing fees, no hidden charges, and no premium tiers for employers. Register with your company email, verify it, and start posting immediately.",
   },
   {
-    q: "What payment methods do you accept?",
-    a: "We accept all major payment methods including UPI, credit cards, debit cards, and net banking through our secure payment partner. All transactions are encrypted and PCI-DSS compliant.",
+    q: "What payment methods do you accept for Indian and international candidates?",
+    a: "We support both international and domestic payment gateways: For international members across the US, UK, UAE, and worldwide, we accept all international credit/debit cards, Apple Pay, and Google Pay via Stripe Checkout (billed in USD, GBP, or AED). For candidates in India, we accept UPI (Google Pay, PhonePe, Paytm), RuPay, debit/credit cards, and net banking via Razorpay (in INR).",
   },
   {
     q: "Can I get a refund?",
@@ -96,7 +96,7 @@ export default function PricingPage() {
               Full access for 7 days
             </p>
             <p className="mt-6">
-              <span className="text-4xl font-bold text-neutral-900">₹0</span>
+              <span className="text-4xl font-bold text-neutral-900">₹0 / $0</span>
               <span className="text-neutral-500 ml-1">/7 days</span>
             </p>
             <Link
@@ -124,12 +124,19 @@ export default function PricingPage() {
               Pro
             </h2>
             <p className="mt-1 text-sm text-neutral-500">
-              For serious job seekers
+              For serious job seekers worldwide
             </p>
-            <p className="mt-6">
-              <span className="text-4xl font-bold text-neutral-900">₹299</span>
-              <span className="text-neutral-500 ml-1"> per month</span>
-            </p>
+            <div className="mt-6">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-neutral-900">₹299</span>
+                <span className="text-neutral-400 text-sm">or</span>
+                <span className="text-3xl font-bold text-neutral-900">$4.99</span>
+                <span className="text-neutral-500 ml-1 text-xs">/month</span>
+              </div>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                🇮🇳 ₹299 (UPI/Razorpay) &bull; 🌍 $4.99 / £4.99 (Stripe/Apple Pay)
+              </p>
+            </div>
             <Link
               href="/login"
               className="mt-6 block w-full rounded-lg bg-primary-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-primary-700 transition-colors min-h-[48px] flex items-center justify-center"

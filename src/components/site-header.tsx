@@ -200,6 +200,12 @@ export async function SiteHeader() {
                 Free Tools
               </Link>
               <Link
+                href="/news"
+                className="hidden md:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
+              >
+                News
+              </Link>
+              <Link
                 href="/blog"
                 className="hidden sm:flex rounded-md px-2.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-primary-600 transition-colors min-h-[44px] items-center"
               >

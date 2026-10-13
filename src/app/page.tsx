@@ -5,6 +5,8 @@ import { InstantJobPreview } from "@/components/instant-job-preview";
 import { SampleDigestMockup } from "@/components/sample-digest-mockup";
 import { getPublicJobs } from "@/lib/public-jobs";
 import { getHreflangAlternates } from "@/lib/i18n/utils";
+import { getLatestNews } from "@/lib/news/daily-news";
+import { getLatestDailyUpdate, getDeepDiveGuides } from "@/lib/blog-data";
 
 export const metadata: Metadata = {
   title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
@@ -59,6 +61,9 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const jobs = await getPublicJobs();
+  const latestNews = getLatestNews(3);
+  const latestDaily = getLatestDailyUpdate();
+  const topGuides = getDeepDiveGuides().slice(0, 2);
 
   return (
     <div className="flex flex-1 flex-col -mx-4 sm:-mx-6 lg:-mx-8">
@@ -332,6 +337,148 @@ export default async function Home() {
             <Link href="/how-it-works" className="text-primary-600 font-medium hover:underline text-sm">
               Learn how our AI matching works →
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Career Intelligence & Daily News Hub */}
+      <section className="bg-neutral-50 border-y border-neutral-200/80 px-4 py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100/70 px-3.5 py-1 text-xs font-semibold text-primary-800 mb-3 border border-primary-200">
+              <span>📡</span> Daily Job Market Intelligence &amp; Career Playbooks
+            </span>
+            <h2 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
+              Stay Ahead with Daily Telemetry &amp; Expert Guides
+            </h2>
+            <p className="mt-3 text-base text-neutral-600">
+              Real-time tech hiring news, verified salary reports, and tactical career blueprints to accelerate your search.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Left: Latest Tech & Hiring News */}
+            <div className="rounded-3xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-6">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">📰</span>
+                    <h3 className="text-xl font-bold text-neutral-900">
+                      Tech &amp; Hiring News
+                    </h3>
+                  </div>
+                  <Link
+                    href="/news"
+                    className="text-xs font-bold text-primary-600 hover:text-primary-700 hover:underline"
+                  >
+                    View All News →
+                  </Link>
+                </div>
+
+                <div className="space-y-4">
+                  {latestNews.slice(0, 3).map((item) => (
+                    <Link
+                      key={item.slug}
+                      href={`/news/${item.slug}`}
+                      className="group block rounded-2xl border border-neutral-100 bg-neutral-50/60 p-4 transition-all hover:border-primary-200 hover:bg-white hover:shadow-sm"
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-[11px] font-semibold text-primary-700">
+                          {item.category}
+                        </span>
+                        <span className="text-[11px] text-neutral-400">
+                          {item.readTime}
+                        </span>
+                      </div>
+                      <h4 className="text-sm font-bold text-neutral-900 group-hover:text-primary-600 transition-colors leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <p className="mt-1.5 text-xs text-neutral-500 line-clamp-2 leading-relaxed">
+                        {item.summary}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 border-t border-neutral-100 pt-4 flex items-center justify-between text-xs text-neutral-500">
+                <span>Updated daily by DecaJobs Newsroom</span>
+                <Link href="/news" className="font-semibold text-primary-600 hover:underline">
+                  Read live stream →
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Career Blog & Daily Update */}
+            <div className="rounded-3xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-6">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">📚</span>
+                    <h3 className="text-xl font-bold text-neutral-900">
+                      Career Blog &amp; Daily Updates
+                    </h3>
+                  </div>
+                  <Link
+                    href="/blog"
+                    className="text-xs font-bold text-primary-600 hover:text-primary-700 hover:underline"
+                  >
+                    Explore Blog →
+                  </Link>
+                </div>
+
+                {/* Today's Daily Update Preview */}
+                {latestDaily && (
+                  <Link
+                    href={`/blog/${latestDaily.slug}`}
+                    className="group mb-4 block rounded-2xl border border-amber-200 bg-amber-50/40 p-4 transition-all hover:border-amber-400 hover:shadow-sm"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-bold text-amber-800">
+                        📅 Today&apos;s Daily Briefing
+                      </span>
+                      <span className="text-[11px] text-neutral-500">{latestDaily.date}</span>
+                    </div>
+                    <h4 className="text-sm font-bold text-neutral-900 group-hover:text-primary-600 transition-colors leading-snug">
+                      {latestDaily.title}
+                    </h4>
+                    {latestDaily.actionItem && (
+                      <p className="mt-2 text-xs text-amber-900/90 line-clamp-1">
+                        🎯 <strong>Action:</strong> {latestDaily.actionItem}
+                      </p>
+                    )}
+                  </Link>
+                )}
+
+                {/* Top Deep-Dive Guides */}
+                <div className="space-y-3">
+                  {topGuides.slice(0, 2).map((guide) => (
+                    <Link
+                      key={guide.slug}
+                      href={`/blog/${guide.slug}`}
+                      className="group block rounded-2xl border border-neutral-100 bg-neutral-50/60 p-4 transition-all hover:border-primary-200 hover:bg-white hover:shadow-sm"
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="rounded-full bg-primary-50 px-2 py-0.5 text-[10px] font-semibold text-primary-700">
+                          {guide.category}
+                        </span>
+                        <span className="text-[10px] text-neutral-400">{guide.readingTime}</span>
+                      </div>
+                      <h4 className="text-xs font-bold text-neutral-900 group-hover:text-primary-600 transition-colors leading-snug line-clamp-2">
+                        {guide.title}
+                      </h4>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 border-t border-neutral-100 pt-4 flex items-center justify-between text-xs text-neutral-500">
+                <span>By Anup Behera &amp; Hiring Specialists</span>
+                <Link href="/blog" className="font-semibold text-primary-600 hover:underline">
+                  Browse all guides →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

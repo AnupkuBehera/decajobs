@@ -14,6 +14,18 @@ export interface BlogPost {
   };
   content: string;
   faqs?: { q: string; a: string }[];
+  isDailyUpdate?: boolean;
+  marketPulse?: {
+    remoteRatio: string;
+    topHiringRoles: string[];
+    hotLocation: string;
+  };
+  actionItem?: string;
+  interviewPrompt?: {
+    question: string;
+    answerStrategy: string;
+  };
+  hotSkill?: string;
 }
 
 export const DEFAULT_AUTHOR = {

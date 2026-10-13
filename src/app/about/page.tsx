@@ -182,6 +182,30 @@ export default function AboutPage() {
             .
           </p>
 
+          <h2>Job Verification & Editorial Standards</h2>
+          <p>
+            DecaJobs adheres to strict job curation and content quality guidelines:
+          </p>
+          <ul>
+            <li>
+              <strong>Verified Career Portals:</strong> Every job listing is vetted to point directly
+              to official employer career portals or authorized recruitment pipelines, ensuring candidates
+              are never subjected to deceptive registration gates or dead-end doorway pages.
+            </li>
+            <li>
+              <strong>Zero Candidate Fees:</strong> DecaJobs is 100% free for job seekers. We strictly prohibit
+              any employer or listing that solicits payment, processing fees, or security deposits from applicants.
+            </li>
+            <li>
+              <strong>Automated Stale-Job Pruning:</strong> Expired postings are promptly retired and redirected
+              to active category directories to keep our index fresh, responsive, and free of thin or stale content.
+            </li>
+            <li>
+              <strong>Fraud & Scam Screening:</strong> Our automated Scam Detector scans company domains,
+              unrealistic salary promises, and suspicious contact details before listings are featured.
+            </li>
+          </ul>
+
           <h2>Contact Us</h2>
           <p>
             We&apos;d love to hear from you. Reach us at{" "}

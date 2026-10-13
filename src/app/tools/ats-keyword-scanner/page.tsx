@@ -103,7 +103,7 @@ export default function AtsKeywordScannerPage() {
 
         {/* AdSense Unit */}
         <div className="my-12">
-          <AdSenseUnit slot="ats-keyword-scanner-mid" format="auto" />
+          <AdSenseUnit label="Advertisement" format="auto" />
         </div>
 
         {/* Educational Content & Guidelines */}

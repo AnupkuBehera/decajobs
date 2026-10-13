@@ -66,10 +66,35 @@ export const PAYMENT_CONFIGS: Record<string, PaymentConfig> = {
  * Returns payment gateway configuration for a candidate based on country code.
  */
 export function getPaymentConfig(countryCode?: string): PaymentConfig {
-  const code = (countryCode || "in").toLowerCase();
+  const code = (countryCode || "in").toLowerCase().trim();
+
+  // Direct matches
   if (PAYMENT_CONFIGS[code]) {
     return PAYMENT_CONFIGS[code];
   }
+
+  // Common aliases
+  if (code === "uk") return PAYMENT_CONFIGS.gb;
+  if (code === "sa" || code === "qa" || code === "kw" || code === "bh" || code === "om") {
+    return PAYMENT_CONFIGS.ae;
+  }
+  if (
+    code === "us" ||
+    code === "ca" ||
+    code === "au" ||
+    code === "nz" ||
+    code === "de" ||
+    code === "fr" ||
+    code === "es" ||
+    code === "it" ||
+    code === "nl" ||
+    code === "se" ||
+    code === "sg" ||
+    code === "jp"
+  ) {
+    return PAYMENT_CONFIGS.global;
+  }
+
   return PAYMENT_CONFIGS.in;
 }
 
@@ -97,6 +122,10 @@ export async function createStripeSubscriptionSession(params: {
     mode: "subscription",
     customer_email: params.userEmail,
     client_reference_id: params.userId,
+    // Cross-border compliance: Collecting customer billing address is required by RBI for export remittances
+    billing_address_collection: "required",
+    payment_method_collection: "always",
+    allow_promotion_codes: "true",
     "metadata[user_id]": params.userId,
     "metadata[country]": params.config.countryCode,
     "subscription_data[trial_period_days]": String(params.config.trialDays),

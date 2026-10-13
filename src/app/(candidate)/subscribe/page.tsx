@@ -13,14 +13,77 @@ declare global {
   }
 }
 
+interface MarketOption {
+  code: "in" | "global" | "gb" | "ae";
+  name: string;
+  flag: string;
+  currency: string;
+  price: string;
+  provider: "razorpay" | "stripe";
+  methodsText: string;
+}
+
+const MARKETS: MarketOption[] = [
+  {
+    code: "in",
+    name: "India",
+    flag: "🇮🇳",
+    currency: "INR",
+    price: "₹299",
+    provider: "razorpay",
+    methodsText: "UPI (GPay, PhonePe, Paytm), RuPay & Indian Netbanking",
+  },
+  {
+    code: "global",
+    name: "Global / US",
+    flag: "🌍",
+    currency: "USD",
+    price: "$4.99",
+    provider: "stripe",
+    methodsText: "Apple Pay, Google Pay, International Visa, Mastercard & Amex",
+  },
+  {
+    code: "gb",
+    name: "UK",
+    flag: "🇬🇧",
+    currency: "GBP",
+    price: "£4.99",
+    provider: "stripe",
+    methodsText: "Apple Pay, Google Pay & UK Debit/Credit Cards",
+  },
+  {
+    code: "ae",
+    name: "UAE & Gulf",
+    flag: "🇦🇪",
+    currency: "AED",
+    price: "19 AED",
+    provider: "stripe",
+    methodsText: "Apple Pay, Google Pay & Gulf Credit/Debit Cards",
+  },
+];
+
 export default function SubscribePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [checkingSub, setCheckingSub] = useState(true);
   const [isAlreadyPro, setIsAlreadyPro] = useState(false);
+  const [selectedMarket, setSelectedMarket] = useState<"in" | "global" | "gb" | "ae">("in");
 
   useEffect(() => {
+    // Read country from cookie if present
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/NEXT_COUNTRY=([a-z]+)/);
+      if (match && match[1]) {
+        const c = match[1];
+        if (c === "ae" || c === "gb" || c === "global") {
+          setSelectedMarket(c);
+        } else if (c === "us" || c === "ca" || c === "eu") {
+          setSelectedMarket("global");
+        }
+      }
+    }
+
     async function checkExistingSub() {
       try {
         const supabase = createClient();
@@ -50,13 +113,26 @@ export default function SubscribePage() {
     checkExistingSub();
   }, []);
 
+  const currentMarket = MARKETS.find((m) => m.code === selectedMarket) || MARKETS[0];
+
+  const handleMarketChange = (code: "in" | "global" | "gb" | "ae") => {
+    setSelectedMarket(code);
+    if (typeof document !== "undefined") {
+      document.cookie = `NEXT_COUNTRY=${code}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+  };
+
   async function handleSubscribe() {
     setIsLoading(true);
     setErrorMsg("");
 
     try {
-      // Create subscription on server
-      const response = await fetch("/api/subscription/create", { method: "POST" });
+      // Create subscription on server with selected market
+      const response = await fetch("/api/subscription/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: selectedMarket }),
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -65,7 +141,7 @@ export default function SubscribePage() {
         return;
       }
 
-      // If Stripe international checkout, redirect to Stripe Checkout
+      // If Stripe international checkout, redirect to Stripe Checkout session
       if (data.provider === "stripe" && data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
@@ -164,57 +240,94 @@ export default function SubscribePage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
       <div className="py-10 sm:py-16">
-        <div className="mx-auto max-w-lg text-center">
+        <div className="mx-auto max-w-xl text-center">
           <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl">
             Upgrade to DecaJobs Pro
           </h1>
-          <p className="mt-4 text-neutral-600">
-            Get 10 AI-matched jobs delivered to your inbox every morning.
+          <p className="mt-3 text-neutral-600 text-sm sm:text-base">
+            10 AI-matched jobs delivered to your inbox every morning at 7:00 AM.
           </p>
 
-          <Card padding="lg" className="mt-8 text-left">
+          {/* Currency / Market Selector */}
+          <div className="mt-6 inline-flex rounded-xl bg-neutral-100 p-1 border border-neutral-200">
+            {MARKETS.map((market) => {
+              const active = market.code === selectedMarket;
+              return (
+                <button
+                  key={market.code}
+                  type="button"
+                  onClick={() => handleMarketChange(market.code)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+                    active
+                      ? "bg-white text-neutral-900 shadow-xs font-semibold"
+                      : "text-neutral-600 hover:text-neutral-900"
+                  }`}
+                >
+                  <span>{market.flag}</span>
+                  <span>{market.name}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <Card padding="lg" className="mt-6 text-left">
             <div className="text-center mb-6">
-              <p className="text-sm text-neutral-500">Monthly plan</p>
+              <div className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 mb-2">
+                {currentMarket.provider === "stripe" ? "🌍 International Subscription" : "🇮🇳 Domestic India Plan"}
+              </div>
               <p className="mt-1">
-                <span className="text-4xl font-bold text-neutral-900">₹299</span>
-                <span className="text-neutral-500"> per month</span>
+                <span className="text-4xl font-extrabold text-neutral-900">
+                  {currentMarket.price}
+                </span>
+                <span className="text-neutral-500 text-sm"> / month</span>
               </p>
-              <p className="mt-2 text-sm text-green-600 font-medium">
-                🎉 First 7 days FREE — cancel anytime
+              <p className="mt-2 text-sm text-green-600 font-semibold">
+                🎉 First 7 days FREE — cancel anytime with 1 click
               </p>
+            </div>
+
+            <div className="mb-6 rounded-xl border border-neutral-100 bg-neutral-50/70 p-3.5 text-xs text-neutral-600 space-y-1">
+              <p className="font-semibold text-neutral-800 flex items-center gap-1.5">
+                <span>{currentMarket.provider === "stripe" ? "💳 Stripe Checkout" : "⚡ Razorpay"}</span>
+                <span className="text-[10px] text-neutral-400 font-normal">| Accepted Methods</span>
+              </p>
+              <p>{currentMarket.methodsText}</p>
             </div>
 
             <ul className="space-y-3 mb-8">
               {[
-                "10 AI-matched jobs daily in your inbox",
-                "Jobs from LinkedIn, Indeed, Glassdoor & 20+ sources",
-                "AI Resume Scorer & Optimizer",
-                "AI Cover Letter Generator",
-                "Priority job matching algorithm",
-                "Cancel anytime — no lock-in",
+                "10 AI-matched jobs daily in your inbox at 7 AM",
+                "Jobs aggregated from LinkedIn, Indeed, Glassdoor & 20+ sources",
+                "Full access to all 12+ AI career tools (Resume Scorer, Cover Letter, ATS Scanner)",
+                "Priority job ranking matching your exact target skills & salary expectations",
+                "Zero commitment — cancel anytime from your account settings",
               ].map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm text-neutral-700">
-                  <span className="text-green-600 shrink-0 mt-0.5">✓</span>
-                  {feature}
+                <li key={feature} className="flex items-start gap-2.5 text-sm text-neutral-700">
+                  <span className="text-green-600 font-bold shrink-0 mt-0.5">✓</span>
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
             {errorMsg && (
-              <p className="text-sm text-red-600 mb-4" role="alert">{errorMsg}</p>
+              <p className="text-sm text-red-600 mb-4 p-3 rounded-lg bg-red-50 border border-red-200" role="alert">
+                {errorMsg}
+              </p>
             )}
 
             <Button
               onClick={handleSubscribe}
               isLoading={isLoading}
               size="lg"
-              className="w-full"
+              className="w-full text-base font-semibold shadow-md"
             >
-              Start Free Trial — ₹299/month after 7 days
+              Start 7-Day Free Trial — {currentMarket.price}/mo after trial
             </Button>
 
             <p className="mt-4 text-center text-xs text-neutral-500">
-              Secure payment via Razorpay. Cancel anytime from your dashboard.
+              {currentMarket.provider === "stripe"
+                ? "🔒 256-bit encrypted international checkout via Stripe. Apple Pay & credit/debit cards accepted."
+                : "🔒 256-bit encrypted domestic checkout via Razorpay. UPI, RuPay & Netbanking accepted."}
             </p>
           </Card>
         </div>

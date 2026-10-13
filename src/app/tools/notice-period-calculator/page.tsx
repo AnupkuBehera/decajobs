@@ -104,7 +104,7 @@ export default function NoticePeriodPage() {
 
         {/* AdSense Unit */}
         <div className="my-12">
-          <AdSenseUnit slot="notice-period-calculator-mid" format="auto" />
+          <AdSenseUnit label="Advertisement" format="auto" />
         </div>
 
         {/* Deep SEO & Educational Guide */}

@@ -247,6 +247,58 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {article.excerpt}
           </div>
 
+          {/* Daily Update Specific Highlight Widgets */}
+          {article.isDailyUpdate && (
+            <div className="mt-6 space-y-4">
+              {article.marketPulse && (
+                <div className="rounded-2xl border border-amber-300 bg-amber-50/50 p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-amber-900 mb-3 flex items-center gap-1.5">
+                    <span>📊</span> Daily Market Pulse &amp; Telemetry
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="rounded-xl bg-white p-3 border border-amber-200">
+                      <span className="text-neutral-500 block mb-0.5">Remote Availability</span>
+                      <strong className="text-neutral-900 text-sm">{article.marketPulse.remoteRatio}</strong>
+                    </div>
+                    <div className="rounded-xl bg-white p-3 border border-amber-200">
+                      <span className="text-neutral-500 block mb-0.5">Hot Location</span>
+                      <strong className="text-neutral-900 text-sm">{article.marketPulse.hotLocation}</strong>
+                    </div>
+                    <div className="rounded-xl bg-white p-3 border border-amber-200">
+                      <span className="text-neutral-500 block mb-0.5">Hot Skill</span>
+                      <strong className="text-amber-800 text-sm">{article.hotSkill || "Cloud & AI"}</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {article.actionItem && (
+                <div className="rounded-2xl border border-emerald-300 bg-emerald-50/50 p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1 flex items-center gap-1.5">
+                    <span>🎯</span> Today&apos;s 10-Minute Career Action
+                  </h3>
+                  <p className="text-xs sm:text-sm text-emerald-950 font-medium leading-relaxed">
+                    {article.actionItem}
+                  </p>
+                </div>
+              )}
+
+              {article.interviewPrompt && (
+                <div className="rounded-2xl border border-sky-300 bg-sky-50/50 p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-sky-900 mb-1 flex items-center gap-1.5">
+                    <span>💡</span> Interview Challenge of the Day
+                  </h3>
+                  <p className="text-xs sm:text-sm font-bold text-sky-950 mb-2">
+                    &ldquo;{article.interviewPrompt.question}&rdquo;
+                  </p>
+                  <p className="text-xs text-sky-900 leading-relaxed">
+                    <strong>STAR Strategy:</strong> {article.interviewPrompt.answerStrategy}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Table of Contents jump box if article has headings */}
           {headings.length > 2 && (
             <nav className="my-8 rounded-2xl border border-neutral-200 bg-neutral-50/70 p-5">

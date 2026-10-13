@@ -8,6 +8,7 @@ import {
   COMPANIES,
 } from "@/lib/public-jobs";
 import { BLOG_ARTICLES } from "@/lib/blog-data";
+import { getAllNews } from "@/lib/news/daily-news";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
@@ -91,7 +92,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/jobs`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 1.0 },
     { url: `${baseUrl}/jobs/remote`, lastModified: new Date("2026-08-28"), changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/jobs/fresher`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: `${baseUrl}/jobs/country/ae`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
     // Fresher Job Hubs by City
     ...CITIES.map((city) => ({
       url: `${baseUrl}/jobs/fresher/${city.slug}`,
@@ -120,16 +120,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.85,
     })),
-    // Blog Hub & Core
-    { url: `${baseUrl}/blog`, lastModified: new Date("2026-08-12"), changeFrequency: "weekly", priority: 0.8 },
+    // Blog Hub & RSS
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.85 },
+    { url: `${baseUrl}/blog/rss.xml`, lastModified: new Date(), changeFrequency: "daily", priority: 0.6 },
     { url: `${baseUrl}/blog/editorial-policy`, lastModified: new Date("2026-08-12"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/blog/author/anup-behera`, lastModified: new Date("2026-09-03"), changeFrequency: "monthly", priority: 0.7 },
-    // All 24 in-depth career guides dynamically included
+    // All career guides and daily updates dynamically included
     ...Object.values(BLOG_ARTICLES).map((article) => ({
       url: `${baseUrl}/blog/${article.slug}`,
       lastModified: new Date(article.dateISO),
-      changeFrequency: "monthly" as const,
+      changeFrequency: "daily" as const,
       priority: 0.75,
+    })),
+    // Tech & Hiring News Hub, RSS & Articles
+    { url: `${baseUrl}/news`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/news/rss.xml`, lastModified: new Date(), changeFrequency: "daily", priority: 0.6 },
+    ...getAllNews().map((article) => ({
+      url: `${baseUrl}/news/${article.slug}`,
+      lastModified: new Date(article.dateISO),
+      changeFrequency: "daily" as const,
+      priority: 0.8,
     })),
   ];
 

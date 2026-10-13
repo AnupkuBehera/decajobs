@@ -50,7 +50,7 @@ const UK_FEATURED_JOBS: ExternalJob[] = [
     description:
       "Build high-throughput event-driven microservices processing millions of multi-currency payments daily. Strong experience in Java, Kotlin, PostgreSQL, and distributed caching required. Full UK Skilled Worker Visa (Certificate of Sponsorship - CoS) provided for eligible candidates.",
     location: "London, UK (Canary Wharf / Hybrid)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.revolut.com/careers/",
     postedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
     source: "DecaJobs UK Verified",
   },
@@ -61,7 +61,7 @@ const UK_FEATURED_JOBS: ExternalJob[] = [
     description:
       "Drive customer experience and architecture across our iOS, Android, and web banking apps. Tech stack: React Native, TypeScript, GraphQL. Competitive salary (£85,000 - £110,000), generous equity options, and relocation support.",
     location: "London, UK (City of London / Flexible Remote)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://monzo.com/careers/",
     postedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
     source: "DecaJobs UK Verified",
   },
@@ -72,7 +72,7 @@ const UK_FEATURED_JOBS: ExternalJob[] = [
     description:
       "Optimize LLVM compiler backends for next-generation neural processing units and Arm silicon architectures. C++, LLVM, assembly, and performance modeling. Comprehensive pension, private medical, and Skilled Worker sponsorship.",
     location: "Cambridge, UK (On-site / Hybrid)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.arm.com/company/careers",
     postedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
     source: "DecaJobs UK Verified",
   },
@@ -83,7 +83,7 @@ const UK_FEATURED_JOBS: ExternalJob[] = [
     description:
       "Design multi-tenant cloud infrastructure and automated CI/CD pipelines supporting global retail brands. Kubernetes, Terraform, AWS, and Prometheus monitoring. Salary: £65,000 - £80,000.",
     location: "Manchester, UK (MediaCityUK / Hybrid)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.thg.com/careers/",
     postedAt: new Date(Date.now() - 4 * 86400000).toISOString(),
     source: "DecaJobs UK Verified",
   },

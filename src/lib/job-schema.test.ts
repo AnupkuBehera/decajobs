@@ -37,6 +37,26 @@ describe("JobPosting Schema Generator", () => {
       expect(res.streetAddress).toBe("Remote / Flexible");
       expect(res.addressRegion).toBe("Remote");
       expect(res.addressLocality).toBe("Remote");
+      expect(res.postalCode).toBe("94105");
+    });
+
+    it("should parse Portland, OR with state code and postal code", () => {
+      const res = parseLocation("Portland, OR");
+      expect(res.isRemote).toBe(false);
+      expect(res.addressCountry).toBe("US");
+      expect(res.addressRegion).toBe("OR");
+      expect(res.addressLocality).toBe("Portland");
+      expect(res.postalCode).toBe("97201");
+      expect(res.streetAddress).toBe("City Center");
+    });
+
+    it("should extract explicit ZIP code from location string", () => {
+      const res = parseLocation("Austin, TX 78701");
+      expect(res.isRemote).toBe(false);
+      expect(res.addressCountry).toBe("US");
+      expect(res.addressRegion).toBe("TX");
+      expect(res.addressLocality).toBe("Austin");
+      expect(res.postalCode).toBe("78701");
     });
 
     it("should parse city/country locations like Bangalore, India", () => {
@@ -45,6 +65,7 @@ describe("JobPosting Schema Generator", () => {
       expect(res.addressCountry).toBe("IN");
       expect(res.addressRegion).toBe("Karnataka");
       expect(res.addressLocality).toBe("Bangalore");
+      expect(res.postalCode).toBe("560001");
       expect(res.streetAddress).toBe("City Center");
     });
 
@@ -54,6 +75,7 @@ describe("JobPosting Schema Generator", () => {
       expect(res.addressCountry).toBe("US");
       expect(res.addressRegion).toBe("CA");
       expect(res.addressLocality).toBe("San Francisco");
+      expect(res.postalCode).toBe("94105");
       expect(res.streetAddress).toBe("City Center");
     });
   });
@@ -107,11 +129,12 @@ describe("JobPosting Schema Generator", () => {
       // 2. validThrough present in ISO 8601 format
       expect(schema.validThrough).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
 
-      // 3, 4, 6. Address fields (addressCountry, streetAddress, addressRegion)
+      // 3, 4, 6. Address fields (addressCountry, streetAddress, addressRegion, postalCode)
       expect(schema.jobLocation.address.addressCountry).toBe("IN");
       expect(schema.jobLocation.address.addressRegion).toBe("Karnataka");
       expect(schema.jobLocation.address.streetAddress).toBe("City Center");
       expect(schema.jobLocation.address.addressLocality).toBe("Bangalore");
+      expect(schema.jobLocation.address.postalCode).toBe("560001");
 
       // 5. baseSalary present
       expect(schema.baseSalary["@type"]).toBe("MonetaryAmount");
@@ -138,6 +161,7 @@ describe("JobPosting Schema Generator", () => {
       });
       expect(schema.jobLocation.address.addressCountry).toBe("US");
       expect(schema.jobLocation.address.streetAddress).toBe("Remote / Flexible");
+      expect(schema.jobLocation.address.postalCode).toBe("94105");
     });
   });
 });

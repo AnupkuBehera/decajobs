@@ -69,8 +69,13 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/news" className="text-neutral-400 hover:text-white transition-colors">
+                  Tech &amp; Hiring News
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="text-neutral-400 hover:text-white transition-colors">
-                  Career Blog
+                  Career Blog &amp; Daily Updates
                 </Link>
               </li>
               <li>

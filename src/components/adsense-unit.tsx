@@ -71,7 +71,7 @@ export function AdSenseUnit({
         className="adsbygoogle block w-full"
         style={{ display: "block" }}
         data-ad-client="ca-pub-7950314044956492"
-        data-ad-slot={slot !== "default" ? slot : undefined}
+        data-ad-slot={typeof slot === "string" && /^\d+$/.test(slot) ? slot : undefined}
         data-ad-format={format}
         data-full-width-responsive={responsive ? "true" : "false"}
       />

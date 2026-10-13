@@ -49,7 +49,7 @@ const UAE_EXPEDITION_JOBS: ExternalJob[] = [
     description:
       "Careem is hiring a Senior Full-Stack Engineer to scale our digital wallet and payment gateway across the Middle East. Tech stack: React, TypeScript, Node.js, and AWS. Package includes full UAE residence visa sponsorship, family health insurance, and 100% tax-free AED compensation.",
     location: "Dubai, UAE (Dubai Media City / Hybrid)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.careem.com/careers/",
     postedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
     source: "DecaJobs UAE Verified",
   },
@@ -60,7 +60,7 @@ const UAE_EXPEDITION_JOBS: ExternalJob[] = [
     description:
       "Lead multi-region Kubernetes clusters and high-throughput microservices powering food delivery across 7 Gulf nations. Hands-on expertise in AWS, Terraform, Docker, and CI/CD pipelines. Competitive tax-free salary, annual flight tickets, and relocation assistance.",
     location: "Dubai Silicon Oasis, UAE (On-site / Relocation Supported)",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://careers.deliveryhero.com/",
     postedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
     source: "DecaJobs UAE Verified",
   },
@@ -71,7 +71,7 @@ const UAE_EXPEDITION_JOBS: ExternalJob[] = [
     description:
       "Build real-time search, catalog ranking, and fraud detection algorithms handling millions of daily transactions. Must have production experience in PySpark, Kafka, Python, and Snowflake. Relocation package includes 30 days initial hotel stay and visa assistance.",
     location: "Downtown Dubai / Emaar Square, UAE",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://noon.careers/",
     postedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
     source: "DecaJobs UAE Verified",
   },
@@ -82,7 +82,7 @@ const UAE_EXPEDITION_JOBS: ExternalJob[] = [
     description:
       "Architect regulatory-compliant digital asset exchange infrastructure under VARA guidelines. Deep knowledge of Go, PostgreSQL, Redis, and high-concurrency event-driven architectures. 100% tax-free compensation with performance bonuses.",
     location: "DIFC (Dubai International Financial Centre), UAE",
-    applicationLink: "https://decajob.com/login",
+    applicationLink: "https://www.binance.com/en/careers",
     postedAt: new Date(Date.now() - 4 * 86400000).toISOString(),
     source: "DecaJobs UAE Verified",
   },

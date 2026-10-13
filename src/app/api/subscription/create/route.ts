@@ -16,18 +16,23 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    let countryCode = "in";
+    let countryCode: string | undefined;
     try {
       const body = await request.json();
-      if (body?.country) countryCode = body.country;
+      if (body?.country) countryCode = String(body.country).toLowerCase().trim();
     } catch {
       // Body may be empty if called without parameters
     }
 
     // Check cookie fallback if not in body
-    const cookieCountry = request.cookies.get("NEXT_COUNTRY")?.value;
-    if (!countryCode && cookieCountry) {
-      countryCode = cookieCountry;
+    if (!countryCode) {
+      const cookieCountry = request.cookies.get("NEXT_COUNTRY")?.value;
+      if (cookieCountry) countryCode = cookieCountry.toLowerCase().trim();
+    }
+
+    // Default to "in" if neither body nor cookie specified
+    if (!countryCode) {
+      countryCode = "in";
     }
 
     const config = getPaymentConfig(countryCode);
