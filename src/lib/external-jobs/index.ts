@@ -1,20 +1,22 @@
 /**
  * Unified External Job Fetcher & Multi-Engine Aggregator
  *
- * Queries up to 10 independent job engines in parallel using resilient
+ * Queries 11+ independent job engines and 33+ direct ATS boards in parallel using resilient
  * Promise.allSettled() and circuit breakers. Deduplicates across providers
  * by normalized title and company name.
  *
  * Sources:
  * 1. Jobicy (verified 7-day remote jobs with structured salaries)
  * 2. Himalayas (OpenAPI remote tech jobs with timezone restrictions)
- * 3. Direct Primary ATS (Greenhouse & Lever public boards: Vercel, Supabase, Stripe, Razorpay, BrowserStack, Postman)
- * 4. Adzuna (Local country jobs routed to India in, UK gb, US us, CA, AU)
- * 5. Remotive (Remote software engineering and devops)
- * 6. RemoteOK (Global remote tech and startup jobs)
- * 7. Arbeitnow (EU, UK, and European tech hubs)
- * 8. JSearch (LinkedIn, Indeed, Glassdoor via RapidAPI when configured)
- * 9. Apify (LinkedIn actor scraper when configured)
+ * 3. Direct Primary ATS (Greenhouse & Lever: Figma, Stripe, Airbnb, Spotify, Coinbase, etc. - 33+ tech leaders)
+ * 4. We Work Remotely (Remote programming, devops, design RSS feeds)
+ * 5. Working Nomads (Remote developer, tech and management careers)
+ * 6. Adzuna (Local country jobs routed to India in, UK gb, US us, CA, AU)
+ * 7. Remotive (Remote software engineering and devops)
+ * 8. RemoteOK (Global remote tech and startup jobs)
+ * 9. Arbeitnow (EU, UK, and European tech hubs)
+ * 10. JSearch (LinkedIn, Indeed, Glassdoor via RapidAPI when configured)
+ * 11. Apify (LinkedIn actor scraper when configured)
  */
 
 import { fetchJobsForCandidate as fetchJSearchJobs } from "@/lib/jsearch/client";
@@ -26,12 +28,14 @@ import { fetchAdzunaJobs, resolveAdzunaCountry } from "./adzuna";
 import { fetchJobicyJobs } from "./jobicy";
 import { fetchHimalayasJobs } from "./himalayas";
 import { fetchDirectAtsJobs } from "./ats-boards";
+import { fetchWorkingNomadsJobs } from "./workingnomads";
+import { fetchWeWorkRemotelyJobs } from "./weworkremotely";
 import type { ExternalJob } from "./types";
 
 export type { ExternalJob } from "./types";
 
 /**
- * Fetch jobs from all 10 external sources for a candidate's profile.
+ * Fetch jobs from all external sources for a candidate's profile.
  * Runs all APIs concurrently with Promise.allSettled for maximum fault tolerance.
  *
  * @param targetTitles - Candidate's desired job titles
@@ -51,25 +55,29 @@ export async function fetchAllExternalJobs(
   const adzunaCountry = resolveAdzunaCountry(location);
   const adzunaCity = location && location.trim() !== "" ? location : "London";
 
-  // Run all 9 external API engines in parallel with individual error resilience
+  // Run all external API engines in parallel with individual error resilience
   const results = await Promise.allSettled([
     // 1. Jobicy Remote API (Keyless)
     fetchJobicyJobs(skills[0] || primaryTitle),
     // 2. Himalayas Tech API (Keyless)
     fetchHimalayasJobs(primaryTitle),
-    // 3. Direct Primary ATS (Greenhouse / Lever)
+    // 3. Direct Primary ATS (Greenhouse / Lever - 33+ Tech Leaders)
     fetchDirectAtsJobs(primaryTitle),
-    // 4. Adzuna Local Country Aggregator (Resolved country)
+    // 4. We Work Remotely (Keyless RSS)
+    fetchWeWorkRemotelyJobs(primaryTitle),
+    // 5. Working Nomads (Keyless Open API)
+    fetchWorkingNomadsJobs(primaryTitle),
+    // 6. Adzuna Local Country Aggregator (Resolved country)
     fetchAdzunaJobs(primaryTitle, adzunaCity, adzunaCountry),
-    // 5. Remotive
+    // 7. Remotive
     fetchRemotiveJobs(searchQuery),
-    // 6. RemoteOK
+    // 8. RemoteOK
     fetchRemoteOKJobs(skills.slice(0, 3)),
-    // 7. Arbeitnow
+    // 9. Arbeitnow
     fetchArbeitnowJobs(primaryTitle),
-    // 8. JSearch (RapidAPI)
+    // 10. JSearch (RapidAPI)
     fetchJSearchJobs(targetTitles, skills, location),
-    // 9. Apify LinkedIn
+    // 11. Apify LinkedIn
     fetchApifyLinkedInJobs(primaryTitle, location),
   ]);
 
@@ -78,9 +86,9 @@ export async function fetchAllExternalJobs(
   // Extract fulfilled jobs safely
   results.forEach((res, idx) => {
     if (res.status === "fulfilled" && Array.isArray(res.value)) {
-      if (idx === 7) {
-        // JSearch format mapping
-        const jsearchJobs = res.value.map((j: any) => ({
+      for (const j of res.value) {
+        if (!j) continue;
+        allJobs.push({
           id: j.id,
           title: j.title,
           company: j.company,
@@ -88,11 +96,8 @@ export async function fetchAllExternalJobs(
           location: j.location,
           applicationLink: j.applicationLink,
           postedAt: j.postedAt,
-          source: j.source || "jsearch",
-        }));
-        allJobs.push(...jsearchJobs);
-      } else {
-        allJobs.push(...res.value);
+          source: j.source || "external",
+        });
       }
     } else if (res.status === "rejected") {
       console.warn(`[External Jobs] Provider index ${idx} failed:`, res.reason);

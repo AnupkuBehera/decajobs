@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DecaJobs - AI Powered Online Job Portal | 10 Perfect Jobs Every Morning",
     description:
-      "The smartest job search engine that delivers exactly 10 AI-matched jobs to your inbox daily. Aggregates from LinkedIn, Indeed, Glassdoor & 20+ job boards. Free to start.",
+      "The smartest job search engine that delivers exactly 10 AI-matched jobs to your inbox daily. Aggregates from LinkedIn, Indeed, Glassdoor & 40+ job platforms and direct ATS boards. Free to start.",
     url: "https://decajob.com",
     siteName: "DecaJobs",
     type: "website",
@@ -93,7 +93,7 @@ export default async function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-primary-100/80 sm:text-xl">
-            AI scans 20+ top job boards overnight and delivers your curated Top 10 matches
+            AI scans 40+ leading job platforms and direct ATS boards overnight and delivers your curated Top 10 matches
             by 7:00 AM with verified Job Trust Scores™. No noise, no endless scrolling.
           </p>
 
@@ -128,8 +128,8 @@ export default async function Home() {
           {/* Social proof stats */}
           <div className="mt-14 grid grid-cols-3 gap-6 border-t border-primary-700/50 pt-8 sm:gap-12">
             <div>
-              <p className="text-2xl font-bold text-white sm:text-3xl">20+</p>
-              <p className="mt-1 text-xs text-primary-300 sm:text-sm">Job Sources</p>
+              <p className="text-2xl font-bold text-white sm:text-3xl">40+</p>
+              <p className="mt-1 text-xs text-primary-300 sm:text-sm">Job Sources & ATS Boards</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-white sm:text-3xl">10</p>
@@ -146,21 +146,26 @@ export default async function Home() {
       {/* Logos / Source Strip */}
       <section className="border-b border-neutral-200 bg-white px-4 py-6 sm:py-8">
         <p className="text-center text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-4">
-          Curated & Verified from 20+ Leading Job Platforms
+          Curated & Verified from 40+ Leading Job Platforms & Direct ATS Boards
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3.5 text-neutral-500 max-w-4xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3.5 text-neutral-500 max-w-5xl mx-auto">
           <span className="text-sm font-bold sm:text-base text-neutral-700">LinkedIn</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Naukri</span>
           <span className="text-sm font-bold sm:text-base text-neutral-700">Indeed</span>
           <span className="text-sm font-bold sm:text-base text-neutral-700">Glassdoor</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Foundit</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Wellfound</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Cutshort</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Hirist</span>
-          <span className="text-sm font-bold sm:text-base text-neutral-700">Instahyre</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Naukri</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">We Work Remotely</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Working Nomads</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Himalayas</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Jobicy</span>
           <span className="text-sm font-bold sm:text-base text-neutral-700">Remotive</span>
           <span className="text-sm font-bold sm:text-base text-neutral-700">RemoteOK</span>
           <span className="text-sm font-bold sm:text-base text-neutral-700">Arbeitnow</span>
+          <span className="text-sm font-bold sm:text-base text-neutral-700">Adzuna</span>
+          <span className="text-sm font-bold sm:text-base text-primary-700">Figma ATS</span>
+          <span className="text-sm font-bold sm:text-base text-primary-700">Stripe ATS</span>
+          <span className="text-sm font-bold sm:text-base text-primary-700">Airbnb ATS</span>
+          <span className="text-sm font-bold sm:text-base text-primary-700">Spotify ATS</span>
+          <span className="text-sm font-bold sm:text-base text-primary-700">Coinbase ATS</span>
         </div>
       </section>
 
@@ -255,8 +260,8 @@ export default async function Home() {
             />
             <FeatureCard
               icon="🌐"
-              title="20+ Job Sources"
-              description="We aggregate from LinkedIn, Indeed, Glassdoor, Remotive, RemoteOK, and Arbeitnow — one inbox, every opportunity."
+              title="40+ Job Sources & ATS Boards"
+              description="We aggregate from LinkedIn, Indeed, Glassdoor, We Work Remotely, Working Nomads, Himalayas, and direct employer ATS boards (Figma, Stripe, Airbnb, Spotify) — one inbox, every opportunity."
             />
             <FeatureCard
               icon="🤖"

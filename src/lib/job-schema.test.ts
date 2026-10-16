@@ -138,7 +138,7 @@ describe("JobPosting Schema Generator", () => {
 
       // 5. baseSalary present
       expect(schema.baseSalary["@type"]).toBe("MonetaryAmount");
-      expect(schema.baseSalary.currency).toBe("USD");
+      expect(schema.baseSalary.currency).toBe("INR");
       expect(schema.baseSalary.value.minValue).toBe(130000);
       expect(schema.baseSalary.value.maxValue).toBe(170000);
       expect(schema.baseSalary.value.unitText).toBe("YEAR");

@@ -68,6 +68,7 @@ describe("fetchActiveCandidates", () => {
       id: "candidate-1",
       email: "alice@example.com",
       preferred_delivery_time: "07:00",
+      timeZone: "Asia/Kolkata",
       profile: {
         target_titles: ["Software Engineer", "Full Stack Developer"],
         skills: ["TypeScript", "React"],
@@ -78,6 +79,7 @@ describe("fetchActiveCandidates", () => {
       id: "candidate-2",
       email: "bob@example.com",
       preferred_delivery_time: "17:00",
+      timeZone: "Asia/Kolkata",
       profile: {
         target_titles: ["Product Manager"],
         skills: ["Agile", "Data Analysis"],
@@ -107,7 +109,7 @@ describe("fetchActiveCandidates", () => {
     expect(result).toHaveLength(0);
   });
 
-  it("filters out candidates with empty skills", async () => {
+  it("falls back to target_titles when skills array is empty", async () => {
     const mockData = [
       {
         id: "candidate-1",
@@ -125,7 +127,8 @@ describe("fetchActiveCandidates", () => {
     chain.eq.mockResolvedValue({ data: mockData, error: null });
 
     const result = await fetchActiveCandidates();
-    expect(result).toHaveLength(0);
+    expect(result).toHaveLength(1);
+    expect(result[0].profile.skills).toEqual(["Engineer"]);
   });
 
   it("filters out candidates with empty location", async () => {

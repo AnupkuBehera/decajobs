@@ -17,6 +17,8 @@ import { fetchArbeitnowJobs } from "@/lib/external-jobs/arbeitnow";
 import { fetchJobicyJobs } from "@/lib/external-jobs/jobicy";
 import { fetchHimalayasJobs } from "@/lib/external-jobs/himalayas";
 import { fetchDirectAtsJobs } from "@/lib/external-jobs/ats-boards";
+import { fetchWorkingNomadsJobs } from "@/lib/external-jobs/workingnomads";
+import { fetchWeWorkRemotelyJobs } from "@/lib/external-jobs/weworkremotely";
 
 export type { ExternalJob } from "@/lib/external-jobs/types";
 
@@ -1281,7 +1283,9 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
             fetchJobicyJobs("developer"),
             fetchJobicyJobs("data"),
             fetchHimalayasJobs("engineer"),
-            fetchDirectAtsJobs("engineer"),
+            fetchDirectAtsJobs(""),
+            fetchWeWorkRemotelyJobs(""),
+            fetchWorkingNomadsJobs(""),
         ]);
 
         const all: ExternalJob[] = [];
@@ -1315,7 +1319,7 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
             return tb - ta;
         });
 
-        cachedPublicJobs = unique.slice(0, MAX_JOBS_PER_PAGE * 3);
+        cachedPublicJobs = unique.slice(0, 500);
         lastPublicJobsFetchTime = now;
         return cachedPublicJobs;
     } catch (error) {
