@@ -14,10 +14,12 @@ import { calculateJobTrustScore } from "@/lib/trust-score";
 
 interface JobCardProps {
     job: ExternalJob;
+    rank?: number;
+    matchScore?: number;
 }
 
 /** Compact job card used across the public job board. */
-export function JobCard({ job }: JobCardProps) {
+export function JobCard({ job, rank, matchScore }: JobCardProps) {
     const days = daysSincePosted(job.postedAt);
     const isRemote = job.location.toLowerCase().includes("remote");
     const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 3);
@@ -35,6 +37,20 @@ export function JobCard({ job }: JobCardProps) {
     return (
         <div className="group flex flex-col justify-between h-full rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-300">
             <div>
+                {(rank !== undefined || matchScore !== undefined) && (
+                    <div className="mb-2.5 flex items-center gap-2">
+                        {rank !== undefined && (
+                            <span className="inline-flex items-center rounded-md bg-neutral-900 px-2 py-0.5 text-[11px] font-bold text-white shadow-2xs">
+                                #{rank}
+                            </span>
+                        )}
+                        {matchScore !== undefined && (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-primary-50 px-2 py-0.5 text-[11px] font-semibold text-primary-700 border border-primary-200/60">
+                                ⚡ {matchScore}% Match
+                            </span>
+                        )}
+                    </div>
+                )}
                 <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                         <Link

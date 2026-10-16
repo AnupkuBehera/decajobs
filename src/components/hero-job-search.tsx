@@ -6,12 +6,12 @@ import Link from "next/link";
 import * as gtag from "@/lib/gtag";
 
 const QUICK_FILTERS = [
-  { label: "🌍 Remote Jobs", href: "/jobs/remote" },
-  { label: "🎓 Fresher Jobs", href: "/jobs/fresher" },
-  { label: "💻 Software Engineer", href: "/jobs?q=Software+Engineer" },
-  { label: "🤖 AI & Machine Learning", href: "/jobs?q=AI+Machine+Learning" },
-  { label: "📍 Bangalore Tech Hub", href: "/jobs/location/bangalore" },
-  { label: "📄 Free ATS Tools", href: "/tools" },
+  { label: "🌍 Remote Jobs", href: "/jobs?remote=true" },
+  { label: "🎓 Fresher / SDE-1", href: "/jobs?exp=fresher" },
+  { label: "💻 React & Frontend", href: "/jobs?q=React" },
+  { label: "🤖 Data & AI", href: "/jobs?cat=data" },
+  { label: "☁️ DevOps & Cloud", href: "/jobs?cat=devops" },
+  { label: "🏙️ Bangalore Hub", href: "/jobs?q=Bangalore" },
 ];
 
 export function HeroJobSearch() {
@@ -43,14 +43,14 @@ export function HeroJobSearch() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Or search 1,000+ verified jobs directly (e.g. Python, Remote, Fresher)..."
+          placeholder="Search by role, skill, or location for your 10 best jobs..."
           className="w-full bg-transparent px-2 py-2.5 text-xs sm:text-sm text-white placeholder-primary-300/60 outline-none"
         />
         <button
           type="submit"
           className="rounded-xl bg-white px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold text-primary-950 hover:bg-neutral-100 transition-colors shadow-md shrink-0"
         >
-          Explore Jobs →
+          10 Best Jobs 🎯
         </button>
       </form>
 

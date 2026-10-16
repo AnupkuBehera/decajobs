@@ -44,12 +44,16 @@ export default async function JobsPage() {
 
                 {/* Header */}
                 <div className="text-center mb-12">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-3.5 py-1 text-xs font-semibold text-primary-800 shadow-xs mb-3">
+                        <span className="h-2 w-2 rounded-full bg-primary-600 animate-pulse" />
+                        DecaJobs Signature USP · Precision 10 Matches
+                    </div>
                     <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl lg:text-5xl">
-                        Genuine & Curated Job Openings
+                        The 10 Best Jobs Search Engine
                     </h1>
                     <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-                        Zero spam, zero expired links. Verified opportunities from top tech companies
-                        around the world — updated daily with our algorithmic Top 10 curated matches.
+                        Zero spam, zero endless scrolling. Search verified opportunities from 20+ top job platforms —
+                        our DecaRank™ engine curates and ranks your exact 10 Best Matches with Job Trust Scores™.
                     </p>
                     <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3.5 py-1.5 text-xs font-semibold text-green-800 shadow-sm">
