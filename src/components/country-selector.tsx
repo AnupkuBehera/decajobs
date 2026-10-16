@@ -88,21 +88,20 @@ export function CountrySelector({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label="Select Country / Market"
-        className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+        className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-medium transition-all whitespace-nowrap ${
           isFooter
             ? "border border-neutral-700 bg-neutral-900 text-neutral-300 hover:bg-neutral-800 hover:text-white"
-            : "border border-neutral-200 bg-white text-neutral-700 shadow-xs hover:bg-neutral-50 hover:text-neutral-900"
+            : variant === "compact"
+              ? "border border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100"
+              : "border border-neutral-200 bg-white/90 text-neutral-700 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 hover:border-neutral-300"
         }`}
       >
-        <span aria-hidden="true" className="text-sm">
-          {current.flag}
-        </span>
-        <span className="hidden xs:inline">{current.name}</span>
-        <span className="text-[11px] text-neutral-400 font-mono">
+        <span className="font-bold text-neutral-800 tracking-wide text-xs">{current.code.toUpperCase()}</span>
+        <span className="text-[11px] text-neutral-500 font-medium font-mono">
           ({current.currency.symbol})
         </span>
         <svg
-          className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-neutral-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
