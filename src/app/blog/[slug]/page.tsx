@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { AdSenseUnit } from "@/components/adsense-unit";
+import { BlogInteractiveBridge } from "@/components/blog/blog-interactive-bridge";
 import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 interface BlogPostPageProps {
@@ -331,6 +332,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {paragraphs.map((paragraph, i) => {
               // Inject compliant AdSense unit after paragraph 4
               const showAdHere = i === 4;
+              // Inject interactive tool bridge at mid-point of article
+              const showBridgeHere = i === Math.max(3, Math.floor(paragraphs.length / 2));
 
               if (paragraph.startsWith("**") && paragraph.includes("\n")) {
                 const lines = paragraph.split("\n");
@@ -353,6 +356,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {showAdHere && (
                       <AdSenseUnit label="Advertisement" className="my-8" />
                     )}
+                    {showBridgeHere && (
+                      <BlogInteractiveBridge
+                        category={article.category}
+                        articleTitle={article.title}
+                      />
+                    )}
                   </div>
                 );
               }
@@ -370,6 +379,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </h2>
                     {showAdHere && (
                       <AdSenseUnit label="Advertisement" className="my-8" />
+                    )}
+                    {showBridgeHere && (
+                      <BlogInteractiveBridge
+                        category={article.category}
+                        articleTitle={article.title}
+                      />
                     )}
                   </div>
                 );
@@ -404,6 +419,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {showAdHere && (
                       <AdSenseUnit label="Advertisement" className="my-8" />
                     )}
+                    {showBridgeHere && (
+                      <BlogInteractiveBridge
+                        category={article.category}
+                        articleTitle={article.title}
+                      />
+                    )}
                   </div>
                 );
               }
@@ -415,6 +436,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </p>
                   {showAdHere && (
                     <AdSenseUnit label="Advertisement" className="my-8" />
+                  )}
+                  {showBridgeHere && (
+                    <BlogInteractiveBridge
+                      category={article.category}
+                      articleTitle={article.title}
+                    />
                   )}
                 </div>
               );

@@ -666,7 +666,7 @@ export function buildJobPostingSchema(job: ExternalJob, slug: string): JobPostin
         unitText: salary.unitText,
       },
     },
-    directApply: false,
+    directApply: job.source === "direct_ats" || !!job.applicationLink?.includes("greenhouse.io") || !!job.applicationLink?.includes("lever.co"),
     url: `https://decajob.com/jobs/${slug}`,
   };
 

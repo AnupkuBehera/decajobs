@@ -57,9 +57,16 @@ export async function fetchRemoteOKJobs(tags: string[]): Promise<ExternalJob[]> 
     return jobs.slice(0, 20).map((job) => ({
       id: `remoteok_${job.id}`,
       title: job.position || "Remote Position",
-      company: job.company || "Unknown",
-      description: (job.description || "").replace(/<[^>]*>/g, "").slice(0, 500),
-      location: "Remote",
+      description: (job.description || "")
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/p>/gi, "\n\n")
+        .replace(/<\/li>/gi, "\n")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 8000),
       applicationLink: job.url || `https://remoteok.com/l/${job.id}`,
       postedAt: job.date,
       source: "remoteok",

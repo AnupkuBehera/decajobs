@@ -119,11 +119,10 @@ export default function ResumeTemplatesPage() {
                                     View & Use Template →
                                 </Link>
                                 <Link
-                                    href={`/resume-tools?tab=builder&template=${tpl.slug}&role=${encodeURIComponent(tpl.title)}`}
-                                    rel="nofollow"
+                                    href="/tools/resume-matcher"
                                     className="block text-center rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
                                 >
-                                    ✨ Customize in AI Builder
+                                    ✨ Match with AI Tool
                                 </Link>
                             </div>
                         </div>

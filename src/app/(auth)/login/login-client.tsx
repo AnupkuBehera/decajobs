@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { signInWithMagicLink, signInWithPassword, type LoginState } from "./actions";
+import * as gtag from "@/lib/gtag";
 
 export default function LoginClient() {
   const [loginMode, setLoginMode] = useState<"magic-link" | "password">("magic-link");
@@ -33,6 +34,8 @@ export default function LoginClient() {
       setOauthLoading(false);
       window.location.href = "/login?error=oauth_failed";
     } else {
+      gtag.trackSignUp("google", "candidate");
+      gtag.trackLogin("google");
       window.location.href = "/dashboard";
     }
   };
@@ -59,6 +62,19 @@ export default function LoginClient() {
       initGoogle();
     }
   }, []);
+
+  useEffect(() => {
+    if (state?.success) {
+      gtag.trackSignUp("magic_link", "candidate");
+    }
+  }, [state?.success]);
+
+  useEffect(() => {
+    if (passwordState?.success) {
+      gtag.trackLogin("password");
+    }
+  }, [passwordState?.success]);
+
   const errorParam = searchParams.get("error");
 
   const errorMessages: Record<string, string> = {

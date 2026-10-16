@@ -50,9 +50,16 @@ export async function fetchRemotiveJobs(query: string): Promise<ExternalJob[]> {
     return (data.jobs || []).map((job) => ({
       id: `remotive_${job.id}`,
       title: job.title,
-      company: job.company_name,
-      description: job.description.replace(/<[^>]*>/g, "").slice(0, 500),
-      location: "Remote",
+      description: job.description
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/p>/gi, "\n\n")
+        .replace(/<\/li>/gi, "\n")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 8000),
       applicationLink: job.url,
       postedAt: job.publication_date,
       source: "remotive",

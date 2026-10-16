@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import * as gtag from "@/lib/gtag";
 import {
     jobSlug,
     formatPostedDate,
@@ -27,12 +30,19 @@ export function JobCard({ job }: JobCardProps) {
         applicationLink: job.applicationLink,
     });
 
+    const slug = jobSlug(job);
+
     return (
         <div className="group flex flex-col justify-between h-full rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:shadow-md hover:border-primary-300">
             <div>
                 <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                        <Link href={`/jobs/${jobSlug(job)}`}>
+                        <Link
+                            href={`/jobs/${slug}`}
+                            onClick={() => {
+                                gtag.trackSelectJob(slug, job.title, job.company);
+                            }}
+                        >
                             <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                                 {job.title}
                             </h3>
@@ -86,10 +96,9 @@ export function JobCard({ job }: JobCardProps) {
                     )}
                     <time>{formatPostedDate(job.postedAt)}</time>
                     <Link
-                        href={`/resume-tools?tab=builder&role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}`}
-                        rel="nofollow"
+                        href="/tools/resume-matcher"
                         className="rounded border border-primary-200 bg-primary-50/70 px-2 py-0.5 text-[11px] font-medium text-primary-700 hover:bg-primary-100 transition-colors"
-                        title="Generate ATS resume tailored to this role"
+                        title="Match & optimize resume for this role with AI"
                     >
                         Tailor Resume ✨
                     </Link>

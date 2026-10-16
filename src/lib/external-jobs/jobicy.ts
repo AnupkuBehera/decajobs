@@ -95,9 +95,19 @@ export async function fetchJobicyJobs(
     console.log(`[Jobicy] Retrieved ${items.length} jobs for query "${query}"`);
 
     return items.map((job) => {
-      // Strip HTML tags from description
-      const rawDesc = job.jobExcerpt || job.jobDescription || "";
-      let cleanDesc = rawDesc.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+      // Strip HTML tags from description while preserving readable spacing
+      const rawDesc = job.jobDescription || job.jobExcerpt || "";
+      const cleanDesc = rawDesc
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/p>/gi, "\n\n")
+        .replace(/<\/li>/gi, "\n")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/\s+/g, " ")
+        .trim();
 
       // Format salary if present
       let salarySnippet = "";
@@ -106,7 +116,7 @@ export async function fetchJobicyJobs(
         salarySnippet = ` [Salary: ${curr} ${job.annualSalaryMin.toLocaleString()} - ${job.annualSalaryMax.toLocaleString()}]`;
       }
 
-      const description = `${cleanDesc.slice(0, 450)}${salarySnippet}`;
+      const description = `${cleanDesc.slice(0, 8000)}${salarySnippet}`;
 
       return {
         id: `jobicy_${job.id}`,

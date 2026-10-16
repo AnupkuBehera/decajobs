@@ -40,7 +40,7 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
         notFound();
     }
 
-    const builderUrl = `/resume-tools?tab=builder&template=${template.slug}&role=${encodeURIComponent(template.title)}`;
+    const builderUrl = "/tools/resume-matcher";
 
     return (
         <div className="py-10 sm:py-16">
@@ -75,10 +75,9 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
                         <div className="w-full sm:w-auto">
                             <Link
                                 href={builderUrl}
-                                rel="nofollow"
                                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-colors min-h-[48px]"
                             >
-                                ✨ Customize with AI (Free) →
+                                ✨ Match with AI (Free) →
                             </Link>
                         </div>
                     </div>
@@ -173,7 +172,7 @@ export default async function RoleResumeTemplatePage({ params }: Props) {
                             href={builderUrl}
                             className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-2.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors"
                         >
-                            Load into AI Builder ✨
+                            Load into AI Matcher ✨
                         </Link>
                     </div>
                 </div>

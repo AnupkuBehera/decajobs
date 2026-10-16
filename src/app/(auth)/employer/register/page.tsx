@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import * as gtag from "@/lib/gtag";
 import {
   registerEmployer,
   resendVerificationEmail,
@@ -27,6 +28,13 @@ export default function EmployerRegisterPage() {
 
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
+
+  useEffect(() => {
+    if (state?.success) {
+      gtag.trackLead("employer", "employer_registration_page", { company: companyName });
+      gtag.trackSignUp("email", "employer");
+    }
+  }, [state?.success, companyName]);
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">

@@ -43,7 +43,8 @@ export function InstantAlertsBanner({ className = "" }: InstantAlertsBannerProps
           </a>
 
           <Link
-            href="/login?alert=whatsapp"
+            href="/#subscribe"
+            rel="nofollow"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] hover:bg-[#20b859] text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs"
           >
             <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">

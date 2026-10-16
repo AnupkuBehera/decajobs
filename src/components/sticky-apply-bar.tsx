@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import * as gtag from "@/lib/gtag";
 
@@ -21,7 +21,12 @@ export function StickyApplyBar({
 }: StickyApplyBarProps) {
   const [copied, setCopied] = useState(false);
 
+  useEffect(() => {
+    gtag.trackViewJob(slug, jobTitle, company);
+  }, [slug, jobTitle, company]);
+
   const handleApplyClick = () => {
+    gtag.trackFunnelEvent("funnel_job_clicked", { jobId: slug, role: jobTitle });
     gtag.event("job_apply_click", {
       event_category: "job_engagement",
       event_label: jobTitle,
@@ -58,9 +63,7 @@ export function StickyApplyBar({
     }
   };
 
-  const resumeUrl = `/resume-tools?tab=builder&role=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(company)}${
-    jobDescription ? `&desc=${encodeURIComponent(jobDescription.slice(0, 1000))}` : ""
-  }`;
+  const resumeUrl = "/tools/resume-matcher";
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white/95 p-3 sm:p-4 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-white/85">

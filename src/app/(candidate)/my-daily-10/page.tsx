@@ -352,7 +352,8 @@ export default function MyDaily10Page() {
                           Apply Now →
                         </a>
                         <Link
-                          href={`/tools/resume-matcher?role=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                          href="/tools/resume-matcher"
+                          rel="nofollow"
                           className="inline-flex items-center rounded-md border border-primary-300 bg-primary-50 px-3.5 py-2 text-xs sm:text-sm font-semibold text-primary-700 hover:bg-primary-100 min-h-[44px] gap-1"
                           title="Generate targeted ATS resume & cover letter tailored to this specific job"
                         >

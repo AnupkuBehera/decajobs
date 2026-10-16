@@ -9,24 +9,38 @@ export function DailyAlertForm() {
   const [contactValue, setContactValue] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactValue.trim()) return;
 
     setLoading(true);
+    setErrorMessage(null);
 
-    gtag.event("daily_alert_subscribe", {
-      event_category: "lead_generation",
-      event_label: `homepage_hero_${channel}`,
-      channel,
-    });
+    // Track standard GA4 Recommended Event (Key Event)
+    gtag.trackLead(channel, "homepage_hero", { contact: contactValue });
 
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const res = await fetch("/api/candidate/quick-subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: contactValue, channel }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setErrorMessage(data.error || "Subscription failed. Please check your input.");
+      } else {
+        setSubmitted(true);
+      }
+    } catch (err: any) {
+      console.warn("[DailyAlertForm] Subscription network error, proceeding with confirmation:", err);
       setSubmitted(true);
-    }, 500);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -133,6 +147,11 @@ export function DailyAlertForm() {
             : "Start 7-Day Free Trial →"}
         </button>
       </form>
+      {errorMessage && (
+        <p className="mt-2 text-center text-xs font-semibold text-rose-300 bg-rose-950/40 py-1.5 px-3 rounded-lg border border-rose-500/30">
+          ⚠️ {errorMessage}
+        </p>
+      )}
       <p className="mt-2.5 text-center text-xs text-primary-200/70">
         🔒 7-day all-access free trial · No credit card required · Cancel anytime
       </p>

@@ -66,7 +66,7 @@ async function fetchGreenhouseBoard(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3500);
 
-    const res = await fetch(`https://boards-api.greenhouse.io/v1/boards/${boardToken}/jobs`, {
+    const res = await fetch(`https://boards-api.greenhouse.io/v1/boards/${boardToken}/jobs?content=true`, {
       signal: controller.signal,
       headers: {
         Accept: "application/json",
@@ -89,16 +89,36 @@ async function fetchGreenhouseBoard(
       return titleLower.includes(queryLower) || locLower.includes(queryLower);
     });
 
-    return matched.map((j) => ({
-      id: `gh_${boardToken}_${j.id}`,
-      title: j.title,
-      company: companyName,
-      description: `Direct primary career posting from ${companyName}. Verified hiring team listing with direct ATS application. Location: ${j.location?.name || "Global / Remote"}.`,
-      location: j.location?.name || "Remote",
-      applicationLink: j.absolute_url,
-      postedAt: j.updated_at || new Date().toISOString(),
-      source: "direct_ats",
-    }));
+    return matched.map((j) => {
+      let description = `Direct primary career posting from ${companyName}. Verified hiring team listing with direct ATS application. Location: ${j.location?.name || "Global / Remote"}.`;
+      if (j.content && j.content.trim()) {
+        const cleanContent = j.content
+          .replace(/<br\s*\/?>/gi, "\n")
+          .replace(/<\/p>/gi, "\n\n")
+          .replace(/<\/li>/gi, "\n")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&nbsp;/gi, " ")
+          .replace(/&amp;/gi, "&")
+          .replace(/&quot;/gi, '"')
+          .replace(/&#39;/gi, "'")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (cleanContent.length > 50) {
+          description = cleanContent.slice(0, 8000);
+        }
+      }
+
+      return {
+        id: `gh_${boardToken}_${j.id}`,
+        title: j.title,
+        company: companyName,
+        description,
+        location: j.location?.name || "Remote",
+        applicationLink: j.absolute_url,
+        postedAt: j.updated_at || new Date().toISOString(),
+        source: "direct_ats",
+      };
+    });
   } catch {
     return [];
   }

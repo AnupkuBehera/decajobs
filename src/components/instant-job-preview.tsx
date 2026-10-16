@@ -72,23 +72,28 @@ export function InstantJobPreview({ jobs }: InstantJobPreviewProps) {
     return result.slice(0, 10);
   }, [jobs, selectedRole, selectedLocation]);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactValue.trim()) return;
 
     setIsSubmitting(true);
-    gtag.event("instant_preview_subscribe", {
-      event_category: "lead_generation",
-      event_label: `instant_preview_widget_${channel}`,
-      channel,
+    gtag.trackLead(channel, "instant_preview_widget", {
       role: selectedRole,
       location: selectedLocation,
     });
 
-    setTimeout(() => {
+    try {
+      await fetch("/api/candidate/quick-subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: contactValue, channel }),
+      });
+    } catch (err) {
+      console.warn("[InstantPreview] Quick subscribe network error:", err);
+    } finally {
       setIsSubmitting(false);
       setSubscribed(true);
-    }, 500);
+    }
   };
 
   return (

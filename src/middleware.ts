@@ -74,6 +74,23 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url), 301);
   }
 
+  // 3. Canonicalize parameterized /tools/* URLs (301 Permanent Redirect to clean canonical path)
+  if (pathname.startsWith("/tools/") && request.nextUrl.search) {
+    return NextResponse.redirect(new URL(pathname, request.url), 301);
+  }
+
+  // 4. Canonicalize non-auth parameter URLs on /login (e.g. alert=whatsapp)
+  if (pathname === "/login" && request.nextUrl.searchParams.has("alert")) {
+    return NextResponse.redirect(new URL("/login", request.url), 301);
+  }
+
+  // 5. Canonicalize parameterized /resume-tools URLs (301 Permanent Redirect to /tools/resume-matcher)
+  // Collapses all 41 GSC crawler parameter URLs (tab=builder, role=..., company=..., desc=...)
+  // into the canonical public AI tool, cleanly resolving the "Blocked by robots.txt" indexing issue.
+  if (pathname === "/resume-tools" && request.nextUrl.search) {
+    return NextResponse.redirect(new URL("/tools/resume-matcher", request.url), 301);
+  }
+
   // First, try to refresh the session (handles cookie updates)
   let response: NextResponse;
   try {
@@ -114,12 +131,19 @@ export async function middleware(request: NextRequest) {
   if (!user && matchesRoute(pathname, protectedRoutes)) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
-    return NextResponse.redirect(loginUrl);
+    const redirectRes = NextResponse.redirect(loginUrl);
+    redirectRes.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    return redirectRes;
   }
 
   // Redirect authenticated users away from login page to dashboard
   if (user && (cleanPathname(pathname) === "/login" || pathname === "/login")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // Attach X-Robots-Tag header to protected app routes so crawlers never index them
+  if (matchesRoute(pathname, protectedRoutes)) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   }
 
   // 3. Internationalization (i18n) Routing & Fallbacks

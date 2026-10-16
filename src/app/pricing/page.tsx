@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getHreflangAlternates } from "@/lib/i18n/utils";
+import { PricingCta } from "@/components/pricing/pricing-cta";
 
 export const metadata: Metadata = {
   title: "Pricing - DecaJobs | Free Trial & Pro Plans for AI Job Matching",
@@ -99,12 +100,15 @@ export default function PricingPage() {
               <span className="text-4xl font-bold text-neutral-900">₹0 / $0</span>
               <span className="text-neutral-500 ml-1">/7 days</span>
             </p>
-            <Link
+            <PricingCta
+              plan="free_trial"
               href="/login"
+              value={0}
+              currency="INR"
               className="mt-6 block w-full rounded-lg border-2 border-primary-600 px-4 py-3 text-center text-sm font-semibold text-primary-600 hover:bg-primary-50 transition-colors min-h-[48px] flex items-center justify-center"
             >
               Start Free Trial
-            </Link>
+            </PricingCta>
             <ul className="mt-8 space-y-3">
               {freeFeatures.map((feature, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
@@ -137,12 +141,15 @@ export default function PricingPage() {
                 🇮🇳 ₹299 (UPI/Razorpay) &bull; 🌍 $4.99 / £4.99 (Stripe/Apple Pay)
               </p>
             </div>
-            <Link
+            <PricingCta
+              plan="pro_monthly"
               href="/login"
+              value={299}
+              currency="INR"
               className="mt-6 block w-full rounded-lg bg-primary-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-primary-700 transition-colors min-h-[48px] flex items-center justify-center"
             >
               Start Free Trial →
-            </Link>
+            </PricingCta>
             <ul className="mt-8 space-y-3">
               {proFeatures.map((feature, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
@@ -165,12 +172,15 @@ export default function PricingPage() {
               <span className="text-4xl font-bold text-neutral-900">Free</span>
               <span className="text-neutral-500 ml-1">forever</span>
             </p>
-            <Link
+            <PricingCta
+              plan="employer"
               href="/employer/register"
+              value={0}
+              currency="INR"
               className="mt-6 block w-full rounded-lg border-2 border-neutral-300 px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:bg-white transition-colors min-h-[48px] flex items-center justify-center"
             >
               Register as Employer
-            </Link>
+            </PricingCta>
             <ul className="mt-8 space-y-3">
               <li className="flex items-start gap-2 text-sm text-neutral-700">
                 <span className="text-green-500 mt-0.5 shrink-0">✓</span>

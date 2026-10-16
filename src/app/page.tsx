@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DailyAlertForm } from "@/components/daily-alert-form";
+import { HeroJobSearch } from "@/components/hero-job-search";
 import { InstantJobPreview } from "@/components/instant-job-preview";
 import { SampleDigestMockup } from "@/components/sample-digest-mockup";
 import { getPublicJobs } from "@/lib/public-jobs";
@@ -98,6 +99,7 @@ export default async function Home() {
 
           <div className="mt-8">
             <DailyAlertForm />
+            <HeroJobSearch />
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-primary-200">

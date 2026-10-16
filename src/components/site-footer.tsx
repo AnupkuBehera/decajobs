@@ -28,7 +28,8 @@ export function SiteFooter() {
                 <span>✈️</span> Telegram
               </a>
               <Link
-                href="/login?alert=whatsapp"
+                href="/#subscribe"
+                rel="nofollow"
                 className="inline-flex items-center gap-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-2.5 py-1 text-xs transition-colors"
                 title="Get WhatsApp job alerts"
               >
