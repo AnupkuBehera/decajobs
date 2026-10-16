@@ -30,6 +30,7 @@ interface QuestionData {
   tip: string;
   questionNumber: number;
   totalQuestions: number;
+  isDemo?: boolean;
 }
 
 interface EvaluationData {
@@ -48,6 +49,7 @@ interface EvaluationData {
   overallFeedback: string;
   questionNumber: number;
   fillerCount?: number;
+  isDemo?: boolean;
 }
 
 interface CompletedItem {
@@ -514,6 +516,11 @@ export function AIInterviewerStudio() {
         </div>
 
         <div className="flex items-center gap-2">
+          {currentQuestion?.isDemo && (
+            <span className="hidden sm:inline-flex rounded-full bg-cyan-50 px-2.5 py-0.5 text-xs font-bold text-cyan-800 border border-cyan-200">
+              Free Demo
+            </span>
+          )}
           <span className="rounded-full bg-primary-50 px-3 py-1 text-xs font-bold text-primary-700 border border-primary-200">
             Question {currentQuestion?.questionNumber} of {currentQuestion?.totalQuestions}
           </span>
@@ -720,20 +727,57 @@ export function AIInterviewerStudio() {
               <p className="italic">&ldquo;{currentEvaluation.sampleAnswer}&rdquo;</p>
             </div>
 
-            {/* Next Question CTA */}
-            <div className="pt-2 flex justify-end">
-              <Button
-                onClick={handleNextQuestion}
-                disabled={isLoading}
-                className="rounded-xl bg-neutral-900 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-neutral-800"
-              >
-                {isLoading
-                  ? "Loading..."
-                  : currentQuestion?.questionNumber === currentQuestion?.totalQuestions
-                    ? "Generate Final Scorecard 🏆"
-                    : "Next Interview Question →"}
-              </Button>
-            </div>
+            {/* Next Question CTA or Demo Completion Banner */}
+            {currentEvaluation.isDemo ? (
+              <div className="mt-4 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-5 text-center space-y-3">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-bold text-indigo-800">
+                  <span>🎉</span> Question 1 Demo Completed!
+                </div>
+                <h4 className="text-sm sm:text-base font-bold text-neutral-900">
+                  Ready to finish your interview and get your Hire Readiness Scorecard?
+                </h4>
+                <p className="text-xs text-neutral-600 max-w-lg mx-auto">
+                  Unlock Questions 2-5 with AI adaptive follow-up probing, STAR depth analysis, and hiring lead recommendations. Free with your DecaJobs account.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+                  <Link
+                    href={`/login?redirect=${encodeURIComponent(
+                      `/mock-interview?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
+                        initialCompany
+                      )}&desc=${encodeURIComponent(initialDesc)}`
+                    )}`}
+                    className="rounded-xl bg-primary-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-primary-700 transition-colors"
+                  >
+                    Sign In Free to Continue (Q2-Q5) →
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentEvaluation(null);
+                      setAnswer("");
+                      setIsStarted(false);
+                    }}
+                    className="text-xs font-semibold text-neutral-600 hover:text-neutral-900 underline underline-offset-4"
+                  >
+                    Try another role or persona
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="pt-2 flex justify-end">
+                <Button
+                  onClick={handleNextQuestion}
+                  disabled={isLoading}
+                  className="rounded-xl bg-neutral-900 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-neutral-800"
+                >
+                  {isLoading
+                    ? "Loading..."
+                    : currentQuestion?.questionNumber === currentQuestion?.totalQuestions
+                      ? "Generate Final Scorecard 🏆"
+                      : "Next Interview Question →"}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -133,6 +133,12 @@ export async function SiteHeader() {
                   Resume AI
                 </Link>
                 <Link
+                  href="/mock-interview"
+                  className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
+                >
+                  Mock Interview 🎙️
+                </Link>
+                <Link
                   href="/career-coach"
                   className="hidden xl:inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
                 >
@@ -159,6 +165,12 @@ export async function SiteHeader() {
                 className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
               >
                 Jobs
+              </Link>
+              <Link
+                href="/mock-interview"
+                className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
+              >
+                Mock Interview 🎙️
               </Link>
               <Link
                 href="/tools"

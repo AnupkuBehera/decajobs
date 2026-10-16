@@ -130,6 +130,12 @@ export function MobileNav({
                       Resume AI
                     </Link>
                     <Link
+                      href="/mock-interview"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-indigo-700 bg-indigo-50/60 hover:bg-indigo-100"
+                    >
+                      Mock Interview 🎙️
+                    </Link>
+                    <Link
                       href="/career-coach"
                       className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                     >
@@ -169,6 +175,13 @@ export function MobileNav({
                   >
                     <span>Browse All Jobs</span>
                     <span className="text-xs bg-primary-50 text-primary-700 font-semibold px-2 py-0.5 rounded-full">Active</span>
+                  </Link>
+                  <Link
+                    href="/mock-interview"
+                    className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold text-indigo-700 bg-indigo-50/60 hover:bg-indigo-100"
+                  >
+                    <span>AI Mock Interview</span>
+                    <span className="text-xs bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded-full">🎙️ Free Demo</span>
                   </Link>
                   <Link
                     href="/tools"

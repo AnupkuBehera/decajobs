@@ -15,17 +15,36 @@ import { getPersonaById } from "@/lib/interview/personas";
 export async function POST(request: Request) {
   const authClient = await createClient();
   const { data: { user } } = await authClient.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const sub = await checkSubscription(authClient, user.id);
-  if (!sub.hasAccess) {
-    return NextResponse.json({
-      error: "trial_expired",
-      message: sub.message,
-    }, { status: 403 });
-  }
 
   const { action, ...params } = await request.json();
+
+  // Public Free Demo: Allow any visitor (even unauthenticated) to take Question 1 for free!
+  const isQuestion1 = !params.questionNumber || params.questionNumber === 1;
+  const isDemo = !user;
+
+  if (isDemo) {
+    if (action !== "start" && (action !== "evaluate" || !isQuestion1)) {
+      return NextResponse.json(
+        {
+          error: "auth_required",
+          message: "Sign in with Google or Email to unlock Questions 2-5 and your complete Hire Scorecard.",
+          isDemo: true,
+        },
+        { status: 401 }
+      );
+    }
+  } else {
+    const sub = await checkSubscription(authClient, user.id);
+    if (!sub.hasAccess) {
+      return NextResponse.json(
+        {
+          error: "trial_expired",
+          message: sub.message,
+        },
+        { status: 403 }
+      );
+    }
+  }
 
   try {
     const persona = getPersonaById(params.personaId || "tech-lead");
@@ -35,12 +54,16 @@ export async function POST(request: Request) {
         const { jobTitle, jobDescription, interviewType } = params;
         if (!jobTitle) return NextResponse.json({ error: "Job title required" }, { status: 400 });
 
-        // Fetch profile for context
-        const { data: profile } = await authClient
-          .from("candidate_profiles")
-          .select("target_titles, skills, location")
-          .eq("candidate_id", user.id)
-          .maybeSingle();
+        // Fetch profile for context if authenticated
+        let profile = null;
+        if (user) {
+          const { data } = await authClient
+            .from("candidate_profiles")
+            .select("target_titles, skills, location")
+            .eq("candidate_id", user.id)
+            .maybeSingle();
+          profile = data;
+        }
 
         const type = interviewType || "mixed";
         const prompt = `You are ${persona.name}, a ${persona.role} at a ${persona.companyArchetype}.
@@ -71,7 +94,9 @@ Respond in this exact JSON format (no markdown, no code blocks):
 
         const result = await callGemini(prompt);
         const cleaned = result.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-        return NextResponse.json(JSON.parse(cleaned));
+        const startData = JSON.parse(cleaned);
+        startData.isDemo = isDemo;
+        return NextResponse.json(startData);
       }
 
       case "evaluate": {
@@ -118,6 +143,7 @@ Respond in this exact JSON format (no markdown, no code blocks):
         const evaluation = JSON.parse(cleaned);
         evaluation.questionNumber = questionNumber || 1;
         evaluation.fillerCount = fillerCount;
+        evaluation.isDemo = isDemo;
         return NextResponse.json(evaluation);
       }
 

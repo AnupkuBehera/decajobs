@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const tools = [
   {
-    href: "/mock-interview",
+    href: "/tools/mock-interview",
     title: "AI Voice Mock Interviewer",
     description:
       "Practice realistic spoken technical & behavioral interviews with AI personas. Live voice speech-to-text, audio questions, adaptive probing, and STAR method scorecards.",
