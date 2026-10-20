@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(request: NextRequest) {
+export async function updateSessionAndGetUser(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -15,7 +15,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options: _options }) =>
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
@@ -29,9 +29,17 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refreshing the auth token is critical for Server Components.
-  // This call ensures the session is refreshed before any page renders.
-  await supabase.auth.getUser();
+  // Refresh token and retrieve authenticated user in a single network roundtrip
+  const { data } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  return {
+    response: supabaseResponse,
+    user: data?.user ?? null,
+  };
 }
+
+export async function updateSession(request: NextRequest) {
+  const { response } = await updateSessionAndGetUser(request);
+  return response;
+}
+

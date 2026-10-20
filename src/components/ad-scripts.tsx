@@ -1,35 +1,44 @@
+"use client";
+
 import Script from "next/script";
-import { createClient } from "@/lib/supabase/server";
-import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { AdSenseUnit } from "@/components/adsense-unit";
 
 /**
  * Renders ad scripts only for non-Pro users.
  * Pro subscribers get an ad-free experience.
  */
-export async function AdScripts() {
-  let isPro = false;
+export function AdScripts() {
+  const [isPro, setIsPro] = useState(false);
 
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.auth.getUser();
-
-    if (data?.user) {
-      const serviceClient = createServiceClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
-      const { data: candidate } = await serviceClient
-        .from("candidates")
-        .select("subscription_status")
-        .eq("id", data.user.id)
-        .maybeSingle();
-
-      isPro = candidate?.subscription_status === "active";
+  useEffect(() => {
+    try {
+      const cachedPro = sessionStorage.getItem("decajobs_is_pro");
+      if (cachedPro === "true") {
+        setIsPro(true);
+        return;
+      }
+      const supabase = createClient();
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          supabase
+            .from("candidates")
+            .select("subscription_status")
+            .eq("id", session.user.id)
+            .maybeSingle()
+            .then(({ data }) => {
+              const pro = data?.subscription_status === "active";
+              setIsPro(pro);
+              sessionStorage.setItem("decajobs_is_pro", String(pro));
+            })
+            .catch(() => {});
+        }
+      });
+    } catch {
+      // Safe fallback: show ads
     }
-  } catch {
-    // If check fails, show ads (safe default)
-  }
+  }, []);
 
   if (isPro) return null;
 
@@ -48,29 +57,36 @@ export async function AdScripts() {
 /**
  * Renders the banner ad container only for non-Pro users.
  */
-export async function AdBanner() {
-  let isPro = false;
+export function AdBanner() {
+  const [isPro, setIsPro] = useState(false);
 
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.auth.getUser();
-
-    if (data?.user) {
-      const serviceClient = createServiceClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
-      const { data: candidate } = await serviceClient
-        .from("candidates")
-        .select("subscription_status")
-        .eq("id", data.user.id)
-        .maybeSingle();
-
-      isPro = candidate?.subscription_status === "active";
+  useEffect(() => {
+    try {
+      const cachedPro = sessionStorage.getItem("decajobs_is_pro");
+      if (cachedPro === "true") {
+        setIsPro(true);
+        return;
+      }
+      const supabase = createClient();
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          supabase
+            .from("candidates")
+            .select("subscription_status")
+            .eq("id", session.user.id)
+            .maybeSingle()
+            .then(({ data }) => {
+              const pro = data?.subscription_status === "active";
+              setIsPro(pro);
+              sessionStorage.setItem("decajobs_is_pro", String(pro));
+            })
+            .catch(() => {});
+        }
+      });
+    } catch {
+      // Safe fallback
     }
-  } catch {
-    // Show ads by default
-  }
+  }, []);
 
   if (isPro) return null;
 
@@ -80,3 +96,4 @@ export async function AdBanner() {
     </div>
   );
 }
+

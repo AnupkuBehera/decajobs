@@ -10,6 +10,8 @@ import {
 import { BLOG_ARTICLES } from "@/lib/blog-data";
 import { getAllNews } from "@/lib/news/daily-news";
 
+export const revalidate = 86400;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
   let jobs: ExternalJob[] = [];

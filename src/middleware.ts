@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { updateSession } from "@/lib/supabase/middleware";
+import { updateSessionAndGetUser } from "@/lib/supabase/middleware";
 import { cleanPathname } from "@/lib/i18n/utils";
 import { isValidLocale } from "@/lib/i18n/config";
+
 
 /**
  * Subpaths under /[lang]/ that have dedicated localized page implementations.
@@ -91,44 +91,33 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/tools/resume-matcher", request.url), 301);
   }
 
-  // First, try to refresh the session (handles cookie updates)
-  let response: NextResponse;
-  try {
-    response = await updateSession(request);
-  } catch {
-    // If session refresh fails (e.g., invalid Supabase credentials), continue without auth
-    response = NextResponse.next({ request });
-  }
+  const isProtected = matchesRoute(pathname, protectedRoutes);
+  const isLoginPage = cleanPathname(pathname) === "/login" || pathname === "/login";
+  const hasAuthCookie = request.cookies.getAll().some(
+    (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
+  );
 
-  // After session refresh, check authentication status
+  let response: NextResponse = NextResponse.next({ request });
   let user = null;
-  try {
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
-            );
-          },
-        },
-      }
-    );
 
-    const { data } = await supabase.auth.getUser();
-    user = data?.user ?? null;
-  } catch {
-    // If auth check fails, treat as unauthenticated
-    user = null;
+  // Only perform remote Supabase Auth network calls when necessary:
+  // 1. User is accessing a protected route (must verify auth)
+  // 2. User is on /login (redirect if already logged in)
+  // 3. User has an active Supabase auth cookie that needs token refresh
+  // Anonymous visitors and bots browsing public routes bypass all remote network roundtrips!
+  if (isProtected || isLoginPage || hasAuthCookie) {
+    try {
+      const result = await updateSessionAndGetUser(request);
+      response = result.response;
+      user = result.user;
+    } catch {
+      response = NextResponse.next({ request });
+      user = null;
+    }
   }
 
   // Redirect unauthenticated users away from protected routes
-  if (!user && matchesRoute(pathname, protectedRoutes)) {
+  if (!user && isProtected) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
     const redirectRes = NextResponse.redirect(loginUrl);
@@ -137,12 +126,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect authenticated users away from login page to dashboard
-  if (user && (cleanPathname(pathname) === "/login" || pathname === "/login")) {
+  if (user && isLoginPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   // Attach X-Robots-Tag header to protected app routes so crawlers never index them
-  if (matchesRoute(pathname, protectedRoutes)) {
+  if (isProtected) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   }
 

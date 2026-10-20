@@ -29,6 +29,7 @@ export async function fetchRemoteOKJobs(tags: string[]): Promise<ExternalJob[]> 
       headers: {
         "User-Agent": "DecaJobs/1.0",
       },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

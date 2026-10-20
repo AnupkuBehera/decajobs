@@ -68,6 +68,7 @@ export async function fetchJobicyJobs(
         Accept: "application/json",
         "User-Agent": "DecaJobs-Aggregator/2.4 (https://decajob.com)",
       },
+      next: { revalidate: 3600 },
     });
 
     clearTimeout(timeoutId);

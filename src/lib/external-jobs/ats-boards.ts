@@ -96,6 +96,7 @@ async function fetchLeverBoard(
         Accept: "application/json",
         "User-Agent": "DecaJobs-DirectATS/2.5 (https://decajob.com)",
       },
+      next: { revalidate: 3600 },
     });
 
     clearTimeout(timeoutId);
@@ -151,6 +152,7 @@ async function fetchGreenhouseBoard(
         Accept: "application/json",
         "User-Agent": "DecaJobs-DirectATS/2.5 (https://decajob.com)",
       },
+      next: { revalidate: 3600 },
     });
 
     clearTimeout(timeoutId);

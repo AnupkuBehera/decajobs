@@ -22,9 +22,9 @@ interface RemotiveResponse {
 
 export async function fetchRemotiveJobs(query: string): Promise<ExternalJob[]> {
   try {
-    const params = new URLSearchParams({ search: query, limit: "20" });
     const response = await fetch(
-      `https://remotive.com/api/remote-jobs?${params}`
+      `https://remotive.com/api/remote-jobs?${params}`,
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {

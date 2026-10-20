@@ -1,64 +1,80 @@
-import { createClient } from "@/lib/supabase/server";
-import { createClient as createServiceClient } from "@supabase/supabase-js";
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { checkSubscription } from "@/lib/subscription/check";
+import { createClient } from "@/lib/supabase/client";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { CountrySelector } from "@/components/country-selector";
 import { MobileNav } from "@/components/mobile-nav";
 
-export async function SiteHeader() {
-  let user = null;
-  let isPro = false;
-  let isEmployer = false;
-  let isAdmin = false;
+export function SiteHeader() {
+  const [user, setUser] = useState<any>(null);
+  const [isPro, setIsPro] = useState(false);
+  const [isEmployer, setIsEmployer] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  try {
-    await cookies();
-    const supabase = await createClient();
-    const { data } = await supabase.auth.getUser();
-    user = data?.user ?? null;
+  useEffect(() => {
+    try {
+      const supabase = createClient();
 
-    if (user) {
-      // Check if user is admin
-      const adminEmails = (process.env.ADMIN_EMAILS || "")
-        .split(",")
-        .map((email) => email.trim().toLowerCase())
-        .filter(Boolean);
+      const syncUserState = async (sessionUser: any) => {
+        if (!sessionUser) {
+          setUser(null);
+          setIsPro(false);
+          setIsEmployer(false);
+          setIsAdmin(false);
+          return;
+        }
 
-      if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
-      if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
+        setUser(sessionUser);
 
-      if (user.email && adminEmails.includes(user.email.toLowerCase())) {
-        isAdmin = true;
-      }
+        const email = sessionUser.email?.toLowerCase() || "";
+        const adminEmails = ["anup4503@gmail.com", "anupkist@gmail.com"];
+        const admin = adminEmails.includes(email);
+        setIsAdmin(admin);
 
-      // Use service role to reliably read subscription_status (bypasses RLS issues)
-      const serviceClient = createServiceClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
-
-      // Check if user is a verified employer
-      if (user.email) {
-        const { data: employer } = await serviceClient
+        // Check employer status
+        const { data: employer } = await supabase
           .from("employers")
           .select("is_verified")
-          .eq("email", user.email)
+          .eq("email", email)
           .maybeSingle();
 
-        isEmployer = employer?.is_verified ?? false;
-      }
+        const employerVerified = employer?.is_verified ?? false;
+        setIsEmployer(employerVerified);
 
-      // If not an employer, check candidate subscription
-      if (!isEmployer) {
-        const sub = await checkSubscription(serviceClient, user.id);
-        isPro = sub.hasAccess;
-      }
+        // If not employer, check candidate subscription
+        if (!employerVerified) {
+          const { data: candidate } = await supabase
+            .from("candidates")
+            .select("subscription_status")
+            .eq("id", sessionUser.id)
+            .maybeSingle();
+
+          setIsPro(candidate?.subscription_status === "active");
+        }
+      };
+
+      // Initial check from active session
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        syncUserState(session?.user ?? null);
+      });
+
+      // Listen for auth changes (login / logout)
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        syncUserState(session?.user ?? null);
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch {
+      // Safe fallback
     }
-  } catch {
-    user = null;
-  }
+  }, []);
+
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/85">

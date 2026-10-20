@@ -26,6 +26,7 @@ export async function fetchWeWorkRemotelyJobs(query?: string): Promise<ExternalJ
             Accept: "application/rss+xml, application/xml, text/xml",
             "User-Agent": "DecaJobs-Aggregator/2.5 (https://decajob.com)",
           },
+          next: { revalidate: 3600 },
         });
 
         clearTimeout(timeoutId);

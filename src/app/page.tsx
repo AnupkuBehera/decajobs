@@ -9,6 +9,8 @@ import { getHreflangAlternates } from "@/lib/i18n/utils";
 import { getLatestNews } from "@/lib/news/daily-news";
 import { getLatestDailyUpdate, getDeepDiveGuides } from "@/lib/blog-data";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "DecaJobs — 10 Jobs. Every Morning. That's It. | AI Job Portal",
   description:

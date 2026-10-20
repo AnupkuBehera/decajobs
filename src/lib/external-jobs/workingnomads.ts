@@ -31,6 +31,7 @@ export async function fetchWorkingNomadsJobs(query?: string): Promise<ExternalJo
         Accept: "application/json",
         "User-Agent": "DecaJobs-Aggregator/2.5 (https://decajob.com)",
       },
+      next: { revalidate: 3600 },
     });
 
     clearTimeout(timeoutId);

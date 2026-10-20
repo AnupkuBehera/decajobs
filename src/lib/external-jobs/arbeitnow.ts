@@ -24,9 +24,9 @@ interface ArbeitnowResponse {
 
 export async function fetchArbeitnowJobs(query: string): Promise<ExternalJob[]> {
   try {
-    const params = new URLSearchParams({ search: query, page: "1" });
     const response = await fetch(
-      `https://www.arbeitnow.com/api/job-board-api?${params}`
+      `https://www.arbeitnow.com/api/job-board-api?${params}`,
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {
