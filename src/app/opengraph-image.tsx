@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const revalidate = 86400;
 export const alt = "DecaJobs - 10 Perfect Jobs Every Morning";
 export const size = { width: 1200, height: 630 };
