@@ -10,5 +10,15 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "workers_dev": true
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "decajob.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.decajob.com",
+      "custom_domain": true
+    }
+  ]
 }
