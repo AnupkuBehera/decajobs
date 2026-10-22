@@ -366,7 +366,8 @@ export default function MyDaily10Page() {
                           🎤 Prep
                         </a>
                         <a
-                          href={`/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                          href={`/tools/mock-interview?title=${encodeURIComponent(job.title)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                          rel="nofollow"
                           className="inline-flex items-center rounded-md border border-neutral-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-neutral-700 hover:bg-neutral-50 hover:border-primary-200 min-h-[44px]"
                         >
                           🤖 Mock

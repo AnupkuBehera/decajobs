@@ -24,6 +24,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "(?<subdomain>.*)\\.workers\\.dev",
+          },
+        ],
+        destination: "https://decajob.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/en",
         destination: "/",
         permanent: true,
@@ -43,10 +54,30 @@ const nextConfig: NextConfig = {
         destination: "/resume-templates",
         permanent: true,
       },
+      {
+        source: "/mock-interview",
+        destination: "/tools/mock-interview",
+        permanent: true,
+      },
     ];
   },
   async headers() {
     return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "(?<subdomain>.*)\\.workers\\.dev",
+          },
+        ],
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
       {
         source: "/ads.txt",
         headers: [
@@ -79,6 +110,32 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
+          },
+          {
+            key: "Cloudflare-CDN-Cache-Control",
+            value: "max-age=3600",
+          },
+        ],
+      },
+      {
+        source: "/:path(jobs|jobs/.*|tools|tools/.*|resume-templates|resume-templates/.*|pricing|about|how-it-works|faq|contact|privacy|terms|disclaimer|request-removal|accessibility|blog|blog/.*|news|news/.*|uk|ae|hi|es|ja|fr|de|pt|ko|it)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
+          },
+          {
+            key: "Cloudflare-CDN-Cache-Control",
+            value: "max-age=3600",
           },
         ],
       },

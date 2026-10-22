@@ -6,12 +6,12 @@ import Link from "next/link";
 import * as gtag from "@/lib/gtag";
 
 const QUICK_FILTERS = [
-  { label: "🌍 Remote Jobs", href: "/jobs?remote=true" },
-  { label: "🎓 Fresher / SDE-1", href: "/jobs?exp=fresher" },
-  { label: "💻 React & Frontend", href: "/jobs?q=React" },
-  { label: "🤖 Data & AI", href: "/jobs?cat=data" },
-  { label: "☁️ DevOps & Cloud", href: "/jobs?cat=devops" },
-  { label: "🏙️ Bangalore Hub", href: "/jobs?q=Bangalore" },
+  { label: "🌍 Remote Jobs", href: "/jobs/remote" },
+  { label: "🎓 Fresher Jobs", href: "/jobs/fresher" },
+  { label: "💻 Software & React", href: "/jobs/category/software-engineering" },
+  { label: "🤖 Data & AI", href: "/jobs/category/data-analytics" },
+  { label: "☁️ DevOps & Cloud", href: "/jobs/category/devops-cloud" },
+  { label: "🏙️ Bangalore Hub", href: "/jobs/location/bangalore" },
 ];
 
 export function HeroJobSearch() {

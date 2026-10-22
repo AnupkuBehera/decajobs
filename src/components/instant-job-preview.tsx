@@ -234,7 +234,8 @@ export function InstantJobPreview({ jobs }: InstantJobPreviewProps) {
               {/* Action buttons */}
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0 w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-neutral-200">
                 <Link
-                  href={`/mock-interview?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                  href={`/tools/mock-interview?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                  rel="nofollow"
                   className="rounded-xl border border-indigo-200 bg-indigo-50/80 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors min-h-[40px] flex items-center justify-center gap-1"
                   title="Practice realistic mock interview with AI for this role"
                 >

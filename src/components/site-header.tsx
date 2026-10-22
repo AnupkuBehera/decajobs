@@ -149,7 +149,7 @@ export function SiteHeader() {
                   Resume AI
                 </Link>
                 <Link
-                  href="/mock-interview"
+                  href="/tools/mock-interview"
                   className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
                 >
                   Mock Interview 🎙️
@@ -183,7 +183,7 @@ export function SiteHeader() {
                 Jobs
               </Link>
               <Link
-                href="/mock-interview"
+                href="/tools/mock-interview"
                 className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
               >
                 Mock Interview 🎙️

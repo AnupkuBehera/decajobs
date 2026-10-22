@@ -234,7 +234,7 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
                 follow: true,
             },
             alternates: {
-                canonical: "https://decajob.com/jobs",
+                canonical: `https://decajob.com/jobs/${slug}`,
             },
         };
     }
@@ -455,7 +455,8 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                                 ✨ Tailor Resume for this Job (AI)
                             </Link>
                             <Link
-                                href={`/mock-interview?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                                href={`/tools/mock-interview?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(job.description.slice(0, 1500))}`}
+                                rel="nofollow"
                                 className="inline-flex items-center justify-center rounded-lg border border-indigo-200 bg-indigo-50/80 px-6 py-3 text-sm font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors min-h-[48px]"
                             >
                                 🎙️ Practice Mock Interview (AI)

@@ -61,6 +61,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301);
   }
 
+  // 1b. Redirect *.workers.dev staging/edge domain -> decajob.com (301 Permanent Redirect)
+  // and attach X-Robots-Tag: noindex, nofollow, noarchive to force search engines to de-index the worker domain to 0.
+  // Bypass redirect if ?preview=true is specified (useful during DNS propagation or debugging).
+  if (host.includes("workers.dev")) {
+    if (request.nextUrl.searchParams.get("preview") !== "true") {
+      const redirectUrl = new URL(
+        pathname + request.nextUrl.search,
+        "https://decajob.com"
+      );
+      const redirectRes = NextResponse.redirect(redirectUrl, 301);
+      redirectRes.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+      return redirectRes;
+    }
+  }
+
   // 2. Redirect crawler artifact URLs and malformed symbol paths (301 Permanent Redirect)
   if (pathname === "/month") {
     return NextResponse.redirect(new URL("/pricing", request.url), 301);

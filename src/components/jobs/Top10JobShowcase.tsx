@@ -242,11 +242,12 @@ export function Top10JobShowcase({
 
                 <div className="flex items-center gap-1.5">
                   <Link
-                    href={`/mock-interview?title=${encodeURIComponent(
+                    href={`/tools/mock-interview?title=${encodeURIComponent(
                       job.title
                     )}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(
                       job.description.slice(0, 300)
                     )}`}
+                    rel="nofollow"
                     className="rounded-lg border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors"
                     title="Practice realistic mock interview for this role with AI"
                   >
@@ -254,11 +255,8 @@ export function Top10JobShowcase({
                   </Link>
 
                   <Link
-                    href={`/tools/resume-matcher?role=${encodeURIComponent(
-                      job.title
-                    )}&company=${encodeURIComponent(job.company)}&desc=${encodeURIComponent(
-                      job.description.slice(0, 200)
-                    )}`}
+                    href="/tools/resume-matcher"
+                    rel="nofollow"
                     className="rounded-lg border border-primary-200 bg-primary-50 px-2 py-1 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors"
                     title="Tailor your resume for this role with AI"
                   >
