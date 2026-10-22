@@ -14,7 +14,9 @@ function getSupabase() {
 async function verifySignature(body: string, signature: string): Promise<boolean> {
   try {
     const { createHmac } = await import("crypto");
-    const secret = process.env.RAZORPAY_KEY_SECRET!;
+    const secret =
+      process.env.RAZORPAY_WEBHOOK_SECRET || process.env.RAZORPAY_KEY_SECRET;
+    if (!secret || !signature) return false;
     const expected = createHmac("sha256", secret).update(body).digest("hex");
     return signature === expected;
   } catch {

@@ -136,7 +136,9 @@ export default function SubscribePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMsg(data.error || "Failed to create subscription");
+        setErrorMsg(
+          data.message || data.details || data.error || "Failed to create subscription"
+        );
         setIsLoading(false);
         return;
       }
@@ -154,22 +156,31 @@ export default function SubscribePage() {
         name: "DecaJobs",
         description: `DecaJobs Pro - ${data.displayPrice || "₹299/month"}`,
         theme: { color: "#2563eb" },
-        handler: async function () {
-          // Immediately activate Pro status (fallback for webhook delay)
+        handler: async function (paymentResponse: {
+          razorpay_payment_id: string;
+          razorpay_subscription_id: string;
+          razorpay_signature: string;
+        }) {
+          // Immediately activate Pro status (fast-path verification)
           try {
             await fetch("/api/subscription/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ subscriptionId: data.subscriptionId }),
+              body: JSON.stringify({
+                paymentId: paymentResponse.razorpay_payment_id,
+                subscriptionId:
+                  paymentResponse.razorpay_subscription_id || data.subscriptionId,
+                signature: paymentResponse.razorpay_signature,
+              }),
             });
           } catch {
-            // Webhook will eventually handle it even if this fails
+            // Webhook will also handle it even if client fetch fails
           }
           setStatus("success");
           // Redirect to dashboard after success
           setTimeout(() => {
             window.location.href = "/dashboard";
-          }, 2000);
+          }, 1500);
         },
         modal: {
           ondismiss: function () {
@@ -181,7 +192,7 @@ export default function SubscribePage() {
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch {
-      setErrorMsg("Something went wrong. Please try again.");
+      setErrorMsg("Something went wrong. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }

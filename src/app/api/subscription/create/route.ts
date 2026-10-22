@@ -6,16 +6,17 @@ import {
 } from "@/lib/subscription/payment-router";
 
 export async function POST(request: NextRequest) {
-  const authClient = await createClient();
-  const {
-    data: { user },
-  } = await authClient.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
+    const authClient = await createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await authClient.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     let countryCode: string | undefined;
     try {
       const body = await request.json();
@@ -64,15 +65,17 @@ export async function POST(request: NextRequest) {
     const planId = process.env.RAZORPAY_PLAN_ID;
 
     if (!keyId || !keySecret || !planId) {
-      // Mock / Dev response if credentials not set
-      console.warn("[Razorpay] Keys not configured in environment. Returning mock subscription.");
-      return NextResponse.json({
-        provider: "razorpay",
-        subscriptionId: `sub_mock_${Date.now()}`,
-        razorpayKeyId: keyId || "rzp_test_mock",
-        currency: config.currency,
-        displayPrice: config.displayPrice,
-      });
+      console.warn(
+        `[Razorpay] Missing credentials: keyId=${!!keyId}, keySecret=${!!keySecret}, planId=${!!planId}`
+      );
+      return NextResponse.json(
+        {
+          error: "Razorpay Not Configured",
+          message:
+            "Razorpay live keys (RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET) or Plan ID (RAZORPAY_PLAN_ID) have not been provisioned in the environment.",
+        },
+        { status: 503 }
+      );
     }
 
     const response = await fetch("https://api.razorpay.com/v1/subscriptions", {
@@ -83,20 +86,27 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         plan_id: planId,
-        total_count: 12, // 12 months max
+        total_count: 60, // 60 monthly cycles (5 years)
         quantity: 1,
+        customer_notify: 1, // Razorpay notifies candidate via SMS/Email
         notes: {
           user_id: user.id,
-          email: user.email,
+          email: user.email || "",
           country: config.countryCode,
         },
       }),
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      console.error("[Razorpay] Subscription creation failed:", error);
-      return NextResponse.json({ error: "Failed to create subscription" }, { status: 500 });
+      const errorData = await response.json().catch(() => ({}));
+      console.error("[Razorpay] Subscription creation failed:", errorData);
+      return NextResponse.json(
+        {
+          error: "Razorpay Subscription Creation Failed",
+          details: errorData?.error?.description || "Unable to create subscription with Razorpay.",
+        },
+        { status: response.status || 500 }
+      );
     }
 
     const subscription = await response.json();
