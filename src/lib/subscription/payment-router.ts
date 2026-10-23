@@ -31,7 +31,7 @@ export const PAYMENT_CONFIGS: Record<string, PaymentConfig> = {
     trialDays: 7,
   },
   ae: {
-    provider: "stripe",
+    provider: "razorpay",
     countryCode: "ae",
     currency: "AED",
     currencySymbol: "AED ",
@@ -41,7 +41,7 @@ export const PAYMENT_CONFIGS: Record<string, PaymentConfig> = {
     trialDays: 7,
   },
   gb: {
-    provider: "stripe",
+    provider: "razorpay",
     countryCode: "gb",
     currency: "GBP",
     currencySymbol: "£",
@@ -51,7 +51,7 @@ export const PAYMENT_CONFIGS: Record<string, PaymentConfig> = {
     trialDays: 7,
   },
   global: {
-    provider: "stripe",
+    provider: "razorpay",
     countryCode: "global",
     currency: "USD",
     currencySymbol: "$",

@@ -39,8 +39,8 @@ const MARKETS: MarketOption[] = [
     flag: "🌍",
     currency: "USD",
     price: "$4.99",
-    provider: "stripe",
-    methodsText: "Apple Pay, Google Pay, International Visa, Mastercard & Amex",
+    provider: "razorpay",
+    methodsText: "International Visa, Mastercard & American Express",
   },
   {
     code: "gb",
@@ -48,8 +48,8 @@ const MARKETS: MarketOption[] = [
     flag: "🇬🇧",
     currency: "GBP",
     price: "£4.99",
-    provider: "stripe",
-    methodsText: "Apple Pay, Google Pay & UK Debit/Credit Cards",
+    provider: "razorpay",
+    methodsText: "International Visa, Mastercard & UK Cards",
   },
   {
     code: "ae",
@@ -57,8 +57,8 @@ const MARKETS: MarketOption[] = [
     flag: "🇦🇪",
     currency: "AED",
     price: "19 AED",
-    provider: "stripe",
-    methodsText: "Apple Pay, Google Pay & Gulf Credit/Debit Cards",
+    provider: "razorpay",
+    methodsText: "International Visa, Mastercard & Gulf Cards",
   },
 ];
 

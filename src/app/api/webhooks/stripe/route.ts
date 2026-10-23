@@ -94,28 +94,23 @@ export async function POST(request: Request) {
 
         const customerEmail = dataObject.customer_details?.email || dataObject.customer_email;
         const subscriptionId = dataObject.subscription;
+        const customerId = dataObject.customer;
 
         console.log(`[Stripe Webhook] Checkout completed for user: ${userId || customerEmail}`);
 
+        const updateData: Record<string, unknown> = {
+          subscription_status: "active",
+          subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        if (subscriptionId) updateData.stripe_subscription_id = String(subscriptionId);
+        if (customerId) updateData.stripe_customer_id = String(customerId);
+
         if (userId) {
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "active",
-              subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("id", userId);
+          await supabase.from("candidates").update(updateData).eq("id", userId);
         } else if (customerEmail) {
           // Fallback to match by email
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "active",
-              subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("email", customerEmail);
+          await supabase.from("candidates").update(updateData).eq("email", customerEmail);
         }
         break;
       }
@@ -124,27 +119,23 @@ export async function POST(request: Request) {
       case "invoice.paid": {
         const customerEmail = dataObject.customer_email;
         const userId = dataObject.lines?.data?.[0]?.metadata?.user_id;
+        const subscriptionId = dataObject.subscription;
+        const customerId = dataObject.customer;
 
         console.log(`[Stripe Webhook] Invoice paid for user: ${userId || customerEmail}`);
 
+        const updateData: Record<string, unknown> = {
+          subscription_status: "active",
+          subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        if (subscriptionId) updateData.stripe_subscription_id = String(subscriptionId);
+        if (customerId) updateData.stripe_customer_id = String(customerId);
+
         if (userId) {
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "active",
-              subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("id", userId);
+          await supabase.from("candidates").update(updateData).eq("id", userId);
         } else if (customerEmail) {
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "active",
-              subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("email", customerEmail);
+          await supabase.from("candidates").update(updateData).eq("email", customerEmail);
         }
         break;
       }
@@ -152,25 +143,21 @@ export async function POST(request: Request) {
       case "customer.subscription.deleted": {
         const customerEmail = dataObject.customer_email;
         const userId = dataObject.metadata?.user_id;
+        const subscriptionId = dataObject.id;
 
-        console.log(`[Stripe Webhook] Subscription cancelled for user: ${userId || customerEmail}`);
+        console.log(`[Stripe Webhook] Subscription cancelled for user: ${userId || customerEmail || subscriptionId}`);
+
+        const updateData: Record<string, unknown> = {
+          subscription_status: "cancelled",
+          updated_at: new Date().toISOString(),
+        };
 
         if (userId) {
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "cancelled",
-              updated_at: new Date().toISOString(),
-            })
-            .eq("id", userId);
+          await supabase.from("candidates").update(updateData).eq("id", userId);
+        } else if (subscriptionId) {
+          await supabase.from("candidates").update(updateData).eq("stripe_subscription_id", subscriptionId);
         } else if (customerEmail) {
-          await supabase
-            .from("candidates")
-            .update({
-              subscription_status: "cancelled",
-              updated_at: new Date().toISOString(),
-            })
-            .eq("email", customerEmail);
+          await supabase.from("candidates").update(updateData).eq("email", customerEmail);
         }
         break;
       }
