@@ -18,15 +18,6 @@ export function SiteFooter() {
               your inbox every morning. Stop scrolling, start applying.
             </p>
             <div className="mt-3 flex items-center gap-2">
-              <a
-                href="https://t.me/decajobs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-2.5 py-1 text-xs transition-colors"
-                title="Join DecaJobs on Telegram"
-              >
-                <span>✈️</span> Telegram
-              </a>
               <Link
                 href="/#subscribe"
                 rel="nofollow"
