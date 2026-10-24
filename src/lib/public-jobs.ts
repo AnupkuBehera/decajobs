@@ -1184,6 +1184,14 @@ const COMMON_SKILLS = [
     "Agile", "Scrum", "Product Management", "Jira", "SEO", "Growth Marketing"
 ];
 
+// Pre-compile skill regexes once at module load to avoid thousands of RegExp allocations in V8
+const SKILL_REGEX_CACHE = new Map<string, RegExp>();
+for (const skill of COMMON_SKILLS) {
+    const skillLower = skill.toLowerCase();
+    const escaped = skillLower.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    SKILL_REGEX_CACHE.set(skill, new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i"));
+}
+
 /**
  * Extract matched skills from a job title and description.
  */
@@ -1191,11 +1199,7 @@ export function extractSkillsFromJob(text: string, limit = 6): string[] {
     const lower = text.toLowerCase();
     const matched: string[] = [];
 
-    for (const skill of COMMON_SKILLS) {
-        const skillLower = skill.toLowerCase();
-        // Regex word boundary matching
-        const escaped = skillLower.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const regex = new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i");
+    for (const [skill, regex] of SKILL_REGEX_CACHE.entries()) {
         if (regex.test(lower)) {
             matched.push(skill);
             if (matched.length >= limit) break;
@@ -1274,8 +1278,17 @@ let lastPublicJobsFetchTime = 0;
 const PUBLIC_JOBS_CACHE_TTL = 10 * 60 * 1000; // 10 minutes in-memory cache for builds & server revalidation
 
 /**
- * Fetch public jobs from all free sources, deduplicated and sorted by recency.
- * Cached at the module level for 10 minutes to limit external API calls.
+ * Fast public jobs retriever for sitemap and bot crawlers.
+ * Returns cached jobs immediately if available, or SAMPLE_JOBS without triggering
+ * cold network scrapes during crawler spikes. Runs in <0.5ms CPU time.
+ */
+export function getFastSitemapJobs(): ExternalJob[] {
+    return cachedPublicJobs && cachedPublicJobs.length > 0 ? cachedPublicJobs : SAMPLE_JOBS;
+}
+
+/**
+ * Fetch public jobs from high-signal, lightweight JSON providers, deduplicated and sorted by recency.
+ * Cached at the module level for 10 minutes to strictly prevent Cloudflare Workers 10ms CPU timeouts.
  */
 export async function fetchPublicJobs(): Promise<ExternalJob[]> {
     const now = Date.now();
@@ -1284,18 +1297,12 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
     }
 
     try {
-        // Query keyless providers concurrently using Promise.allSettled for maximum resilience
+        // Query lean, fast keyless providers concurrently (avoiding heavy 33-company ATS & RSS parsing in SSR request path)
         const results = await Promise.allSettled([
             fetchRemotiveJobs("developer"),
             fetchRemotiveJobs("product"),
-            fetchRemoteOKJobs(["developer", "design", "marketing", "data"]),
-            fetchArbeitnowJobs("software"),
-            fetchArbeitnowJobs("design"),
+            fetchRemoteOKJobs(["developer"]),
             fetchJobicyJobs("developer"),
-            fetchJobicyJobs("data"),
-            fetchHimalayasJobs("engineer"),
-            fetchDirectAtsJobs(""),
-            fetchWeWorkRemotelyJobs(""),
             fetchWorkingNomadsJobs(""),
         ]);
 
@@ -1330,8 +1337,8 @@ export async function fetchPublicJobs(): Promise<ExternalJob[]> {
             return tb - ta;
         });
 
-        // Clean descriptions on-demand only for the top 200 active jobs, saving ~85% V8 CPU time
-        const topJobs = unique.slice(0, 200).map((job) => ({
+        // Clean descriptions on-demand only for the top 75 active jobs (MAX_JOBS_PER_PAGE = 50), saving ~85% V8 CPU time
+        const topJobs = unique.slice(0, 75).map((job) => ({
             ...job,
             description: cleanDescription(job.description),
         }));

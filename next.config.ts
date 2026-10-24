@@ -90,6 +90,10 @@ const nextConfig: NextConfig = {
             value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate",
           },
           {
+            key: "Cloudflare-CDN-Cache-Control",
+            value: "max-age=86400",
+          },
+          {
             key: "Access-Control-Allow-Origin",
             value: "*",
           },
@@ -102,6 +106,10 @@ const nextConfig: NextConfig = {
             key: "Cache-Control",
             value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400",
           },
+          {
+            key: "Cloudflare-CDN-Cache-Control",
+            value: "max-age=86400",
+          },
         ],
       },
       {
@@ -110,6 +118,10 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400",
+          },
+          {
+            key: "Cloudflare-CDN-Cache-Control",
+            value: "max-age=86400",
           },
         ],
       },

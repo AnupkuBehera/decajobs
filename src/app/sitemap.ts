@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import {
-  getPublicJobs,
+  getFastSitemapJobs,
   jobSlug,
   type ExternalJob,
   CITIES,
@@ -14,12 +14,8 @@ export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://decajob.com";
-  let jobs: ExternalJob[] = [];
-  try {
-    jobs = await getPublicJobs();
-  } catch (error) {
-    console.error("[Sitemap] Failed to fetch public jobs for sitemap:", error);
-  }
+  // Use fast sitemap job provider (<0.5ms CPU time) to never hit Cloudflare Workers 10ms CPU limits
+  const jobs: ExternalJob[] = getFastSitemapJobs();
 
   const staticEntries: MetadataRoute.Sitemap = [
     {

@@ -4,6 +4,7 @@ import {
     isJobFresh,
     extractSkillsFromJob,
     getCuratedTop10Jobs,
+    getFastSitemapJobs,
     COMPANIES,
     getCompanyBySlug,
     jobMatchesCompany,
@@ -12,6 +13,16 @@ import {
 import type { ExternalJob } from "./external-jobs/types";
 
 describe("Public Jobs Quality & Anti-Scam Engine", () => {
+    describe("getFastSitemapJobs", () => {
+        it("should instantly return valid jobs without network calls", () => {
+            const start = performance.now();
+            const jobs = getFastSitemapJobs();
+            const elapsed = performance.now() - start;
+            expect(jobs.length).toBeGreaterThan(0);
+            expect(elapsed).toBeLessThan(10); // Must execute in under 10ms CPU time
+            expect(jobs[0].title).toBeTruthy();
+        });
+    });
     describe("isGenuineJob", () => {
         it("should accept valid real job postings", () => {
             const validJob: Partial<ExternalJob> = {
