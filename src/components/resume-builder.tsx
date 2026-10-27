@@ -797,6 +797,7 @@ export default function ResumeBuilder() {
               </div>
               <Link
                 href={`/login?role=${encodeURIComponent(targetRole)}`}
+                rel="nofollow"
                 className="shrink-0 rounded-xl bg-white text-primary-700 hover:bg-neutral-100 font-bold px-4 py-2 text-xs text-center transition-colors shadow-xs"
               >
                 Receive Daily 10 Jobs →

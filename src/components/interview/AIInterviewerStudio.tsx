@@ -742,10 +742,11 @@ export function AIInterviewerStudio() {
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
                   <Link
                     href={`/login?redirect=${encodeURIComponent(
-                      `/mock-interview?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
+                      `/tools/mock-interview?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
                         initialCompany
                       )}&desc=${encodeURIComponent(initialDesc)}`
                     )}`}
+                    rel="nofollow"
                     className="rounded-xl bg-primary-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-primary-700 transition-colors"
                   >
                     Sign In Free to Continue (Q2-Q5) →

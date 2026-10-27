@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StickyApplyBar } from "@/components/sticky-apply-bar";
 import {
@@ -226,17 +227,7 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
     const job = jobs.find((j) => jobSlug(j) === slug);
 
     if (!job) {
-        return {
-            title: "Job Position Closed or Expired | DecaJobs",
-            description: "This job opening has closed or expired. Explore active verified job postings and apply today on DecaJobs.",
-            robots: {
-                index: false,
-                follow: true,
-            },
-            alternates: {
-                canonical: `https://decajob.com/jobs/${slug}`,
-            },
-        };
+        permanentRedirect(getExpiredJobRedirectUrl(slug));
     }
 
     return {
@@ -266,102 +257,11 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const jobs = await getPublicJobs();
     const job = jobs.find((j) => jobSlug(j) === slug);
 
-    // Expired or missing job: Render 200 OK expired status page with live similar jobs
-    // to eliminate soft-404s and redirect issues per Google Search Central guidelines.
+    // Expired or missing job: Issue HTTP 301/308 Permanent Redirect to relevant category hub.
+    // Per Google Search Console guidelines, redirecting rotated job listings converts them
+    // into standard redirects, eliminating "Excluded by noindex tag" failures and preserving SEO equity.
     if (!job) {
-        const categoryUrl = getExpiredJobRedirectUrl(slug);
-        const categorySlug = categoryUrl.replace("/jobs/category/", "");
-        const category = JOB_CATEGORIES.find((c) => c.slug === categorySlug);
-        const fallbackJobs = jobs
-            .filter((j) => (category ? jobMatchesCategory(j, category) : true))
-            .slice(0, 6);
-
-        // Derive clean role name from slug for friendly UX
-        const cleanTitle = slug
-            .replace(/-(jobicy|otive|arbeitnow|remoteok|ats)\d+.*$/i, "")
-            .replace(/-/g, " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase());
-
-        return (
-            <div className="pt-10 pb-24 sm:pt-16 sm:pb-28">
-                <div className="mx-auto max-w-4xl px-4 sm:px-6">
-                    <Breadcrumbs
-                        items={[
-                            { label: "Jobs", href: "/jobs" },
-                            category
-                                ? { label: category.name, href: categoryUrl }
-                                : { label: "All Openings", href: "/jobs" },
-                            { label: "Position Closed" },
-                        ]}
-                    />
-
-                    {/* Closed Notice Banner */}
-                    <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/70 p-6 sm:p-8">
-                        <div className="flex items-start gap-4">
-                            <span className="text-3xl sm:text-4xl" aria-hidden="true">⚠️</span>
-                            <div className="flex-1">
-                                <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 mb-2">
-                                    Position Closed / Expired
-                                </span>
-                                <h1 className="text-xl sm:text-2xl font-bold text-neutral-900">
-                                    {cleanTitle || "This Position"} is No Longer Accepting Applications
-                                </h1>
-                                <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-                                    The employer has closed applications or filled this role. DecaJobs publishes fresh, verified opportunities every single morning. Explore active similar openings below.
-                                </p>
-                                <div className="mt-5 flex flex-wrap items-center gap-3">
-                                    {category && (
-                                        <Link
-                                            href={categoryUrl}
-                                            className="rounded-lg bg-primary-600 px-4 py-2 text-xs font-semibold text-white hover:bg-primary-700 transition-colors shadow-xs"
-                                        >
-                                            View Active {category.name} Jobs →
-                                        </Link>
-                                    )}
-                                    <Link
-                                        href="/jobs"
-                                        className="rounded-lg border border-neutral-300 bg-white px-4 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-50 transition-colors shadow-xs"
-                                    >
-                                        Browse All Live Jobs
-                                    </Link>
-                                    <Link
-                                        href="/tools/resume-matcher"
-                                        className="rounded-lg border border-primary-200 bg-primary-50 px-4 py-2 text-xs font-medium text-primary-700 hover:bg-primary-100 transition-colors"
-                                    >
-                                        Free AI Resume Matcher ✨
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Active Similar Jobs Grid */}
-                    <div className="mt-10">
-                        <div className="flex items-center justify-between mb-4">
-                            <div>
-                                <h2 className="text-lg font-bold text-neutral-900">
-                                    Active Openings You Might Be Interested In
-                                </h2>
-                                <p className="text-xs text-neutral-500 mt-0.5">
-                                    Verified positions currently accepting applications.
-                                </p>
-                            </div>
-                            <Link
-                                href="/jobs"
-                                className="text-xs font-semibold text-primary-600 hover:underline"
-                            >
-                                View all {jobs.length} jobs →
-                            </Link>
-                        </div>
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            {fallbackJobs.map((item) => (
-                                <JobCard key={item.id} job={item} />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        permanentRedirect(getExpiredJobRedirectUrl(slug));
     }
 
     const days = daysSincePosted(job.postedAt);

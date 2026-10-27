@@ -1471,7 +1471,7 @@ export const SAMPLE_JOBS: ExternalJob[] = [
         title: "Technical Talent Acquisition Lead",
         company: "Tata Consultancy Services (TCS)",
         description:
-            "Lead full-lifecycle engineering recruitment and candidate experience. Partner with practice leaders to source, interview, and onboard talent across enterprise software architecture and cloud practices.",
+            "Lead full-lifecycle engineering hiring and candidate experience. Partner with practice leaders to source, interview, and onboard talent across enterprise software architecture and cloud practices.",
         location: "Pune",
         applicationLink: "https://www.tcs.com/careers",
         postedAt: new Date(Date.now() - 10 * 86400000).toISOString(),

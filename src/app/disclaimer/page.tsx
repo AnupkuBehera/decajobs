@@ -77,13 +77,16 @@ export default function DisclaimerPage() {
             all AI-generated content before using it in professional contexts.
           </p>
 
-          <h2>No Employment Guarantee</h2>
+          <h2>No Employment Guarantee &amp; Non-Recruitment Disclaimer</h2>
           <p>
             DecaJobs does not guarantee employment, job placement, or any specific outcome from
             using our service. Our matching algorithms provide recommendations based on skill and
             preference alignment, but hiring decisions are solely made by employers. Results may
             vary significantly based on market conditions, individual qualifications, competition,
             geographic factors, and other variables beyond our control.
+          </p>
+          <p>
+            <strong>Business Model Clarification:</strong> DecaJobs is strictly an independent career preparation and job discovery software platform (SaaS). We are not an employment agency, recruitment agency, staffing provider, headhunting service, or job outsourcing enterprise. DecaJobs does not participate in hiring negotiations, does not collect recruitment commissions, and does not charge candidate placement fees. All job listings direct applicants to apply directly with respective corporate employers.
           </p>
 
           <h2>Salary Information</h2>

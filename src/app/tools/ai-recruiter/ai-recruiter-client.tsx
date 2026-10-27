@@ -365,7 +365,7 @@ export function AIRecruiterClient() {
               className="w-full py-3.5"
               id="analyze-jobs-btn"
             >
-              {isLoading ? "Fetching Live Jobs & Running AI Analysis..." : "Run AI Recruiter Mode — Free"}
+              {isLoading ? "Fetching Live Jobs & Running AI Analysis..." : "Run AI Job Fit Scanner — Free"}
             </Button>
             <p className="text-center text-xs text-neutral-500">
               Scans live openings across remote & Indian job boards. No login required.

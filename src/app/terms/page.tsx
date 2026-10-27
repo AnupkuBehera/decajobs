@@ -25,9 +25,12 @@ export default function TermsPage() {
           By accessing and using DecaJobs (&quot;the Service&quot;), you agree to be bound by these Terms &amp; Conditions. If you do not agree with any part of these terms, you may not use the Service.
         </p>
 
-        <h2>2. Description of Service</h2>
+        <h2>2. Description of Service &amp; Business Classification</h2>
         <p>
-          DecaJobs is an AI-powered online job portal that provides personalized daily job recommendations via email. The Service aggregates job listings from multiple external sources and matches them to user profiles using intelligent algorithms.
+          DecaJobs is a digital software-as-a-service (SaaS) and career enablement technology platform. The Service provides AI-powered resume analysis, interview preparation modules, career guidance tools, and personalized daily job recommendation digests aggregating publicly available job listings.
+        </p>
+        <p>
+          <strong>Non-Recruitment &amp; Non-Outsourcing Declaration:</strong> DecaJobs is <strong>NOT</strong> an employment agency, recruitment agency, job placement consultancy, staffing firm, or manpower outsourcing contractor. DecaJobs does not act as an employer representative, does not recruit personnel on behalf of third parties, does not outsource labor or contractors, and does not charge any fees or commissions for employment placement or hiring outcomes. All job listings featured on the Service link candidates directly to official third-party employer career websites and applicant tracking systems (ATS).
         </p>
 
         <h2>3. User Accounts</h2>

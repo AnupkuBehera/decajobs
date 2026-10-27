@@ -35,7 +35,7 @@ const SCAM_PRESETS: ScamPreset[] = [
     description:
       "Work from Home opportunity. You will receive an Apple MacBook and high-speed Wi-Fi router. Before dispatch, candidates must pay a refundable security deposit of ₹3,500 via Google Pay / PhonePe to our courier vendor. No interview required, immediate joining.",
     salary: "₹45,000 / month",
-    contactInfo: "hr.infotechrecruitment@yahoo.com",
+    contactInfo: "hr.infotechcareers@yahoo.com",
   },
   {
     label: "🌍 Remote Task / Telegram Scam",
@@ -55,7 +55,7 @@ const SCAM_PRESETS: ScamPreset[] = [
     description:
       "We are looking for a Senior Full Stack Engineer with 4+ years experience in React, Node.js, and distributed architectures. You will build merchant payment gateways and scale transaction pipelines. 3 rounds of technical interviews including system design and live coding.",
     salary: "₹28,00,000 - ₹38,00,000 CTC",
-    contactInfo: "recruiting@razorpay.com (Official Careers Portal)",
+    contactInfo: "careers@razorpay.com (Official Careers Portal)",
   },
 ];
 

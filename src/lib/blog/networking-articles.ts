@@ -303,7 +303,7 @@ In 52 weeks, this effortless 5-minute routine creates over 100 warm, genuine pro
 
 Yet many developers treat their GitHub profile as a digital junkyard: dozens of abandoned tutorial repositories with names like \`test-app-2\`, empty README files, and zero pinned highlights.
 
-Here is how to transform your GitHub profile into a high-converting inbound recruitment funnel.
+Here is how to transform your GitHub profile into a high-converting inbound job discovery funnel.
 
 **1. Create a Master Profile README (username/username)**
 GitHub allows you to render a custom markdown banner at the top of your profile:

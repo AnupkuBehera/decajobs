@@ -1,0 +1,44 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Runs at 04:00 UTC every 3 days (well within Supabase's 7-day auto-pause limit)
+    - cron: "0 4 */3 * *"
+  workflow_dispatch: # Allows manual one-click trigger from GitHub Actions UI
+
+jobs:
+  keepalive:
+    name: Refresh Supabase Inactivity Timer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping DecaJobs Keep-Alive Endpoint
+        run: |
+          echo "======================================================="
+          echo " Pinging DecaJobs Keep-Alive Endpoint (/api/cron/keepalive)"
+          echo "======================================================="
+          
+          RESPONSE=$(curl -s -S -w "\nHTTP_STATUS:%{http_code}" --max-time 30 "https://decajob.com/api/cron/keepalive?public=1" || true)
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          BODY=$(echo "$RESPONSE" | grep -v "HTTP_STATUS")
+          
+          echo "HTTP Status Code: $HTTP_STATUS"
+          echo "Response Body:"
+          echo "$BODY"
+          
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "SUCCESS: Supabase activity ping processed successfully."
+          else
+            echo "WARNING: Primary endpoint returned status $HTTP_STATUS"
+          fi
+
+      - name: Direct Fallback Supabase REST Ping (Optional Secrets)
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != '' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          echo "Executing direct Supabase PostgREST ping..."
+          curl -s -S -o /dev/null -w "Direct Ping Status: %{http_code}\n" \
+            "${SUPABASE_URL}/rest/v1/job_listings?select=id&limit=1" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" || true

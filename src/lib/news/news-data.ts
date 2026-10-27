@@ -116,7 +116,7 @@ With personal income tax remaining at 0% and substantial investments flowing int
     slug: "india-it-services-lateral-hiring-rebound",
     title: "India IT Services Rebound: TCS, Infosys and Wipro Accelerate Q3 Lateral Hiring for Cloud & Cybersecurity",
     summary:
-      "Following five quarters of conservative headcount expansion, India's tier-1 IT services giants are restarting lateral recruitment drives, specifically targeting cloud architects and cybersecurity analysts.",
+      "Following five quarters of conservative headcount expansion, India's tier-1 IT services giants are restarting lateral hiring drives, specifically targeting cloud architects and cybersecurity analysts.",
     category: "Hiring & Layoffs",
     publishedAt: "October 10, 2026",
     dateISO: "2026-10-10T14:00:00Z",
@@ -130,7 +130,7 @@ With personal income tax remaining at 0% and substantial investments flowing int
       "Average salary increments for lateral moves have recovered to 22%–30%, up from sub-12% hikes recorded in 2024.",
       "Primary growth areas include AWS/Azure cloud modernization, DevSecOps, and enterprise SAP/Salesforce AI migrations.",
     ],
-    content: `India's ₹20-lakh-crore information technology services sector is showing decisive signs of recruitment revival. Earnings disclosures and active job requisition trends confirm that tier-1 IT vendors are replenishing bench capacity to execute newly signed digital transformation contracts with European and North American clients.
+    content: `India's ₹20-lakh-crore information technology services sector is showing decisive signs of hiring revival. Earnings disclosures and active job requisition trends confirm that tier-1 IT vendors are replenishing bench capacity to execute newly signed digital transformation contracts with European and North American clients.
 
 ### Where the Hiring Focus Lies
 Unlike past boom cycles where generic Java and manual testing professionals made up the bulk of headcount additions, current hiring criteria are tightly defined:
@@ -152,7 +152,7 @@ While campus hiring remains structured and measured, lateral hiring for engineer
     dateISO: "2026-10-09T10:00:00Z",
     readTime: "6 min read",
     author: DEFAULT_NEWS_AUTHOR,
-    source: "UK Home Office Guidelines & British Tech Recruitment Telemetry",
+    source: "UK Home Office Guidelines & British Tech Hiring Telemetry",
     tags: ["UK Jobs", "Skilled Worker Visa", "London Tech", "Visa Sponsorship"],
     relatedJobQuery: "UK",
     keyTakeaways: [
@@ -233,7 +233,7 @@ Security is no longer a separate auditing phase that happens weeks after deploym
     slug: "fresher-hiring-recovery-q4-2026",
     title: "Entry-Level Hiring Shows Q4 Rebound: What 2026 Graduates Need on Their Portfolios",
     summary:
-      "Entry-level recruitment is reopening across product startups and mid-market IT firms, but recruiter criteria have evolved dramatically. Here is what actually catches recruiter attention today.",
+      "Entry-level hiring is reopening across product startups and mid-market IT firms, but recruiter criteria have evolved dramatically. Here is what actually catches recruiter attention today.",
     category: "Hiring & Layoffs",
     publishedAt: "October 6, 2026",
     dateISO: "2026-10-06T09:30:00Z",

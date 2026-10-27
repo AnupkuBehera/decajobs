@@ -64,7 +64,7 @@ export default function DubaiSalaryPage() {
         name: "Can an employer deduct UAE visa fees from my salary?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "No. Under UAE Labour Law (Article 6 of Ministerial Resolution No. 275 of 2006), the employer is legally obligated to bear 100% of recruitment, residency visa, medical fitness test, and Emirates ID costs. Any employer asking a candidate to pay for their visa is committing an illegal act.",
+          text: "No. Under UAE Labour Law (Article 6 of Ministerial Resolution No. 275 of 2006), the employer is legally obligated to bear 100% of hiring, residency visa, medical fitness test, and Emirates ID costs. Any employer asking a candidate to pay for their visa is committing an illegal act.",
         },
       },
     ],

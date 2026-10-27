@@ -99,7 +99,7 @@ export default function ResumeCheckerPage() {
 
           <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">What is an Applicant Tracking System (ATS)?</h3>
           <p className="text-neutral-600 leading-relaxed">
-            An ATS is a software application that handles the recruitment process, including sorting and ranking job applications. It scans resumes for specific keywords, job titles, education, and skills. Resumes that match the job description closely are passed to the hiring manager, while low-scoring resumes are filtered out.
+            An ATS is a software application that handles the candidate screening process, including sorting and ranking job applications. It scans resumes for specific keywords, job titles, education, and skills. Resumes that match the job description closely are passed to the hiring manager, while low-scoring resumes are filtered out.
           </p>
 
           <h3 className="text-xl font-semibold text-neutral-900 mt-8 mb-4">How DecaJobs AI Resume Checker Works</h3>

@@ -189,7 +189,7 @@ export default function AboutPage() {
           <ul>
             <li>
               <strong>Verified Career Portals:</strong> Every job listing is vetted to point directly
-              to official employer career portals or authorized recruitment pipelines, ensuring candidates
+              to official employer career portals or direct company application systems (ATS), ensuring candidates
               are never subjected to deceptive registration gates or dead-end doorway pages.
             </li>
             <li>

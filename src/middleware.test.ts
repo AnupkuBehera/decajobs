@@ -5,6 +5,7 @@ import { middleware } from "./middleware";
 vi.mock("@/lib/supabase/middleware", () => ({
   updateSessionAndGetUser: vi.fn().mockResolvedValue({
     response: {
+      status: 200,
       headers: new Headers(),
       cookies: {
         getAll: () => [],
@@ -74,6 +75,48 @@ describe("Middleware - workers.dev domain handling and de-indexing", () => {
     const req = new NextRequest("https://decajobs.anupkist.workers.dev/pricing?preview=true", {
       headers: {
         host: "decajobs.anupkist.workers.dev",
+      },
+    });
+
+    const res = await middleware(req);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("location")).toBeNull();
+  });
+
+  it("permanently redirects /mock-interview (including query params) to /tools/mock-interview", async () => {
+    const req = new NextRequest(
+      "https://decajob.com/mock-interview?title=Software+Engineer&company=Airbnb&desc=Test",
+      {
+        headers: {
+          host: "decajob.com",
+        },
+      }
+    );
+
+    const res = await middleware(req);
+
+    expect(res.status).toBe(301);
+    expect(res.headers.get("location")).toBe("https://decajob.com/tools/mock-interview");
+  });
+
+  it("canonicalizes /login?role=Microsoft to clean /login", async () => {
+    const req = new NextRequest("https://decajob.com/login?role=Microsoft", {
+      headers: {
+        host: "decajob.com",
+      },
+    });
+
+    const res = await middleware(req);
+
+    expect(res.status).toBe(301);
+    expect(res.headers.get("location")).toBe("https://decajob.com/login");
+  });
+
+  it("preserves auth error params on /login without redirecting", async () => {
+    const req = new NextRequest("https://decajob.com/login?error=oauth_failed", {
+      headers: {
+        host: "decajob.com",
       },
     });
 

@@ -42,7 +42,7 @@ export default function RequestRemovalPage() {
         <div className="mt-12 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 text-xs text-neutral-600 space-y-3 leading-relaxed">
           <h3 className="font-bold text-neutral-900 text-sm">Our Removal &amp; Privacy Policies</h3>
           <p>
-            <strong>For Employers &amp; Recruiters:</strong> DecaJobs indexes publicly available job
+            <strong>For Employers &amp; Hiring Organizations:</strong> DecaJobs indexes publicly available job
             postings to connect qualified talent with open roles. If a role is filled, cancelled, or
             your organization prefers not to be indexed, we will promptly delist the listing or
             permanently exclude your corporate domain upon request.

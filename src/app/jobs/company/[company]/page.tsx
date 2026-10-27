@@ -133,6 +133,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
                                 </p>
                                 <Link
                                     href={`/login?company=${encodeURIComponent(companyInfo.name)}`}
+                                    rel="nofollow"
                                     className="block w-full text-center rounded-xl bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 text-xs font-bold transition-colors shadow-xs"
                                 >
                                     Get 10 Jobs Daily →

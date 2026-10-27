@@ -89,14 +89,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url), 301);
   }
 
+  // 2b. Redirect legacy /mock-interview path to canonical /tools/mock-interview (301 Permanent Redirect)
+  if (pathname === "/mock-interview" || cleanPathname(pathname) === "/mock-interview") {
+    return NextResponse.redirect(new URL("/tools/mock-interview", request.url), 301);
+  }
+
   // 3. Canonicalize parameterized /tools/* URLs (301 Permanent Redirect to clean canonical path)
   if (pathname.startsWith("/tools/") && request.nextUrl.search) {
     return NextResponse.redirect(new URL(pathname, request.url), 301);
   }
 
-  // 4. Canonicalize non-auth parameter URLs on /login (e.g. alert=whatsapp)
-  if (pathname === "/login" && request.nextUrl.searchParams.has("alert")) {
-    return NextResponse.redirect(new URL("/login", request.url), 301);
+  // 4. Canonicalize non-auth parameter URLs on /login (301 Permanent Redirect to clean /login)
+  // Preserves OAuth/auth callbacks (code, error) while stripping crawler/promotional params (role, company, city, alert, etc.)
+  if ((pathname === "/login" || cleanPathname(pathname) === "/login") && request.nextUrl.search) {
+    const searchParams = request.nextUrl.searchParams;
+    const isAuthCallback = searchParams.has("code") || searchParams.has("error");
+    if (!isAuthCallback) {
+      return NextResponse.redirect(new URL(cleanPathname(pathname), request.url), 301);
+    }
   }
 
   // 5. Canonicalize parameterized /resume-tools URLs (301 Permanent Redirect to /tools/resume-matcher)

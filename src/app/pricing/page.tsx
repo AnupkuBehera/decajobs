@@ -33,13 +33,17 @@ const proFeatures = [
   "Resume Optimizer tailored to specific job descriptions",
   "Skill Gap Analyzer for targeted upskilling",
   "Career Path Visualizer (2-5 year projections)",
-  "Cold Email Generator for recruiter outreach",
+  "Cold Email & Outreach Letter Generator",
   "LinkedIn Headline Generator",
   "Email support with 24-hour response time",
   "Cancel anytime — no lock-in contracts",
 ];
 
 const pricingFaqs = [
+  {
+    q: "Is DecaJobs a recruitment agency or job outsourcing company?",
+    a: "No. DecaJobs is strictly an AI-powered SaaS technology platform for candidates. We do not provide recruitment, staffing, placement, or manpower outsourcing services. Our subscription fees solely cover software access to our AI career tools, resume checkers, and daily curated job alerts. Employers post listings 100% free with no placement fees or hiring commissions.",
+  },
   {
     q: "What happens after the 7-day free trial?",
     a: "After your free trial ends, you can upgrade to Pro for ₹299/month to continue receiving daily job matches and access to all AI tools. If you don't upgrade, your account remains active but you won't receive daily job emails or have access to Pro-only tools. Our free public tools (Resume Checker, Salary Calculator, Interview Prep) remain available without any login.",
@@ -233,12 +237,12 @@ export default function PricingPage() {
                   ["Free Public Tools (In-Hand Salary & Notice Calc)", true, true, "No account needed"],
                   ["Daily 10 Curated Jobs Delivered at 7:00 AM", false, true, "Personalized to exact skills & experience"],
                   ["WhatsApp Morning Digest Delivery", false, true, "Read & 1-click apply before morning commute"],
-                  ["Email Dispatch with Direct Apply Links", false, true, "Direct to recruiter portal"],
+                  ["Email Dispatch with Direct Apply Links", false, true, "Direct to company careers portal / ATS"],
                   ["Urgent 90+ Match Instant Notifications", false, true, "Catch fresh roles before 200+ apply"],
                   ["Job Trust Score™ & Ghost Job Detection", false, true, "Scam filters, salary verified, hiring status"],
                   ["1-Click Resume-to-Job Tailorer & ATS Matcher", false, true, "Customized keywords & bullets per job"],
-                  ["Direct Hiring Manager & Recruiter Contact Details", false, true, "Verified LinkedIn & corporate email"],
-                  ["Application Tracker CRM with 5-Day Recruiter Nudges", false, true, "Automated follow-up templates"],
+                  ["Hiring Team & Department Leads Lookup", false, true, "Verified LinkedIn & corporate career links"],
+                  ["Application Tracker CRM with 5-Day Follow-Up Nudges", false, true, "Automated follow-up templates"],
                   ["Ad-Free Browsing Experience", false, true, "100% clean interface with no ads"],
                   ["100% Quality Match Guarantee (70 jobs or full refund)", false, true, "Risk-free trial & money-back promise"],
                 ].map(([feature, free, pro, note], i) => (

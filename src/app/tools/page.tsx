@@ -23,10 +23,10 @@ const tools = [
   },
   {
     href: "/tools/ai-recruiter",
-    title: "AI Recruiter Mode",
+    title: "AI Job Fit & ATS Match Scanner",
     description:
-      "Search live job listings, get brutally-honest AI match scores, skill gap analysis, visa flags, and tailored resume bullets for your top matches.",
-    emoji: "🤖",
+      "Search live job listings, get brutally-honest AI applicant match scores, skill gap analysis, visa flags, and tailored resume bullets for your top matches.",
+    emoji: "🎯",
     badge: "New",
   },
   {
@@ -208,7 +208,7 @@ export default function ToolsPage() {
           </h2>
           <div className="space-y-4 text-sm text-neutral-700 leading-relaxed">
             <p>
-              In 2026, modern technical recruiting relies heavily on automated applicant filtering. Over 75% of submitted resumes are parsed and ranked by Applicant Tracking Systems before a human recruiter ever sees them.
+              In 2026, modern technical hiring relies heavily on automated applicant filtering. Over 75% of submitted resumes are parsed and ranked by Applicant Tracking Systems before a hiring manager ever sees them.
             </p>
             <p>
               By leveraging our suite of free tools, job seekers can systematically diagnose resume weaknesses, benchmark market salaries, and practice STAR-method behavioral interview responses:

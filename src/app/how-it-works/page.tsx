@@ -114,7 +114,7 @@ export default function HowItWorksPage() {
             <li><strong>AI Career Coach</strong> — Ask any career question and get expert advice</li>
             <li><strong>Interview Prep</strong> — Role-specific questions with answer tips</li>
             <li><strong>Career Path Visualizer</strong> — See where your career can go in 2-5 years</li>
-            <li><strong>Cold Email Generator</strong> — Personalized outreach messages to recruiters</li>
+            <li><strong>Cold Email Generator</strong> — Personalized networking and outreach messages to hiring teams</li>
             <li><strong>Job Scam Detector</strong> — Verify if a listing is legitimate</li>
           </ul>
 
