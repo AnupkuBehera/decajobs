@@ -54,3 +54,8 @@ Decajob.txt
 .vercel
 .env*
 scratch/
+
+# credentials & keys
+*service-account*.json
+*credentials*.json
+gcp-*.json

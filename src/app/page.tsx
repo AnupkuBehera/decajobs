@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { DailyAlertForm } from "@/components/daily-alert-form";
 import { HeroJobSearch } from "@/components/hero-job-search";
@@ -83,7 +83,7 @@ export default async function Home() {
           {/* Trust badge */}
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-800/50 px-4 py-1.5 text-xs sm:text-sm text-primary-200 backdrop-blur-sm">
             <span className="inline-block h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-            Trusted by 5,000+ tech job seekers across Bangalore, Hyderabad, Pune, Delhi NCR & Remote India
+            Trusted by 10,000+ tech job seekers across the United States, India, UK & Global Remote Hubs
           </div>
 
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -294,7 +294,7 @@ export default async function Home() {
             Loved by Job Seekers
           </h2>
 
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <TestimonialCard
               quote="I was spending 3 hours daily on job boards. Now I spend 5 minutes with my DecaJobs 7 AM digest and apply to verified, high-trust roles."
               name="Priya Sharma"
@@ -303,8 +303,14 @@ export default async function Home() {
             />
             <TestimonialCard
               quote="The Job Trust Score is a game-changer. No more ghost jobs or 60-day-old listings. 8 out of 10 matches are genuine openings I'd interview for."
-              name="Rahul Mukherjee"
-              role="Data Analyst, Remote India"
+              name="Marcus Vance"
+              role="Staff Cloud Engineer, Seattle, WA"
+              verified={true}
+            />
+            <TestimonialCard
+              quote="Filtering by US W-2 vs Remote and seeing exact USD salary bands saved me weeks of negotiations. Landed a $175k role through their morning alert."
+              name="David Chen"
+              role="Senior Full-Stack Engineer, Austin, TX"
               verified={true}
             />
             <TestimonialCard

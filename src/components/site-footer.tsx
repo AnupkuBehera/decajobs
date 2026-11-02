@@ -51,13 +51,23 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/jobs/remote" className="text-neutral-400 hover:text-white transition-colors">
-                  Remote Jobs
+                <Link href="/us" className="text-neutral-400 hover:text-white transition-colors font-medium text-primary-400">
+                  🇺🇸 US Tech Jobs
                 </Link>
               </li>
               <li>
-                <Link href="/tools" className="text-neutral-400 hover:text-white transition-colors">
-                  Free Tools
+                <Link href="/uk" className="text-neutral-400 hover:text-white transition-colors">
+                  🇬🇧 UK Tech Jobs
+                </Link>
+              </li>
+              <li>
+                <Link href="/ae" className="text-neutral-400 hover:text-white transition-colors">
+                  🇦🇪 UAE &amp; Gulf Jobs
+                </Link>
+              </li>
+              <li>
+                <Link href="/jobs/remote" className="text-neutral-400 hover:text-white transition-colors">
+                  Remote Jobs
                 </Link>
               </li>
               <li>
@@ -153,6 +163,11 @@ export function SiteFooter() {
             </h3>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
+                <Link href="/tools/us-salary-calculator" className="text-neutral-400 hover:text-white transition-colors font-medium text-primary-400">
+                  🇺🇸 US Paycheck Calculator
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools/resume-checker" className="text-neutral-400 hover:text-white transition-colors">
                   Resume Checker
                 </Link>
@@ -160,6 +175,11 @@ export function SiteFooter() {
               <li>
                 <Link href="/tools/salary-calculator" className="text-neutral-400 hover:text-white transition-colors">
                   Salary Calculator
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools/uk-salary-calculator" className="text-neutral-400 hover:text-white transition-colors">
+                  UK Salary Calculator
                 </Link>
               </li>
               <li>
@@ -188,7 +208,7 @@ export function SiteFooter() {
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs text-neutral-500">
-              Serving candidates across India, UAE &amp; Gulf, and global remote hubs
+              Serving candidates across the United States, India, UK, UAE &amp; Gulf, and global remote hubs
             </span>
             <CountrySelector variant="footer" />
             <LanguageSwitcher variant="footer" />

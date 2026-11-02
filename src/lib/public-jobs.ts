@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Public Jobs Data Layer
  *
  * Powers the public, indexable job board (/jobs, /jobs/[slug], /jobs/remote,
@@ -640,6 +640,95 @@ export const CITIES: CityInfo[] = [
             {
                 q: "Why is San Francisco leading the AI revolution?",
                 a: "OpenAI, Anthropic, Google, and dozens of top AI research labs and specialized venture firms are centered in San Francisco."
+            }
+        ],
+    },
+    {
+        slug: "seattle",
+        name: "Seattle",
+        aliases: ["seattle", "bellevue", "redmond", "wa", "washington", "pacific northwest"],
+        blurb:
+            "Seattle is the cloud computing capital of the world, anchored by tech giants Amazon and Microsoft. Offering zero state personal income tax, a lush Pacific Northwest lifestyle, and a dense concentration of cloud, AI, and developer platform engineering roles.",
+        techParks: ["South Lake Union (Amazon HQ)", "Redmond Campus (Microsoft)", "Bellevue Tech Corridor", "Pioneer Square", "Fremont Tech Cluster"],
+        salaryInsight: "Software Engineers in Seattle earn $135,000 to $240,000+ base salary, with total compensation packages regularly exceeding $275,000 to $400,000+ including RSUs.",
+        topIndustries: ["Cloud Computing (AWS, Azure)", "E-Commerce & Logistics", "AI & Machine Learning", "Gaming & Interactive Media", "Aerospace & Enterprise Systems"],
+        costOfLiving: "High. Washington has 0% state income tax. Average monthly rent for 1-bedroom apartments ranges from $2,100 to $3,200.",
+        faqs: [
+            {
+                q: "Why is Seattle considered a premier tech hub in the US?",
+                a: "Seattle hosts global headquarters for Amazon and Microsoft, along with massive engineering hubs for Google, Meta, Apple, and Salesforce, benefiting from Washington's lack of personal income tax."
+            },
+            {
+                q: "What roles are in highest demand in Seattle?",
+                a: "Distributed systems, cloud infrastructure, AI model serving, distributed data storage, and enterprise developer tools are heavily hired across Seattle and Bellevue."
+            }
+        ],
+    },
+    {
+        slug: "austin",
+        name: "Austin",
+        aliases: ["austin", "silicon hills", "tx", "texas"],
+        blurb:
+            "Austin (Silicon Hills) has exploded into one of the US's fastest-growing tech and startup capitals. With zero personal income tax in Texas, major corporate campuses (Tesla, Apple, Dell, Oracle), and a thriving entrepreneurial culture.",
+        techParks: ["The Domain Tech District", "Silicon Hills (Southwest Austin)", "Downtown Austin Tech Center", "East Austin Startup District"],
+        salaryInsight: "Software Engineers in Austin earn $115,000 to $195,000+ base salary, with senior engineers earning $230,000+ total compensation.",
+        topIndustries: ["Semiconductors & Hardware", "Enterprise SaaS & Cloud", "Electric Vehicles & CleanTech", "Fintech & Insurtech", "Gaming & Media"],
+        costOfLiving: "Moderate-High. Texas has 0% state income tax. 1-bedroom apartment rent ranges from $1,600 to $2,500/month.",
+        faqs: [
+            {
+                q: "Why are companies and engineers moving to Austin?",
+                a: "Austin combines zero state income tax with a world-class university talent pool (UT Austin), lower operating costs than California, and major presences from Apple, Tesla, Google, and Meta."
+            }
+        ],
+    },
+    {
+        slug: "boston",
+        name: "Boston",
+        aliases: ["boston", "cambridge", "kendall square", "ma", "massachusetts"],
+        blurb:
+            "Boston and Cambridge (Kendall Square) represent the global nexus of Biotech, Artificial Intelligence, Robotics, and Defense Tech. Powered by MIT, Harvard, and centuries of intellectual leadership.",
+        techParks: ["Kendall Square (Cambridge)", "Boston Seaport Innovation District", "Route 128 Tech Corridor", "Fenway Tech Hub"],
+        salaryInsight: "Software Engineers and Data Scientists in Boston earn $120,000 to $210,000+ base salary, with specialized biotech and robotics roles commanding substantial equity.",
+        topIndustries: ["Bioinformatics & HealthTech", "Robotics & Automation", "AI & Deep Tech Research", "Fintech & Asset Management", "Cybersecurity"],
+        costOfLiving: "High. Monthly apartment rent in Cambridge and Boston ranges from $2,400 to $3,800.",
+        faqs: [
+            {
+                q: "What industries dominate Boston's tech ecosystem?",
+                a: "Biotech, life sciences, robotics, cybersecurity, and deep AI research driven by university pipelines from MIT and Harvard."
+            }
+        ],
+    },
+    {
+        slug: "chicago",
+        name: "Chicago",
+        aliases: ["chicago", "fulton market", "il", "illinois", "midwest"],
+        blurb:
+            "Chicago is the premier tech and quantitative finance powerhouse of the American Midwest. Known for high-frequency trading (HFT), logistics-tech, enterprise B2B SaaS, and a highly diversified economy.",
+        techParks: ["Fulton Market Innovation District", "The Loop Tech Hub", "1871 Tech Incubator (Merchandise Mart)", "River North"],
+        salaryInsight: "Engineers and Quant Developers in Chicago earn $115,000 to $215,000+ base, with quantitative trading firms offering performance bonuses exceeding $300,000+.",
+        topIndustries: ["Proprietary Trading & FinTech", "Supply Chain & Logistics Tech", "HealthTech & B2B SaaS", "E-Commerce & FoodTech"],
+        costOfLiving: "Moderate. Offers exceptional urban amenities at significantly lower rents than NYC or SF ($1,700 - $2,600/month for 1BHK).",
+        faqs: [
+            {
+                q: "Why is Chicago famous for Quantitative Finance tech?",
+                a: "Chicago hosts the Chicago Mercantile Exchange (CME) and world-renowned proprietary trading firms (Citadel, Jump Trading, IMC, DRW), driving huge demand for low-latency C++ and Python engineers."
+            }
+        ],
+    },
+    {
+        slug: "los-angeles",
+        name: "Los Angeles",
+        aliases: ["los angeles", "la", "silicon beach", "santa monica", "culver city", "ca"],
+        blurb:
+            "Los Angeles (Silicon Beach) brings together Hollywood entertainment, aerospace engineering, consumer internet, and aerospace/defense. Stretching from Santa Monica and Venice to Culver City and El Segundo.",
+        techParks: ["Silicon Beach (Santa Monica & Venice)", "Culver City Media-Tech Hub", "El Segundo Aerospace & Defense Corridor", "Playa Vista"],
+        salaryInsight: "Software Engineers in Los Angeles earn $120,000 to $225,000+ base salary, with top streaming and gaming companies paying competitive total comp.",
+        topIndustries: ["Entertainment & Streaming Tech", "Consumer Social & Gaming", "Aerospace & Defense (SpaceX)", "E-Commerce & Creator Economy"],
+        costOfLiving: "High. Monthly 1-bedroom apartment rent ranges from $2,200 to $3,500.",
+        faqs: [
+            {
+                q: "What sectors characterize Silicon Beach?",
+                a: "Streaming media, video games (Riot Games), consumer apps (Snapchat), aerospace (SpaceX), and e-commerce brands."
             }
         ],
     },

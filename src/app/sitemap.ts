@@ -1,4 +1,4 @@
-import type { MetadataRoute } from "next";
+﻿import type { MetadataRoute } from "next";
 import {
   getFastSitemapJobs,
   jobSlug,
@@ -27,6 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           en: baseUrl,
           "en-IN": baseUrl,
+          "en-US": `${baseUrl}/us`,
           "en-GB": `${baseUrl}/uk`,
           "en-AE": `${baseUrl}/ae`,
           hi: `${baseUrl}/hi`,
@@ -42,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     // Country Expansion Hubs
+    { url: `${baseUrl}/us`, lastModified: new Date(), changeFrequency: "daily", priority: 0.98 },
     { url: `${baseUrl}/ae`, lastModified: new Date(), changeFrequency: "daily", priority: 0.96 },
     { url: `${baseUrl}/uk`, lastModified: new Date(), changeFrequency: "daily", priority: 0.96 },
     // Localized Landing Pages for International Indexing
@@ -83,6 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/tools/job-scam-detector`, lastModified: new Date("2026-08-28"), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/tools/in-hand-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
     { url: `${baseUrl}/tools/dubai-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
+    { url: `${baseUrl}/tools/us-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
     { url: `${baseUrl}/tools/uk-salary-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.88 },
     { url: `${baseUrl}/tools/notice-period-calculator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
     { url: `${baseUrl}/tools/ats-keyword-scanner`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },

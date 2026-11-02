@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { AdSenseUnit } from "@/components/adsense-unit";
@@ -84,6 +84,13 @@ const tools = [
     description: "Convert AED salary to INR/USD, calculate 0% tax savings, UAE End of Service Gratuity, and realistic Dubai living expenses.",
     emoji: "🇦🇪",
     badge: "New • Expat Hub",
+  },
+  {
+    href: "/tools/us-salary-calculator",
+    title: "US Paycheck & Salary Calculator",
+    description: "Calculate US monthly & bi-weekly take-home pay, Federal brackets, FICA (Social Security & Medicare), State tax (CA, NY, WA, TX), and 401(k) deductions.",
+    emoji: "🇺🇸",
+    badge: "New • US Hub",
   },
   {
     href: "/tools/uk-salary-calculator",

@@ -65,7 +65,9 @@ export function CountrySelector({
     document.cookie = `NEXT_COUNTRY=${countryCode}; path=/; max-age=31536000; SameSite=Lax`;
 
     // Direct routing to dedicated country hubs
-    if (countryCode === "ae") {
+    if (countryCode === "us") {
+      router.push("/us");
+    } else if (countryCode === "ae") {
       router.push("/ae");
     } else if (countryCode === "gb") {
       router.push("/uk");

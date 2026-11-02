@@ -7,8 +7,8 @@ import * as gtag from "@/lib/gtag";
 
 const QUICK_FILTERS = [
   { label: "🌍 Remote Jobs", href: "/jobs/remote" },
-  { label: "🎓 Fresher Jobs", href: "/jobs/fresher" },
-  { label: "💻 Software & React", href: "/jobs/category/software-engineering" },
+  { label: "🇺🇸 US & Remote", href: "/us" },
+  { label: "🌉 Silicon Valley", href: "/jobs/location/san-francisco" },
   { label: "🤖 Data & AI", href: "/jobs/category/data-analytics" },
   { label: "☁️ DevOps & Cloud", href: "/jobs/category/devops-cloud" },
   { label: "🏙️ Bangalore Hub", href: "/jobs/location/bangalore" },

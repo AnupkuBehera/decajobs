@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   getPaymentConfig,
-  createStripeSubscriptionSession,
+  getRazorpayPlanId,
 } from "@/lib/subscription/payment-router";
 
 export async function POST(request: NextRequest) {
@@ -37,32 +37,11 @@ export async function POST(request: NextRequest) {
     }
 
     const config = getPaymentConfig(countryCode);
-    const protocol = request.headers.get("x-forwarded-proto") || "https";
-    const host = request.headers.get("host") || "decajob.com";
-    const origin = `${protocol}://${host}`;
 
-    // Handle International (Stripe)
-    if (config.provider === "stripe") {
-      const { checkoutUrl, sessionId } = await createStripeSubscriptionSession({
-        userId: user.id,
-        userEmail: user.email || "",
-        config,
-        origin,
-      });
-
-      return NextResponse.json({
-        provider: "stripe",
-        checkoutUrl,
-        sessionId,
-        currency: config.currency,
-        displayPrice: config.displayPrice,
-      });
-    }
-
-    // Handle Domestic India (Razorpay)
+    // Unified Razorpay Credentials Check
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    const planId = process.env.RAZORPAY_PLAN_ID;
+    const planId = getRazorpayPlanId(config.currency);
 
     if (!keyId || !keySecret || !planId) {
       console.warn(
@@ -93,6 +72,7 @@ export async function POST(request: NextRequest) {
           user_id: user.id,
           email: user.email || "",
           country: config.countryCode,
+          currency: config.currency,
         },
       }),
     });

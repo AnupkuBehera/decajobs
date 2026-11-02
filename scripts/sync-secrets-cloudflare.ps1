@@ -12,7 +12,7 @@ $ErrorActionPreference = "Stop"
 $envFile = Join-Path $PSScriptRoot "..\.env.local"
 if (-not (Test-Path $envFile)) {
     Write-Host "Error: .env.local not found at $envFile" -ForegroundColor Red
-    Write-Host "Please run 'node scripts/setup-payments.mjs' first to create .env.local." -ForegroundColor Yellow
+    Write-Host "Please create .env.local or run 'node scripts/setup-payments.mjs' first." -ForegroundColor Yellow
     exit 1
 }
 
@@ -20,10 +20,10 @@ $secretKeys = @(
     "RAZORPAY_KEY_ID",
     "RAZORPAY_KEY_SECRET",
     "RAZORPAY_PLAN_ID",
+    "RAZORPAY_PLAN_ID_USD",
+    "RAZORPAY_PLAN_ID_GBP",
+    "RAZORPAY_PLAN_ID_AED",
     "RAZORPAY_WEBHOOK_SECRET",
-    "STRIPE_SECRET_KEY",
-    "STRIPE_WEBHOOK_SECRET",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
     "NEXT_PUBLIC_SUPABASE_URL",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",

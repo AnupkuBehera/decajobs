@@ -1,0 +1,67 @@
+name: DecaJobs Daily Digest Cron
+
+on:
+  schedule:
+    # 01:30 UTC = 7:00 AM IST (India)
+    - cron: "30 1 * * *"
+    # 03:00 UTC = 7:00 AM GST (Dubai / Gulf)
+    - cron: "0 3 * * *"
+    # 07:00 UTC = 7:00 AM GMT / BST (United Kingdom)
+    - cron: "0 7 * * *"
+    # 11:00 UTC = 7:00 AM EDT / 6:00 AM EST (United States East)
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force send to all candidates regardless of 7 AM window"
+        required: true
+        type: boolean
+        default: true
+      test_email:
+        description: "Optional test email to send a single sample digest to"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  dispatch-digest:
+    name: Dispatch Daily 10 Curated Job Alerts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Daily Digest API Endpoint
+        run: |
+          echo "======================================================="
+          echo " Triggering DecaJobs Daily Digest API (/api/cron/daily-digest)"
+          echo "======================================================="
+
+          ENDPOINT="https://decajob.com/api/cron/daily-digest"
+          
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ENDPOINT="${ENDPOINT}?force=true"
+          fi
+
+          if [ -n "${{ inputs.test_email }}" ]; then
+            ENDPOINT="${ENDPOINT}&test_email=${{ inputs.test_email }}"
+          fi
+
+          echo "Target URL: $ENDPOINT"
+
+          RESPONSE=$(curl -s -S -w "\nHTTP_STATUS:%{http_code}" \
+            --max-time 60 \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "$ENDPOINT" || true)
+
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          BODY=$(echo "$RESPONSE" | grep -v "HTTP_STATUS")
+
+          echo "HTTP Status Code: $HTTP_STATUS"
+          echo "Response Body:"
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "SUCCESS: Daily digest cron successfully triggered."
+          else
+            echo "ERROR: Daily digest endpoint failed with status code $HTTP_STATUS."
+            exit 1
+          fi
+

@@ -63,6 +63,33 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      // Global OWASP Security Headers
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      // Staging Worker Domain De-indexing
       {
         source: "/:path*",
         has: [
@@ -78,6 +105,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // AdSense ads.txt
       {
         source: "/ads.txt",
         headers: [
@@ -99,6 +127,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Fast Cached Sitemap & Robots
       {
         source: "/sitemap.xml",
         headers: [
@@ -125,6 +154,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Homepage Edge Caching
       {
         source: "/",
         headers: [
@@ -138,8 +168,9 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Public Content & Regional Hubs Caching (including US, UK, UAE, and localized paths)
       {
-        source: "/:path(jobs|jobs/.*|tools|tools/.*|resume-templates|resume-templates/.*|pricing|about|how-it-works|faq|contact|privacy|terms|disclaimer|request-removal|accessibility|blog|blog/.*|news|news/.*|uk|ae|hi|es|ja|fr|de|pt|ko|it)",
+        source: "/:path(jobs|jobs/.*|tools|tools/.*|resume-templates|resume-templates/.*|pricing|about|how-it-works|faq|contact|privacy|terms|disclaimer|request-removal|accessibility|blog|blog/.*|news|news/.*|us|uk|ae|hi|es|ja|fr|de|pt|ko|it)",
         headers: [
           {
             key: "Cache-Control",

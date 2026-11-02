@@ -6,7 +6,7 @@
  * expansion best practices.
  */
 
-export type SupportedCountryCode = "in" | "ae" | "global" | "gb";
+export type SupportedCountryCode = "in" | "us" | "ae" | "global" | "gb";
 
 export interface CountryMarket {
   code: SupportedCountryCode;
@@ -66,6 +66,37 @@ export const COUNTRIES: Record<SupportedCountryCode, CountryMarket> = {
     visaFilterAvailable: false,
     taxNote: "New Tax Regime FY 2025-26 & EPF 12% calculation",
     expatFriendly: false,
+  },
+
+  us: {
+    code: "us",
+    name: "United States",
+    nativeName: "United States",
+    flag: "🇺🇸",
+    currency: {
+      code: "USD",
+      symbol: "$",
+      proMonthlyPrice: "$4.99",
+      proTrialDuration: "7-day free trial",
+    },
+    timeZone: "America/New_York",
+    dispatchTimeDisplay: "7:00 AM EST / 6:00 AM CST / 4:00 AM PST",
+    privacyRegulation: {
+      name: "California Consumer Privacy Act (CCPA / CPRA)",
+      shortName: "CCPA / CPRA",
+      authorityUrl: "https://oag.ca.gov/privacy/ccpa",
+    },
+    hubs: [
+      { name: "San Francisco Bay Area", slug: "san-francisco", popularIndustries: ["AI & Foundation Models", "Enterprise SaaS", "Cloud", "FinTech"] },
+      { name: "New York City", slug: "new-york", popularIndustries: ["FinTech & Quant", "Media Tech", "AdTech", "HealthTech"] },
+      { name: "Seattle", slug: "seattle", popularIndustries: ["Cloud Infrastructure", "E-Commerce", "Operating Systems"] },
+      { name: "Austin", slug: "austin", popularIndustries: ["Semiconductors", "Hardware", "Consumer Tech", "Startups"] },
+      { name: "Boston", slug: "boston", popularIndustries: ["BioTech & Genomics", "Robotics", "Deep Tech & Research"] },
+      { name: "US Remote", slug: "us-remote", popularIndustries: ["Distributed Engineering", "Product Design", "DevOps"] },
+    ],
+    visaFilterAvailable: true,
+    taxNote: "Federal W-4, FICA (Social Security 6.2% + Medicare 1.45%) & State Income Tax",
+    expatFriendly: true,
   },
 
   ae: {
@@ -157,7 +188,7 @@ export const COUNTRIES: Record<SupportedCountryCode, CountryMarket> = {
 
 export const DEFAULT_COUNTRY: SupportedCountryCode = "in";
 
-export const SUPPORTED_COUNTRIES: SupportedCountryCode[] = ["in", "ae", "global", "gb"];
+export const SUPPORTED_COUNTRIES: SupportedCountryCode[] = ["in", "us", "ae", "global", "gb"];
 
 /**
  * Get country market settings by code with automatic fallback.

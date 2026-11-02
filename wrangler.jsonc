@@ -11,6 +11,11 @@
     "binding": "ASSETS"
   },
   "workers_dev": true,
+  "triggers": {
+    "crons": [
+      "0 * * * *"
+    ]
+  },
   "routes": [
     {
       "pattern": "decajob.com",

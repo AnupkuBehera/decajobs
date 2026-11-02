@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import {
   getPaymentConfig,
   PAYMENT_CONFIGS,
-  createStripeSubscriptionSession,
+  getRazorpayPlanId,
 } from "./payment-router";
 
 describe("Unified Payment Router - getPaymentConfig", () => {
@@ -66,29 +66,29 @@ describe("Unified Payment Router - getPaymentConfig", () => {
   });
 });
 
-describe("Payment Router - createStripeSubscriptionSession fallback", () => {
+describe("Unified Payment Router - getRazorpayPlanId", () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
     process.env = { ...originalEnv };
-    delete process.env.STRIPE_SECRET_KEY;
+    process.env.RAZORPAY_PLAN_ID = "plan_default_inr_123";
   });
 
   afterEach(() => {
     process.env = originalEnv;
   });
 
-  it("returns simulated session URL when STRIPE_SECRET_KEY is not set", async () => {
-    const config = PAYMENT_CONFIGS.global;
-    const session = await createStripeSubscriptionSession({
-      userId: "user_test_123",
-      userEmail: "test@decajob.com",
-      config,
-      origin: "https://decajob.com",
-    });
+  it("returns currency-specific plan ID when configured", () => {
+    process.env.RAZORPAY_PLAN_ID_USD = "plan_usd_456";
+    process.env.RAZORPAY_PLAN_ID_GBP = "plan_gbp_789";
 
-    expect(session.sessionId).toContain("mock_stripe_");
-    expect(session.checkoutUrl).toContain("mock_stripe_sub_");
-    expect(session.checkoutUrl).toContain("trial=started");
+    expect(getRazorpayPlanId("USD")).toBe("plan_usd_456");
+    expect(getRazorpayPlanId("GBP")).toBe("plan_gbp_789");
+  });
+
+  it("falls back to default RAZORPAY_PLAN_ID when currency plan is not set", () => {
+    delete process.env.RAZORPAY_PLAN_ID_USD;
+    expect(getRazorpayPlanId("USD")).toBe("plan_default_inr_123");
+    expect(getRazorpayPlanId("INR")).toBe("plan_default_inr_123");
   });
 });

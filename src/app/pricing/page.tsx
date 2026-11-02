@@ -66,7 +66,7 @@ const pricingFaqs = [
   },
   {
     q: "What payment methods do you accept for Indian and international candidates?",
-    a: "We support both international and domestic payment gateways: For international members across the US, UK, UAE, and worldwide, we accept all international credit/debit cards, Apple Pay, and Google Pay via Stripe Checkout (billed in USD, GBP, or AED). For candidates in India, we accept UPI (Google Pay, PhonePe, Paytm), RuPay, debit/credit cards, and net banking via Razorpay (in INR).",
+    a: "All subscriptions are securely processed by Razorpay. For candidates in India, we accept UPI (Google Pay, PhonePe, Paytm), RuPay debit/credit cards, and net banking (billed in INR). For international candidates across the US, UK, UAE, and worldwide, we accept all international Visa, Mastercard, and American Express cards with automatic multi-currency billing (USD, GBP, AED, EUR).",
   },
   {
     q: "Can I get a refund?",
@@ -142,7 +142,7 @@ export default function PricingPage() {
                 <span className="text-neutral-500 ml-1 text-xs">/month</span>
               </div>
               <p className="text-[11px] text-neutral-500 mt-1">
-                🇮🇳 ₹299 (UPI/Razorpay) &bull; 🌍 $4.99 / £4.99 (Stripe/Apple Pay)
+                🇮🇳 ₹299 (UPI/RuPay) &bull; 🌍 $4.99 / £4.99 (International Cards via Razorpay)
               </p>
             </div>
             <PricingCta

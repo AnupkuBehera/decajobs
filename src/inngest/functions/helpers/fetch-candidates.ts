@@ -16,7 +16,7 @@ export interface ActiveCandidateWithProfile {
 }
 
 /**
- * Infer regional timezone based on profile location (India, UAE, UK, Global).
+ * Infer regional timezone based on profile location (India, UAE, UK, US, Global).
  */
 export function inferCandidateTimeZone(location: string): string {
   const loc = (location || "").toLowerCase();
@@ -40,6 +40,37 @@ export function inferCandidateTimeZone(location: string): string {
     loc.includes("bristol")
   ) {
     return "Europe/London"; // GMT / BST
+  }
+  if (
+    loc.includes("san francisco") ||
+    loc.includes("sf") ||
+    loc.includes("california") ||
+    loc.includes("seattle") ||
+    loc.includes("los angeles") ||
+    loc.includes("bay area") ||
+    loc.includes("silicon valley")
+  ) {
+    return "America/Los_Angeles"; // PST / PDT (UTC-8 / -7)
+  }
+  if (
+    loc.includes("austin") ||
+    loc.includes("texas") ||
+    loc.includes("chicago") ||
+    loc.includes("dallas")
+  ) {
+    return "America/Chicago"; // CST / CDT (UTC-6 / -5)
+  }
+  if (
+    loc.includes("us") ||
+    loc.includes("usa") ||
+    loc.includes("united states") ||
+    loc.includes("new york") ||
+    loc.includes("nyc") ||
+    loc.includes("boston") ||
+    loc.includes("florida") ||
+    loc.includes("miami")
+  ) {
+    return "America/New_York"; // EST / EDT (UTC-5 / -4)
   }
   return "Asia/Kolkata"; // IST (UTC+5:30) default
 }
@@ -72,10 +103,16 @@ const BATCH_SIZE = 50;
  * This is required for the cron job which runs without a user session.
  */
 function createServiceRoleClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error("Supabase credentials missing in runtime environment");
+  }
+
+  return createClient(url, key);
 }
 
 /**
@@ -170,11 +207,6 @@ export async function fetchActiveCandidates(
 
 /**
  * Generator that yields candidates in batches of BATCH_SIZE (50).
- * This allows processing candidates incrementally without loading
- * all batch results into memory at once.
- *
- * @param candidates - Full array of active candidates
- * @yields Batches of candidates, each containing up to 50 candidates
  */
 export function* batchCandidates(
   candidates: ActiveCandidateWithProfile[]

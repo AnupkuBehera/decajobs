@@ -19,7 +19,7 @@ interface MarketOption {
   flag: string;
   currency: string;
   price: string;
-  provider: "razorpay" | "stripe";
+  provider: "razorpay";
   methodsText: string;
 }
 
@@ -31,7 +31,7 @@ const MARKETS: MarketOption[] = [
     currency: "INR",
     price: "₹299",
     provider: "razorpay",
-    methodsText: "UPI (GPay, PhonePe, Paytm), RuPay & Indian Netbanking",
+    methodsText: "UPI (Google Pay, PhonePe, Paytm), RuPay & Indian Netbanking",
   },
   {
     code: "global",
@@ -40,7 +40,7 @@ const MARKETS: MarketOption[] = [
     currency: "USD",
     price: "$4.99",
     provider: "razorpay",
-    methodsText: "International Visa, Mastercard & American Express",
+    methodsText: "International Visa, Mastercard, American Express & Global Cards",
   },
   {
     code: "gb",
@@ -49,7 +49,7 @@ const MARKETS: MarketOption[] = [
     currency: "GBP",
     price: "£4.99",
     provider: "razorpay",
-    methodsText: "International Visa, Mastercard & UK Cards",
+    methodsText: "International Visa, Mastercard & UK Debit/Credit Cards",
   },
   {
     code: "ae",
@@ -58,7 +58,7 @@ const MARKETS: MarketOption[] = [
     currency: "AED",
     price: "19 AED",
     provider: "razorpay",
-    methodsText: "International Visa, Mastercard & Gulf Cards",
+    methodsText: "International Visa, Mastercard & Gulf Debit/Credit Cards",
   },
 ];
 
@@ -104,8 +104,8 @@ export default function SubscribePage() {
             }
           }
         }
-      } catch (err) {
-        console.error("Error checking subscription:", err);
+      } catch {
+        // Non-blocking check
       } finally {
         setCheckingSub(false);
       }
@@ -143,13 +143,7 @@ export default function SubscribePage() {
         return;
       }
 
-      // If Stripe international checkout, redirect to Stripe Checkout session
-      if (data.provider === "stripe" && data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-        return;
-      }
-
-      // Open Razorpay checkout for India
+      // Open Razorpay Standard Checkout modal (domestic & international)
       const options = {
         key: data.razorpayKeyId,
         subscription_id: data.subscriptionId,
@@ -284,7 +278,7 @@ export default function SubscribePage() {
           <Card padding="lg" className="mt-6 text-left">
             <div className="text-center mb-6">
               <div className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 mb-2">
-                {currentMarket.provider === "stripe" ? "🌍 International Subscription" : "🇮🇳 Domestic India Plan"}
+                {currentMarket.code === "in" ? "🇮🇳 Domestic India Plan" : "🌍 Global & International Plan"}
               </div>
               <p className="mt-1">
                 <span className="text-4xl font-extrabold text-neutral-900">
@@ -299,7 +293,7 @@ export default function SubscribePage() {
 
             <div className="mb-6 rounded-xl border border-neutral-100 bg-neutral-50/70 p-3.5 text-xs text-neutral-600 space-y-1">
               <p className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <span>{currentMarket.provider === "stripe" ? "💳 Stripe Checkout" : "⚡ Razorpay"}</span>
+                <span>⚡ Secure Razorpay Checkout</span>
                 <span className="text-[10px] text-neutral-400 font-normal">| Accepted Methods</span>
               </p>
               <p>{currentMarket.methodsText}</p>
@@ -336,9 +330,7 @@ export default function SubscribePage() {
             </Button>
 
             <p className="mt-4 text-center text-xs text-neutral-500">
-              {currentMarket.provider === "stripe"
-                ? "🔒 256-bit encrypted international checkout via Stripe. Apple Pay & credit/debit cards accepted."
-                : "🔒 256-bit encrypted domestic checkout via Razorpay. UPI, RuPay & Netbanking accepted."}
+              🔒 256-bit encrypted secure checkout via Razorpay. UPI, RuPay &amp; International Credit/Debit Cards accepted.
             </p>
           </Card>
         </div>
