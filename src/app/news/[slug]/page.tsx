@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { AdSenseUnit } from "@/components/adsense-unit";
 import { getAllNews, getNewsBySlug } from "@/lib/news/daily-news";
@@ -18,7 +18,15 @@ export async function generateMetadata({
 }: NewsArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = getNewsBySlug(slug);
-  if (!article) return { title: "Article Not Found | DecaJobs News" };
+  if (!article) {
+    return {
+      title: "Tech & Hiring News | DecaJobs",
+      description: "Latest verified tech hiring trends, compensation telemetry, and career news.",
+      alternates: {
+        canonical: "https://decajob.com/news",
+      },
+    };
+  }
 
   return {
     title: `${article.title} | DecaJobs Tech & Hiring News`,
@@ -105,7 +113,9 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
   const { slug } = await params;
   const article = getNewsBySlug(slug);
 
-  if (!article) notFound();
+  if (!article) {
+    permanentRedirect("/news");
+  }
 
   const allNews = getAllNews();
   const relatedNews = allNews

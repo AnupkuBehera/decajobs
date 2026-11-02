@@ -125,4 +125,98 @@ describe("Middleware - workers.dev domain handling and de-indexing", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("location")).toBeNull();
   });
+
+  // Google Search Console (GSC) Resolution Tests
+  describe("GSC Indexing Validation & Canonicalization", () => {
+    it("redirects legacy parameterized /resume-tools URLs (119 GSC URLs) to /tools/resume-matcher", async () => {
+      const req = new NextRequest(
+        "https://decajob.com/resume-tools?tab=builder&role=Engineering+Manager&company=GitLab",
+        {
+          headers: { host: "decajob.com" },
+        }
+      );
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/tools/resume-matcher");
+    });
+
+    it("redirects unauthenticated root /resume-tools to /tools/resume-matcher", async () => {
+      const req = new NextRequest("https://decajob.com/resume-tools", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/tools/resume-matcher");
+    });
+
+    it("redirects /jobs?remote=true to canonical /jobs/remote", async () => {
+      const req = new NextRequest("https://decajob.com/jobs?remote=true", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/jobs/remote");
+    });
+
+    it("redirects /jobs?remote=1 to canonical /jobs/remote", async () => {
+      const req = new NextRequest("https://decajob.com/jobs?remote=1", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/jobs/remote");
+    });
+
+    it("redirects city search /jobs?q=Bangalore to canonical /jobs/location/bangalore", async () => {
+      const req = new NextRequest("https://decajob.com/jobs?q=Bangalore", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/jobs/location/bangalore");
+    });
+
+    it("redirects city search /jobs?q=Bengaluru to canonical /jobs/location/bangalore", async () => {
+      const req = new NextRequest("https://decajob.com/jobs?q=Bengaluru", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/jobs/location/bangalore");
+    });
+
+    it("redirects US city search /jobs?q=Seattle to canonical /jobs/location/seattle", async () => {
+      const req = new NextRequest("https://decajob.com/jobs?q=Seattle", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/jobs/location/seattle");
+    });
+
+    it("canonicalizes /?ref=producthunt to clean homepage /", async () => {
+      const req = new NextRequest("https://decajob.com/?ref=producthunt", {
+        headers: { host: "decajob.com" },
+      });
+
+      const res = await middleware(req);
+
+      expect(res.status).toBe(301);
+      expect(res.headers.get("location")).toBe("https://decajob.com/");
+    });
+  });
 });

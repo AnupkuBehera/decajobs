@@ -3,12 +3,62 @@ import { updateSessionAndGetUser } from "@/lib/supabase/middleware";
 import { cleanPathname } from "@/lib/i18n/utils";
 import { isValidLocale } from "@/lib/i18n/config";
 
-
 /**
  * Subpaths under /[lang]/ that have dedicated localized page implementations.
  * e.g., /[lang]/pricing has its own dedicated page.
  */
 const DEDICATED_LOCALIZED_SUBPATHS = ["pricing"];
+
+/**
+ * Fast lookup map for city query normalization.
+ * Redirects parameter queries like /jobs?q=Bangalore directly to dedicated SEO hubs like /jobs/location/bangalore.
+ */
+const CITY_SLUG_BY_ALIAS: Record<string, string> = {
+  bangalore: "bangalore",
+  bengaluru: "bangalore",
+  blr: "bangalore",
+  mumbai: "mumbai",
+  bombay: "mumbai",
+  delhi: "delhi",
+  ncr: "delhi",
+  gurgaon: "delhi",
+  gurugram: "delhi",
+  noida: "delhi",
+  "new delhi": "delhi",
+  hyderabad: "hyderabad",
+  hitech: "hyderabad",
+  gachibowli: "hyderabad",
+  chennai: "chennai",
+  madras: "chennai",
+  pune: "pune",
+  puna: "pune",
+  bhubaneswar: "bhubaneswar",
+  bbsr: "bhubaneswar",
+  odisha: "bhubaneswar",
+  infocity: "bhubaneswar",
+  kolkata: "kolkata",
+  calcutta: "kolkata",
+  ahmedabad: "ahmedabad",
+  amdavad: "ahmedabad",
+  chandigarh: "chandigarh",
+  tricity: "chandigarh",
+  mohali: "chandigarh",
+  kochi: "kochi",
+  cochin: "kochi",
+  ernakulam: "kochi",
+  jaipur: "jaipur",
+  "pink city": "jaipur",
+  indore: "indore",
+  trivandrum: "trivandrum",
+  thiruvananthapuram: "trivandrum",
+  technopark: "trivandrum",
+  seattle: "seattle",
+  austin: "austin",
+  "san francisco": "san-francisco",
+  sf: "san-francisco",
+  "new york": "new-york",
+  nyc: "new-york",
+};
 
 /**
  * Protected routes that require authentication.
@@ -109,18 +159,46 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 5. Canonicalize parameterized /resume-tools URLs (301 Permanent Redirect to /tools/resume-matcher)
-  // Collapses all 41 GSC crawler parameter URLs (tab=builder, role=..., company=..., desc=...)
-  // into the canonical public AI tool, cleanly resolving the "Blocked by robots.txt" indexing issue.
-  if (pathname === "/resume-tools" && request.nextUrl.search) {
-    return NextResponse.redirect(new URL("/tools/resume-matcher", request.url), 301);
+  // Check auth session cookie
+  const hasAuthCookie = request.cookies.getAll().some(
+    (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
+  );
+
+  // 5. Canonicalize /resume-tools URLs (301 Permanent Redirect to /tools/resume-matcher)
+  // Collapses all 119 legacy GSC crawler parameter URLs (tab=builder, role=..., company=..., desc=...)
+  // and unauthenticated visits into the canonical public AI tool, cleanly resolving "Blocked by robots.txt".
+  if (pathname === "/resume-tools" || cleanPathname(pathname) === "/resume-tools") {
+    if (request.nextUrl.search || !hasAuthCookie) {
+      return NextResponse.redirect(new URL("/tools/resume-matcher", request.url), 301);
+    }
+  }
+
+  // 6. Canonicalize referral tracking parameters on homepage (301 Permanent Redirect to clean /)
+  // Resolves GSC "Alternate page with proper canonical tag" for campaign URLs like /?ref=producthunt
+  if ((pathname === "/" || cleanPathname(pathname) === "/") && request.nextUrl.searchParams.has("ref")) {
+    return NextResponse.redirect(new URL("/", request.url), 301);
+  }
+
+  // 7. Canonicalize /jobs filter parameters to high-intent SEO hubs (301 Permanent Redirect)
+  // Resolves /jobs?remote=true -> /jobs/remote and /jobs?q=Bangalore -> /jobs/location/bangalore
+  if (pathname === "/jobs" || cleanPathname(pathname) === "/jobs") {
+    const searchParams = request.nextUrl.searchParams;
+
+    if (searchParams.get("remote") === "true" || searchParams.get("remote") === "1") {
+      return NextResponse.redirect(new URL("/jobs/remote", request.url), 301);
+    }
+
+    const q = searchParams.get("q")?.trim().toLowerCase();
+    if (q) {
+      const citySlug = CITY_SLUG_BY_ALIAS[q];
+      if (citySlug) {
+        return NextResponse.redirect(new URL(`/jobs/location/${citySlug}`, request.url), 301);
+      }
+    }
   }
 
   const isProtected = matchesRoute(pathname, protectedRoutes);
   const isLoginPage = cleanPathname(pathname) === "/login" || pathname === "/login";
-  const hasAuthCookie = request.cookies.getAll().some(
-    (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
-  );
 
   let response: NextResponse = NextResponse.next({ request });
   let user = null;
