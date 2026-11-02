@@ -221,14 +221,25 @@ function getExpiredJobRedirectUrl(slug: string): string {
     return "/jobs";
 }
 
+function isNextRedirect(error: unknown): boolean {
+    return (
+        typeof error === "object" &&
+        error !== null &&
+        "digest" in error &&
+        typeof (error as any).digest === "string" &&
+        (error as any).digest.startsWith("NEXT_REDIRECT")
+    );
+}
+
 export async function generateMetadata({ params }: JobDetailPageProps): Promise<Metadata> {
     const { slug } = await params;
-    const jobs = await getPublicJobs();
-    const job = jobs.find((j) => jobSlug(j) === slug);
+    try {
+        const jobs = await getPublicJobs();
+        const job = jobs.find((j) => jobSlug(j) === slug);
 
-    if (!job) {
-        permanentRedirect(getExpiredJobRedirectUrl(slug));
-    }
+        if (!job) {
+            permanentRedirect(getExpiredJobRedirectUrl(slug));
+        }
 
     return {
         title: `${job.title} at ${job.company} - Apply Now | DecaJobs`,
@@ -250,12 +261,17 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
             type: "website",
         },
     };
+    } catch (error) {
+        if (isNextRedirect(error)) throw error;
+        permanentRedirect(getExpiredJobRedirectUrl(slug));
+    }
 }
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const { slug } = await params;
-    const jobs = await getPublicJobs();
-    const job = jobs.find((j) => jobSlug(j) === slug);
+    try {
+        const jobs = await getPublicJobs();
+        const job = jobs.find((j) => jobSlug(j) === slug);
 
     // Expired or missing job: Issue HTTP 301/308 Permanent Redirect to relevant category hub.
     // Per Google Search Console guidelines, redirecting rotated job listings converts them
@@ -577,5 +593,9 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
             />
         </div>
     );
+    } catch (error) {
+        if (isNextRedirect(error)) throw error;
+        permanentRedirect(getExpiredJobRedirectUrl(slug));
+    }
 }
 

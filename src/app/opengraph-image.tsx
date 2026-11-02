@@ -150,6 +150,11 @@ export default async function OGImage() {
         </p>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      headers: {
+        "X-Robots-Tag": "noindex, noarchive",
+      },
+    }
   );
 }

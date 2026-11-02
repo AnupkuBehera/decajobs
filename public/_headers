@@ -1,0 +1,21 @@
+/site.webmanifest
+  X-Robots-Tag: noindex, noarchive
+
+/favicon.ico
+  X-Robots-Tag: noindex, noarchive
+
+/apple-touch-icon.png
+  X-Robots-Tag: noindex, noarchive
+
+/web-app-manifest-192x192.png
+  X-Robots-Tag: noindex, noarchive
+
+/web-app-manifest-512x512.png
+  X-Robots-Tag: noindex, noarchive
+
+/favicon-96x96.png
+  X-Robots-Tag: noindex, noarchive
+
+/favicon.svg
+  X-Robots-Tag: noindex, noarchive
+

@@ -54,11 +54,6 @@ const nextConfig: NextConfig = {
         destination: "/resume-templates",
         permanent: true,
       },
-      {
-        source: "/mock-interview",
-        destination: "/tools/mock-interview",
-        permanent: true,
-      },
     ];
   },
   async headers() {
@@ -102,6 +97,44 @@ const nextConfig: NextConfig = {
           {
             key: "X-Robots-Tag",
             value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
+      // Media, OpenGraph Images, Manifest, and Static Assets De-indexing
+      // Informs Googlebot that these binary/meta assets are NOT web pages to be indexed in Page Indexing
+      {
+        source: "/opengraph-image",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/site.webmanifest",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/favicon.ico",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/_next/static/media/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, noarchive",
           },
         ],
       },

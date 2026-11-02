@@ -8,95 +8,137 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://decajob.com/terms",
   },
+  openGraph: {
+    title: "Terms & Conditions - DecaJobs",
+    description:
+      "Read the DecaJobs terms and conditions. Understand your rights and responsibilities when using our AI-powered career enablement platform.",
+    url: "https://decajob.com/terms",
+    siteName: "DecaJobs",
+    type: "website",
+    images: [
+      {
+        url: "https://decajob.com/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "DecaJobs Terms & Conditions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms & Conditions - DecaJobs",
+    description:
+      "Read the DecaJobs terms and conditions. Understand your rights and responsibilities when using our AI-powered career enablement platform.",
+    images: ["https://decajob.com/opengraph-image"],
+  },
+};
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Terms & Conditions",
+  url: "https://decajob.com/terms",
+  description:
+    "Terms and conditions governing the use of DecaJobs AI-powered job matching and career platform.",
+  publisher: {
+    "@type": "Organization",
+    name: "DecaJobs",
+    url: "https://decajob.com",
+  },
+  inLanguage: "en-US",
 };
 
 export default function TermsPage() {
   return (
     <div className="py-10 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(termsSchema) }}
+      />
       <div className="mx-auto max-w-3xl">
         <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
 
         <div className="prose prose-neutral prose-sm sm:prose-base">
           <h1>Terms &amp; Conditions</h1>
-        <p className="text-neutral-500 text-sm">Last updated: June 10, 2026</p>
+          <p className="text-neutral-500 text-sm">Last updated: June 10, 2026</p>
 
-        <h2>1. Acceptance of Terms</h2>
-        <p>
-          By accessing and using DecaJobs (&quot;the Service&quot;), you agree to be bound by these Terms &amp; Conditions. If you do not agree with any part of these terms, you may not use the Service.
-        </p>
+          <h2>1. Acceptance of Terms</h2>
+          <p>
+            By accessing and using DecaJobs (&quot;the Service&quot;), you agree to be bound by these Terms &amp; Conditions. If you do not agree with any part of these terms, you may not use the Service.
+          </p>
 
-        <h2>2. Description of Service &amp; Business Classification</h2>
-        <p>
-          DecaJobs is a digital software-as-a-service (SaaS) and career enablement technology platform. The Service provides AI-powered resume analysis, interview preparation modules, career guidance tools, and personalized daily job recommendation digests aggregating publicly available job listings.
-        </p>
-        <p>
-          <strong>Non-Recruitment &amp; Non-Outsourcing Declaration:</strong> DecaJobs is <strong>NOT</strong> an employment agency, recruitment agency, job placement consultancy, staffing firm, or manpower outsourcing contractor. DecaJobs does not act as an employer representative, does not recruit personnel on behalf of third parties, does not outsource labor or contractors, and does not charge any fees or commissions for employment placement or hiring outcomes. All job listings featured on the Service link candidates directly to official third-party employer career websites and applicant tracking systems (ATS).
-        </p>
+          <h2>2. Description of Service &amp; Business Classification</h2>
+          <p>
+            DecaJobs is a digital software-as-a-service (SaaS) and career enablement technology platform. The Service provides AI-powered resume analysis, interview preparation modules, career guidance tools, and personalized daily job recommendation digests aggregating publicly available job listings.
+          </p>
+          <p>
+            <strong>Non-Recruitment &amp; Non-Outsourcing Declaration:</strong> DecaJobs is <strong>NOT</strong> an employment agency, recruitment agency, job placement consultancy, staffing firm, or manpower outsourcing contractor. DecaJobs does not act as an employer representative, does not recruit personnel on behalf of third parties, does not outsource labor or contractors, and does not charge any fees or commissions for employment placement or hiring outcomes. All job listings featured on the Service link candidates directly to official third-party employer career websites and applicant tracking systems (ATS).
+          </p>
 
-        <h2>3. User Accounts</h2>
-        <ul>
-          <li>You must provide a valid email address to create an account</li>
-          <li>You are responsible for maintaining the security of your account</li>
-          <li>You must be at least 16 years old to use the Service</li>
-          <li>One account per person; duplicate accounts may be terminated</li>
-        </ul>
+          <h2>3. User Accounts</h2>
+          <ul>
+            <li>You must provide a valid email address to create an account</li>
+            <li>You are responsible for maintaining the security of your account</li>
+            <li>You must be at least 16 years old to use the Service</li>
+            <li>One account per person; duplicate accounts may be terminated</li>
+          </ul>
 
-        <h2>4. For Candidates</h2>
-        <ul>
-          <li>Profile information must be accurate and truthful</li>
-          <li>Job matches are recommendations only; DecaJobs does not guarantee employment</li>
-          <li>We are not responsible for the accuracy of external job listings</li>
-          <li>You may unsubscribe from daily emails at any time</li>
-        </ul>
+          <h2>4. For Candidates</h2>
+          <ul>
+            <li>Profile information must be accurate and truthful</li>
+            <li>Job matches are recommendations only; DecaJobs does not guarantee employment</li>
+            <li>We are not responsible for the accuracy of external job listings</li>
+            <li>You may unsubscribe from daily emails at any time</li>
+          </ul>
 
-        <h2>5. For Employers</h2>
-        <ul>
-          <li>Job postings must be for legitimate, real positions</li>
-          <li>Listings must not contain discriminatory language</li>
-          <li>Spam, misleading, or fraudulent job posts will be removed</li>
-          <li>Maximum 10 job posts per 24-hour period</li>
-          <li>Job listings expire after 30 days unless renewed</li>
-        </ul>
+          <h2>5. For Employers</h2>
+          <ul>
+            <li>Job postings must be for legitimate, real positions</li>
+            <li>Listings must not contain discriminatory language</li>
+            <li>Spam, misleading, or fraudulent job posts will be removed</li>
+            <li>Maximum 10 job posts per 24-hour period</li>
+            <li>Job listings expire after 30 days unless renewed</li>
+          </ul>
 
-        <h2>6. Subscription and Payments</h2>
-        <ul>
-          <li>New users receive a 7-day free trial</li>
-          <li>After the trial, a paid subscription is required for continued daily job matching</li>
-          <li>Subscription fees are billed monthly and are non-refundable</li>
-          <li>You may cancel your subscription at any time; access continues until the end of the billing period</li>
-        </ul>
+          <h2>6. Subscription and Payments</h2>
+          <ul>
+            <li>New users receive a 7-day free trial</li>
+            <li>After the trial, a paid subscription is required for continued daily job matching</li>
+            <li>Subscription fees are billed monthly and are non-refundable</li>
+            <li>You may cancel your subscription at any time; access continues until the end of the billing period</li>
+          </ul>
 
-        <h2>7. Intellectual Property</h2>
-        <p>
-          The Service, including its design, algorithms, code, and content, is the intellectual property of DecaJobs. You may not copy, modify, distribute, or reverse-engineer any part of the Service.
-        </p>
+          <h2>7. Intellectual Property</h2>
+          <p>
+            The Service, including its design, algorithms, code, and content, is the intellectual property of DecaJobs. You may not copy, modify, distribute, or reverse-engineer any part of the Service.
+          </p>
 
-        <h2>8. Limitation of Liability</h2>
-        <p>
-          DecaJobs is provided &quot;as is&quot; without warranties of any kind. We are not liable for:
-        </p>
-        <ul>
-          <li>The accuracy or availability of external job listings</li>
-          <li>Any employment decisions made based on our recommendations</li>
-          <li>Service interruptions or data loss</li>
-          <li>Actions of employers or third-party job platforms</li>
-        </ul>
+          <h2>8. Limitation of Liability</h2>
+          <p>
+            DecaJobs is provided &quot;as is&quot; without warranties of any kind. We are not liable for:
+          </p>
+          <ul>
+            <li>The accuracy or availability of external job listings</li>
+            <li>Any employment decisions made based on our recommendations</li>
+            <li>Service interruptions or data loss</li>
+            <li>Actions of employers or third-party job platforms</li>
+          </ul>
 
-        <h2>9. Termination</h2>
-        <p>
-          We reserve the right to suspend or terminate accounts that violate these terms, post fraudulent content, or abuse the Service.
-        </p>
+          <h2>9. Termination</h2>
+          <p>
+            We reserve the right to suspend or terminate accounts that violate these terms, post fraudulent content, or abuse the Service.
+          </p>
 
-        <h2>10. Governing Law</h2>
-        <p>
-          These terms are governed by the laws of India. Any disputes shall be resolved in the courts of competent jurisdiction.
-        </p>
+          <h2>10. Governing Law</h2>
+          <p>
+            These terms are governed by the laws of India. Any disputes shall be resolved in the courts of competent jurisdiction.
+          </p>
 
-        <h2>11. Contact</h2>
-        <p>
-          For questions about these Terms, contact us at{" "}
-          <a href="mailto:legal@decajob.com">legal@decajob.com</a>.
-        </p>
+          <h2>11. Contact</h2>
+          <p>
+            For questions about these Terms, contact us at{" "}
+            <a href="mailto:legal@decajob.com">legal@decajob.com</a>.
+          </p>
         </div>
       </div>
     </div>
