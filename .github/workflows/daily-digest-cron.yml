@@ -34,14 +34,32 @@ jobs:
           echo " Triggering DecaJobs Daily Digest API (/api/cron/daily-digest)"
           echo "======================================================="
 
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "::error::CRON_SECRET repository secret is missing or empty!"
+            echo "=========================================================================="
+            echo "ACTION REQUIRED: Please configure CRON_SECRET in GitHub Repository Secrets:"
+            echo "1. Go to https://github.com/${{ github.repository }}/settings/secrets/actions"
+            echo "2. Click 'New repository secret'"
+            echo "3. Name: CRON_SECRET"
+            echo "4. Value: deca_cron_a7f92b4c81e345d096b2e1f5789a4c3d"
+            echo "=========================================================================="
+            exit 1
+          fi
+
           ENDPOINT="https://decajob.com/api/cron/daily-digest"
-          
+          PARAMS=()
+
           if [ "${{ inputs.force }}" = "true" ]; then
-            ENDPOINT="${ENDPOINT}?force=true"
+            PARAMS+=("force=true")
           fi
 
           if [ -n "${{ inputs.test_email }}" ]; then
-            ENDPOINT="${ENDPOINT}&test_email=${{ inputs.test_email }}"
+            PARAMS+=("test_email=${{ inputs.test_email }}")
+          fi
+
+          if [ ${#PARAMS[@]} -gt 0 ]; then
+            QUERY_STRING=$(IFS='&'; echo "${PARAMS[*]}")
+            ENDPOINT="${ENDPOINT}?${QUERY_STRING}"
           fi
 
           echo "Target URL: $ENDPOINT"
@@ -64,4 +82,3 @@ jobs:
             echo "ERROR: Daily digest endpoint failed with status code $HTTP_STATUS."
             exit 1
           fi
-

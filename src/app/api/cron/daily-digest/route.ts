@@ -11,8 +11,14 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("Authorization");
+  const querySecret =
+    request.nextUrl.searchParams.get("secret") ||
+    request.nextUrl.searchParams.get("key");
   const cronSecret = process.env.CRON_SECRET;
-  const isAuthorizedCron = cronSecret && authHeader === `Bearer ${cronSecret}`;
+
+  const isBearerMatch = Boolean(cronSecret && authHeader === `Bearer ${cronSecret}`);
+  const isQueryMatch = Boolean(cronSecret && querySecret === cronSecret);
+  const isAuthorizedCron = isBearerMatch || isQueryMatch;
 
   let isAdmin = false;
   if (!isAuthorizedCron) {
@@ -26,11 +32,24 @@ export async function GET(request: NextRequest) {
 
   const testEmail = request.nextUrl.searchParams.get("test_email");
 
-  // Allow access if authorized via Bearer CRON_SECRET, admin session, or test mode with valid format
+  // If server has no CRON_SECRET configured and request is not admin session or test mode
+  if (!cronSecret && !isAdmin && !testEmail) {
+    return NextResponse.json(
+      {
+        error: "Server configuration error: CRON_SECRET is not configured on Cloudflare Workers.",
+        hint: "Run 'npx wrangler secret put CRON_SECRET' or configure in Cloudflare Dashboard.",
+      },
+      { status: 500 }
+    );
+  }
+
+  // Reject unauthorized calls if not cron, not admin, and not test mode
   if (!isAuthorizedCron && !isAdmin) {
     if (!testEmail) {
       return NextResponse.json(
-        { error: "Unauthorized. Provide Authorization: Bearer <CRON_SECRET> or log in as admin." },
+        {
+          error: "Unauthorized. Provide Authorization: Bearer <CRON_SECRET> header, ?secret=<CRON_SECRET> query param, or log in as admin.",
+        },
         { status: 401 }
       );
     }

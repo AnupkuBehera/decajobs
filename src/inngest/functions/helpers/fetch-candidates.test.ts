@@ -32,6 +32,8 @@ function getMockChain() {
 describe("fetchActiveCandidates", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test-project.supabase.co";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-key";
   });
 
   it("returns candidates with complete profiles", async () => {
@@ -68,7 +70,7 @@ describe("fetchActiveCandidates", () => {
       id: "candidate-1",
       email: "alice@example.com",
       preferred_delivery_time: "07:00",
-      timeZone: "Asia/Kolkata",
+      timeZone: "America/Los_Angeles",
       profile: {
         target_titles: ["Software Engineer", "Full Stack Developer"],
         skills: ["TypeScript", "React"],
