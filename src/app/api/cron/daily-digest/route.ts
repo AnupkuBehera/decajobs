@@ -56,6 +56,26 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Pre-flight check for database credentials
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey =
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        {
+          authenticated: true,
+          status: "misconfigured",
+          error: "Database credentials missing in runtime environment",
+          details:
+            "NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not configured on Cloudflare Workers.",
+          hint: "Upload them to Cloudflare Workers via 'npx wrangler secret put <KEY>' or run scripts/sync-secrets-cloudflare.ps1.",
+        },
+        { status: 503 }
+      );
+    }
+
     // 1. One-click Live Test Mode (Sends an immediate 10-job digest to a specified test address)
     if (testEmail) {
       const emailTrimmed = testEmail.trim().toLowerCase();
@@ -103,14 +123,8 @@ export async function GET(request: NextRequest) {
     // Preload eligible database jobs once to avoid redundant queries across candidate batch
     let preloadedDbJobs: any[] = [];
     try {
-      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const key =
-        process.env.SUPABASE_SERVICE_ROLE_KEY ||
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-      if (url && key) {
-        const supabase = createClient(url, key);
-        preloadedDbJobs = await fetchEligibleJobs(supabase);
-      }
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      preloadedDbJobs = await fetchEligibleJobs(supabase);
     } catch (preloadErr: any) {
       console.warn("[daily-digest] Job preloading notice:", preloadErr.message);
     }

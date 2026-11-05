@@ -30,6 +30,8 @@ describe("Daily Digest Cron API (GET /api/cron/daily-digest)", () => {
     vi.clearAllMocks();
     process.env = { ...originalEnv };
     delete process.env.CRON_SECRET;
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test-project.supabase.co";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-key";
     (verifyAdmin as any).mockResolvedValue(null);
   });
 
@@ -59,6 +61,26 @@ describe("Daily Digest Cron API (GET /api/cron/daily-digest)", () => {
     expect(res.status).toBe(401);
     const json = await res.json();
     expect(json.error).toContain("Unauthorized");
+  });
+
+  it("returns 503 when Supabase database credentials are not configured", async () => {
+    process.env.CRON_SECRET = "test-secret-123";
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    const req = new NextRequest("https://decajob.com/api/cron/daily-digest", {
+      headers: {
+        authorization: "Bearer test-secret-123",
+      },
+    });
+
+    const res = await GET(req);
+    expect(res.status).toBe(503);
+    const json = await res.json();
+    expect(json.authenticated).toBe(true);
+    expect(json.status).toBe("misconfigured");
+    expect(json.error).toContain("Database credentials missing");
   });
 
   it("authorizes successfully with valid Bearer token and runs batch digest", async () => {
