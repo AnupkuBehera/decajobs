@@ -11,12 +11,23 @@ export interface LoginState {
   error?: string;
 }
 
+function getAdminEmails(): string[] {
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
+  if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
+  return adminEmails;
+}
+
 export async function signInWithPassword(
   _prevState: LoginState | null,
   formData: FormData
 ): Promise<LoginState> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const redirectTo = formData.get("redirectTo") as string | null;
 
   if (!email || typeof email !== "string") {
     return { success: false, error: "Please enter a valid email address." };
@@ -26,16 +37,25 @@ export async function signInWithPassword(
     return { success: false, error: "Please enter your password." };
   }
 
+  const emailTrimmed = email.trim().toLowerCase();
+  const isAdmin = getAdminEmails().includes(emailTrimmed);
+
   let success = false;
   try {
     const supabase = await createClient();
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: emailTrimmed,
       password,
     });
 
     if (error) {
       console.error("[Login] signInWithPassword error:", error.message);
+      if (error.message.includes("Invalid login credentials")) {
+        return {
+          success: false,
+          error: "Invalid email or password. If you haven't set a password yet, please use 'Sign in with Magic Link instead'.",
+        };
+      }
       return { success: false, error: error.message };
     }
     success = true;
@@ -48,7 +68,13 @@ export async function signInWithPassword(
   }
 
   if (success) {
-    redirect("/dashboard");
+    if (redirectTo && redirectTo.startsWith("/") && !redirectTo.startsWith("//")) {
+      redirect(redirectTo);
+    } else if (isAdmin) {
+      redirect("/admin");
+    } else {
+      redirect("/dashboard");
+    }
   }
 
   return { success: false };
@@ -70,45 +96,56 @@ export async function signInWithMagicLink(
     return { success: false, error: "Please enter a valid email address." };
   }
 
+  const emailTrimmed = email.trim().toLowerCase();
+  const isAdmin = getAdminEmails().includes(emailTrimmed);
+
   try {
-    const adminSupabase = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabaseUrl =
+      process.env.NEXT_PUBLIC_SUPABASE_URL || "https://tpnmxxwplvsbdypxhuys.supabase.co";
+    const supabaseKey =
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      "";
+
+    const adminSupabase = createAdminClient(supabaseUrl, supabaseKey);
     
     const headersList = await headers();
     const origin = headersList.get("origin") || headersList.get("x-forwarded-host") 
       ? `${headersList.get("x-forwarded-proto") || "http"}://${headersList.get("x-forwarded-host")}`
       : headersList.get("host") 
         ? `${headersList.get("x-forwarded-proto") || "http"}://${headersList.get("host")}`
-        : "http://localhost:3000";
+        : "https://decajob.com";
 
     // 1. Check if candidate already exists in the database
     const { data: candidate } = await adminSupabase
       .from("candidates")
       .select("id")
-      .eq("email", email)
+      .eq("email", emailTrimmed)
       .maybeSingle();
 
     // 2. If candidate doesn't exist, create user account in Supabase auth with auto-confirmed email
     if (!candidate) {
       const { error: createError } = await adminSupabase.auth.admin.createUser({
-        email,
+        email: emailTrimmed,
         email_confirm: true,
       });
 
-      if (createError) {
+      if (createError && !createError.message.includes("already exists")) {
         console.error("[Login] Admin createUser error:", createError.message);
         return { success: false, error: createError.message };
       }
     }
 
     // 3. Generate passwordless magic link programmatically
+    const callbackRedirect = isAdmin
+      ? `${origin}/auth/callback?redirectTo=/admin`
+      : `${origin}/auth/callback`;
+
     const { data: linkData, error: linkError } = await adminSupabase.auth.admin.generateLink({
       type: "magiclink",
-      email,
+      email: emailTrimmed,
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: callbackRedirect,
       },
     });
 
@@ -123,7 +160,7 @@ export async function signInWithMagicLink(
     }
 
     // 4. Send the magic link securely via Resend
-    await sendMagicLink(email, loginUrl);
+    await sendMagicLink(emailTrimmed, loginUrl);
 
     return { success: true };
   } catch (err: any) {

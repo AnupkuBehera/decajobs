@@ -22,6 +22,7 @@ export default function LoginClient() {
   );
   const [oauthLoading, setOauthLoading] = useState(false);
   const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "";
 
   const handleGoogleCredentialResponse = async (response: any) => {
     setOauthLoading(true);
@@ -137,6 +138,7 @@ export default function LoginClient() {
           <Card padding="lg">
             {loginMode === "magic-link" ? (
               <form action={formAction} className="space-y-4" aria-label="Sign in with email link">
+                {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
                 <Input
                   label="Email address"
                   name="email"
@@ -172,6 +174,7 @@ export default function LoginClient() {
               </form>
             ) : (
               <form action={passwordFormAction} className="space-y-4" aria-label="Sign in with password">
+                {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
                 <Input
                   label="Email address"
                   name="email"

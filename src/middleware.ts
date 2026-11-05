@@ -153,7 +153,7 @@ export async function middleware(request: NextRequest) {
   // Preserves OAuth/auth callbacks (code, error) while stripping crawler/promotional params (role, company, city, alert, etc.)
   if ((pathname === "/login" || cleanPathname(pathname) === "/login") && request.nextUrl.search) {
     const searchParams = request.nextUrl.searchParams;
-    const isAuthCallback = searchParams.has("code") || searchParams.has("error");
+    const isAuthCallback = searchParams.has("code") || searchParams.has("error") || searchParams.has("redirectTo");
     if (!isAuthCallback) {
       return NextResponse.redirect(new URL(cleanPathname(pathname), request.url), 301);
     }
@@ -228,8 +228,19 @@ export async function middleware(request: NextRequest) {
     return redirectRes;
   }
 
-  // Redirect authenticated users away from login page to dashboard
+  // Redirect authenticated users away from login page to admin or dashboard
   if (user && isLoginPage) {
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
+    if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
+
+    const isAdmin = user.email && adminEmails.includes(user.email.toLowerCase());
+    if (isAdmin) {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 

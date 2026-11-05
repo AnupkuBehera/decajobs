@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 /**
  * Auth callback route handler.
  * Exchanges the auth code for a session, then redirects based on profile status:
+ * - Admin users → /admin
  * - If `redirectTo` param is present and user has a profile → use that redirect
  * - Profile exists → /dashboard (returning user)
  * - No profile → /profile (new user setup)
@@ -20,26 +21,30 @@ export async function GET(request: Request) {
 
   const cookieStore = await cookies();
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // Ignore errors when called from Server Component context
-          }
-        },
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://tpnmxxwplvsbdypxhuys.supabase.co";
+  const supabaseKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_KEY ||
+    "";
+
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
       },
-    }
-  );
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
+        } catch {
+          // Ignore errors when called from Server Component context
+        }
+      },
+    },
+  });
 
   // Exchange the code for a session
   const { error: exchangeError } =
@@ -56,6 +61,19 @@ export async function GET(request: Request) {
 
   if (!user) {
     return NextResponse.redirect(`${origin}/login?error=no_user`);
+  }
+
+  // Check if authenticated user is an administrator
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  if (!adminEmails.includes("anup4503@gmail.com")) adminEmails.push("anup4503@gmail.com");
+  if (!adminEmails.includes("anupkist@gmail.com")) adminEmails.push("anupkist@gmail.com");
+
+  const isAdmin = user.email && adminEmails.includes(user.email.toLowerCase());
+  if (isAdmin) {
+    return NextResponse.redirect(`${origin}/admin`);
   }
 
   // Edge case: ensure candidate record exists (handles case where auth trigger failed)
