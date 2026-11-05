@@ -43,6 +43,14 @@ export type { ExternalJob } from "./types";
  * @param location - Candidate's preferred location
  * @returns Array of unique external jobs from all sources
  */
+interface CacheEntry {
+  timestamp: number;
+  jobs: ExternalJob[];
+}
+
+const externalJobsCache = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = 20 * 60 * 1000; // 20 minutes TTL
+
 export async function fetchAllExternalJobs(
   targetTitles: string[],
   skills: string[],
@@ -54,6 +62,15 @@ export async function fetchAllExternalJobs(
   // Intelligent Adzuna Country Routing (India in, US us, UK gb, CA ca, AU au, ZA za)
   const adzunaCountry = resolveAdzunaCountry(location);
   const adzunaCity = location && location.trim() !== "" ? location : "London";
+
+  const cacheKey = `${primaryTitle.toLowerCase().trim()}_${adzunaCountry}_${(location || "").toLowerCase().trim()}`;
+  const cached = externalJobsCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    console.log(
+      `[Multi-Engine Aggregator] Cache HIT for "${cacheKey}" (${cached.jobs.length} jobs)`
+    );
+    return cached.jobs;
+  }
 
   // Run all external API engines in parallel with individual error resilience
   const results = await Promise.allSettled([
@@ -124,6 +141,11 @@ export async function fetchAllExternalJobs(
     `[Multi-Engine Aggregator] Total raw fetched: ${allJobs.length} -> Unique deduped: ${uniqueJobs.length} ` +
     `(Target: "${primaryTitle}" in "${location}", Adzuna Country: "${adzunaCountry}")`
   );
+
+  externalJobsCache.set(cacheKey, {
+    timestamp: Date.now(),
+    jobs: uniqueJobs,
+  });
 
   return uniqueJobs;
 }

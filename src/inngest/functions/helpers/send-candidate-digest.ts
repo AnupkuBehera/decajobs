@@ -63,7 +63,8 @@ export async function fetchEligibleJobs(
  */
 export async function sendDigestForCandidate(
   candidate: ActiveCandidateWithProfile,
-  preloadedDbJobs?: JobListingFull[]
+  preloadedDbJobs?: JobListingFull[],
+  preloadedExternalJobs?: JobListingFull[]
 ): Promise<{ success: boolean; reason?: string; jobsSent?: number }> {
   const supabase = createServiceRoleClient();
 
@@ -84,32 +85,37 @@ export async function sendDigestForCandidate(
   const recentSet = new Set(recentlySentIds);
   const deduplicatedJobs = allJobs.filter((job) => !recentSet.has(job.id));
 
-  // 5. Fetch external jobs from all sources (Greenhouse/Lever ATS, Remotive, etc.)
-  let externalJobs: any[] = [];
-  try {
-    externalJobs = await fetchAllExternalJobs(
-      candidate.profile.target_titles,
-      candidate.profile.skills,
-      candidate.profile.location
-    );
-  } catch (extErr: any) {
-    console.warn(
-      `[send-candidate-digest] External jobs fetch warning for ${candidate.id}:`,
-      extErr.message || extErr
-    );
-  }
+  // 5. Use preloaded external jobs if provided, or fetch from external aggregators
+  let externalAsInternal: JobListingFull[] = [];
+  if (preloadedExternalJobs && preloadedExternalJobs.length > 0) {
+    externalAsInternal = preloadedExternalJobs.filter((ej) => !recentSet.has(ej.id));
+  } else {
+    let externalJobs: any[] = [];
+    try {
+      externalJobs = await fetchAllExternalJobs(
+        candidate.profile.target_titles,
+        candidate.profile.skills,
+        candidate.profile.location
+      );
+    } catch (extErr: any) {
+      console.warn(
+        `[send-candidate-digest] External jobs fetch warning for ${candidate.id}:`,
+        extErr.message || extErr
+      );
+    }
 
-  // 6. Convert external jobs to internal format
-  const externalAsInternal: JobListingFull[] = externalJobs
-    .filter((ej) => !recentSet.has(ej.id))
-    .map((ej) => ({
-      id: ej.id,
-      title: ej.title,
-      description: ej.description,
-      location: ej.location,
-      application_link: ej.applicationLink,
-      createdAt: ej.postedAt || new Date().toISOString(),
-    }));
+    // 6. Convert external jobs to internal format
+    externalAsInternal = externalJobs
+      .filter((ej) => !recentSet.has(ej.id))
+      .map((ej) => ({
+        id: ej.id,
+        title: ej.title,
+        description: ej.description,
+        location: ej.location,
+        application_link: ej.applicationLink,
+        createdAt: ej.postedAt || new Date().toISOString(),
+      }));
+  }
 
   // 7. Merge internal + external jobs
   const allAvailableJobs = [...deduplicatedJobs, ...externalAsInternal];
@@ -135,10 +141,9 @@ export async function sendDigestForCandidate(
     .map((id) => allAvailableJobs.find((j) => j.id === id))
     .filter((j): j is JobListingFull => j !== undefined);
 
-  // 9. Record selected jobs in digest_history (only internal DB jobs)
-  const internalJobIds = selectedJobIds.filter(
-    (id) => !id.startsWith("jsearch_") && !id.startsWith("gh_") && !id.startsWith("lever_")
-  );
+  // 9. Record selected jobs in digest_history (only valid UUID internal DB jobs)
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const internalJobIds = selectedJobIds.filter((id) => UUID_REGEX.test(id));
   if (internalJobIds.length > 0) {
     try {
       await recordDigestHistory(supabase, candidate.id, internalJobIds);
@@ -156,9 +161,6 @@ export async function sendDigestForCandidate(
   }));
 
   await sendDigestEmail(candidate.email, digestItems, candidate.id);
-
-  // 11. Cleanup old history (older than 7 days) asynchronously
-  cleanupOldHistory(supabase).catch(() => {});
 
   return { success: true, jobsSent: digestItems.length };
 }

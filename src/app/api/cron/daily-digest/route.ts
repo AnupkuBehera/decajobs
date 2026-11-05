@@ -3,7 +3,9 @@ import { fetchActiveCandidates, type ActiveCandidateWithProfile } from "@/innges
 import {
   sendDigestForCandidate,
   fetchEligibleJobs,
+  type JobListingFull,
 } from "@/inngest/functions/helpers/send-candidate-digest";
+import { fetchAllExternalJobs } from "@/lib/external-jobs";
 import { verifyAdmin } from "@/lib/admin";
 import { createClient } from "@supabase/supabase-js";
 
@@ -87,7 +89,7 @@ export async function GET(request: NextRequest) {
       console.log(`[daily-digest] Dispatching test digest to: ${emailTrimmed}`);
 
       const testCandidate: ActiveCandidateWithProfile = {
-        id: "test-diagnostic-run",
+        id: "00000000-0000-0000-0000-000000000000",
         email: emailTrimmed,
         preferred_delivery_time: "07:00",
         timeZone: "UTC",
@@ -118,10 +120,10 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    console.log(`[daily-digest] Starting in-process digest run for ${candidates.length} candidates...`);
+    console.log(`[daily-digest] Starting sequential digest run for ${candidates.length} candidates...`);
 
     // Preload eligible database jobs once to avoid redundant queries across candidate batch
-    let preloadedDbJobs: any[] = [];
+    let preloadedDbJobs: JobListingFull[] = [];
     try {
       const supabase = createClient(supabaseUrl, supabaseKey);
       preloadedDbJobs = await fetchEligibleJobs(supabase);
@@ -129,33 +131,71 @@ export async function GET(request: NextRequest) {
       console.warn("[daily-digest] Job preloading notice:", preloadErr.message);
     }
 
-    // Execute in-process in parallel batches (avoiding external HTTP loopbacks)
-    const BATCH_SIZE = 10;
+    // Preload external jobs for unique target titles to minimize subrequests under Cloudflare limits
+    let preloadedExternalJobs: JobListingFull[] = [];
+    try {
+      const uniqueTitles = Array.from(
+        new Set(
+          candidates
+            .map((c) => (c.profile?.target_titles?.[0] || "").trim())
+            .filter(Boolean)
+        )
+      );
+
+      const titlesToPreload = uniqueTitles.length > 0 ? uniqueTitles.slice(0, 3) : ["Developer"];
+      const extResults = await Promise.allSettled(
+        titlesToPreload.map((title) => fetchAllExternalJobs([title], [], "Remote"))
+      );
+
+      const combinedExtJobs: any[] = [];
+      for (const r of extResults) {
+        if (r.status === "fulfilled" && Array.isArray(r.value)) {
+          combinedExtJobs.push(...r.value);
+        }
+      }
+
+      preloadedExternalJobs = combinedExtJobs.map((ej) => ({
+        id: ej.id,
+        title: ej.title,
+        description: ej.description,
+        location: ej.location,
+        application_link: ej.applicationLink,
+        createdAt: ej.postedAt || new Date().toISOString(),
+      }));
+
+      console.log(
+        `[daily-digest] Preloaded ${preloadedExternalJobs.length} external jobs for batch titles: ${titlesToPreload.join(", ")}`
+      );
+    } catch (extPreloadErr: any) {
+      console.warn("[daily-digest] External jobs preloading notice:", extPreloadErr.message);
+    }
+
+    // Process candidates sequentially with a pacing delay (600ms) to respect Resend's 2 req/sec rate limit
     const results: Array<{ id: string; email: string; success: boolean; error?: string }> = [];
 
-    for (let i = 0; i < candidates.length; i += BATCH_SIZE) {
-      const batch = candidates.slice(i, i + BATCH_SIZE);
-      const batchPromises = batch.map(async (candidate) => {
-        try {
-          const res = await sendDigestForCandidate(candidate, preloadedDbJobs);
-          return {
-            id: candidate.id,
-            email: candidate.email,
-            success: res.success,
-            error: res.reason,
-          };
-        } catch (candidateErr: any) {
-          return {
-            id: candidate.id,
-            email: candidate.email,
-            success: false,
-            error: candidateErr.message,
-          };
-        }
-      });
+    for (let i = 0; i < candidates.length; i++) {
+      const candidate = candidates[i];
+      try {
+        const res = await sendDigestForCandidate(candidate, preloadedDbJobs, preloadedExternalJobs);
+        results.push({
+          id: candidate.id,
+          email: candidate.email,
+          success: res.success,
+          error: res.reason,
+        });
+      } catch (candidateErr: any) {
+        results.push({
+          id: candidate.id,
+          email: candidate.email,
+          success: false,
+          error: candidateErr.message,
+        });
+      }
 
-      const batchResults = await Promise.all(batchPromises);
-      results.push(...batchResults);
+      // Pacing delay between emails (except after the final candidate)
+      if (i < candidates.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+      }
     }
 
     const successfulCount = results.filter((r) => r.success).length;

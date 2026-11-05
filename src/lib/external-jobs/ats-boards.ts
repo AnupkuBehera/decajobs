@@ -199,8 +199,9 @@ async function fetchGreenhouseBoard(
 export async function fetchDirectAtsJobs(query: string = "engineer"): Promise<ExternalJob[]> {
   const queryLower = query.toLowerCase().trim();
 
-  // Run board queries in parallel
-  const boardPromises = PRIMARY_TECH_COMPANIES.map((company) => {
+  // Query curated top tech employers rather than all 33 in parallel to prevent subrequest exhaustion (Cloudflare Workers Free limit: 50)
+  const boardsToQuery = PRIMARY_TECH_COMPANIES.slice(0, 2);
+  const boardPromises = boardsToQuery.map((company) => {
     if (company.type === "lever") {
       return fetchLeverBoard(company.name, company.board, queryLower);
     }
