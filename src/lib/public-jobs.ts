@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Public Jobs Data Layer
  *
  * Powers the public, indexable job board (/jobs, /jobs/[slug], /jobs/remote,
@@ -10,6 +10,7 @@
  * pages always render with graceful fallback editorial content.
  */
 
+import { cache } from "react";
 import type { ExternalJob } from "@/lib/external-jobs/types";
 import { fetchRemotiveJobs } from "@/lib/external-jobs/remotive";
 import { fetchRemoteOKJobs } from "@/lib/external-jobs/remoteok";
@@ -1605,10 +1606,41 @@ export const SAMPLE_JOBS: ExternalJob[] = [
  * Get public jobs for rendering. Uses cached API data when available, falling
  * back to sample jobs so pages always have content.
  */
-export async function getPublicJobs(): Promise<ExternalJob[]> {
+export const getPublicJobs = cache(async (): Promise<ExternalJob[]> => {
     const live = await fetchPublicJobs();
     return live.length > 0 ? live : SAMPLE_JOBS;
-}
+});
+
+/**
+ * Ultra-fast job retriever for single job detail pages & crawlers.
+ * Checks in-memory cache and sample jobs first (<0.1ms).
+ * If not present and the slug is an expired/historical format, returns undefined immediately
+ * so callers can issue a 308 redirect in <1ms without firing 5 heavy external network calls.
+ */
+export const getJobBySlugFast = cache(async (slug: string): Promise<ExternalJob | undefined> => {
+    // 1. Check in-memory fast dataset (sitemap jobs + sample jobs)
+    const fastJobs = getFastSitemapJobs();
+    const fastMatch = fastJobs.find((j) => jobSlug(j) === slug);
+    if (fastMatch) return fastMatch;
+
+    // 2. If cachedPublicJobs is already populated in this isolate, check it
+    if (cachedPublicJobs && cachedPublicJobs.length > 0) {
+        return cachedPublicJobs.find((j) => jobSlug(j) === slug);
+    }
+
+    // 3. If cache is cold, check if the slug is a known historical ATS/old feed pattern
+    // (jobicy15xxxx, tadogd+, triped+, flared+, mad+, etc.).
+    // These rotated out weeks ago and will NEVER exist in fresh top listings.
+    // Immediately return undefined so caller redirects in <1ms without cold scrape bursts.
+    const isHistoricalPattern = /(?:tripe|tadog|flare|ma\d|rm\d|ngodb|irbnb|eddit|nhood|astic|chm6|jobicy15)\d*/i.test(slug);
+    if (isHistoricalPattern) {
+        return undefined;
+    }
+
+    // 4. Fall back to cached public jobs
+    const jobs = await getPublicJobs();
+    return jobs.find((j) => jobSlug(j) === slug);
+});
 
 /**
  * Get filtered public jobs with graceful fallback to sample data.

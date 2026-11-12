@@ -124,7 +124,7 @@ export function MobileNav({
                       My Daily 10
                     </Link>
                     <Link
-                      href="/resume-tools"
+                      href="/tools/resume-matcher"
                       className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                     >
                       Resume AI

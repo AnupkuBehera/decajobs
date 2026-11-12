@@ -30,6 +30,24 @@ vi.mock("@/lib/public-jobs", async (importOriginal) => {
         ]),
         jobSlug: (job: any) =>
             `${job.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${job.company.toLowerCase().replace(/[^a-z0-9]+/g, "")}`,
+        getJobBySlugFast: vi.fn().mockImplementation(async (slug: string) => {
+            const liveJobs = [
+                {
+                    id: "live-job-1",
+                    title: "Senior Full Stack Engineer",
+                    company: "Acme Corp",
+                    location: "Remote, US",
+                    description: "Building modern full-stack web applications with React and TypeScript.",
+                    salary: "$150,000 - $180,000",
+                    applicationLink: "https://example.com/apply/1",
+                    postedAt: new Date().toISOString(),
+                    source: "greenhouse",
+                },
+            ];
+            return liveJobs.find(
+                (j) => `${j.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${j.company.toLowerCase().replace(/[^a-z0-9]+/g, "")}` === slug
+            );
+        }),
     };
 });
 

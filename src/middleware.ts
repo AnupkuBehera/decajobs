@@ -126,6 +126,19 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // 1c. Attach X-Robots-Tag: noindex, noarchive to non-page assets (OpenGraph images, webmanifest, media)
+  // Prevents binary assets and social sharing cards from cluttering Google Search Console Page Indexing reports.
+  if (
+    pathname.includes("/opengraph-image") ||
+    pathname.endsWith("/site.webmanifest") ||
+    pathname.endsWith("/favicon.ico") ||
+    pathname.startsWith("/_next/static/media/")
+  ) {
+    const res = NextResponse.next();
+    res.headers.set("X-Robots-Tag", "noindex, noarchive");
+    return res;
+  }
+
   // 2. Redirect crawler artifact URLs and malformed symbol paths (301 Permanent Redirect)
   if (pathname === "/month") {
     return NextResponse.redirect(new URL("/pricing", request.url), 301);
@@ -142,11 +155,6 @@ export async function middleware(request: NextRequest) {
   // 2b. Redirect legacy /mock-interview path to canonical /tools/mock-interview (301 Permanent Redirect)
   if (pathname === "/mock-interview" || cleanPathname(pathname) === "/mock-interview") {
     return NextResponse.redirect(new URL("/tools/mock-interview", request.url), 301);
-  }
-
-  // 3. Canonicalize parameterized /tools/* URLs (301 Permanent Redirect to clean canonical path)
-  if (pathname.startsWith("/tools/") && request.nextUrl.search) {
-    return NextResponse.redirect(new URL(pathname, request.url), 301);
   }
 
   // 4. Canonicalize non-auth parameter URLs on /login (301 Permanent Redirect to clean /login)

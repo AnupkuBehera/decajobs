@@ -25,12 +25,17 @@ export async function fetchRemoteOKJobs(tags: string[]): Promise<ExternalJob[]> 
       ? `https://remoteok.com/api?tags=${encodeURIComponent(tagQuery)}`
       : "https://remoteok.com/api";
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
     const response = await fetch(url, {
+      signal: controller.signal,
       headers: {
         "User-Agent": "DecaJobs/1.0",
       },
       next: { revalidate: 3600 },
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error(`[RemoteOK] API error: ${response.status}`);
@@ -55,7 +60,7 @@ export async function fetchRemoteOKJobs(tags: string[]): Promise<ExternalJob[]> 
     const jobs = Array.isArray(data) ? data.slice(1) : [];
     console.log(`[RemoteOK] Found ${jobs.length} jobs for tags: "${tagQuery}"`);
 
-    return jobs.slice(0, 20).map((job) => ({
+    return jobs.slice(0, 15).map((job) => ({
       id: `remoteok_${job.id}`,
       title: job.position || "Remote Position",
       description: (job.description || "")

@@ -15,6 +15,11 @@ describe("robots.txt configuration", () => {
     expect(mediaPartnersRule).toBeDefined();
     expect(mediaPartnersRule?.allow).toBe("/");
 
+    // Official Google Ads.txt crawler must have explicit access to /
+    const adsTxtRule = rules.find((r) => r?.userAgent === "Google-adstxt");
+    expect(adsTxtRule).toBeDefined();
+    expect(adsTxtRule?.allow).toBe("/");
+
     // General search crawler rules
     const wildcardRule = rules.find((r) => r?.userAgent === "*");
     expect(wildcardRule).toBeDefined();

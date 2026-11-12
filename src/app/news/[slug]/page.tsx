@@ -4,6 +4,17 @@ import { permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { AdSenseUnit } from "@/components/adsense-unit";
 import { getAllNews, getNewsBySlug } from "@/lib/news/daily-news";
+import { JOB_CATEGORIES, CITIES } from "@/lib/public-jobs";
+
+function getCanonicalJobHref(queryOrCategory?: string): string {
+  if (!queryOrCategory) return "/jobs";
+  const q = queryOrCategory.toLowerCase().trim();
+  const matchedCity = CITIES.find((c) => c.slug === q || c.aliases.some((a) => a.toLowerCase() === q));
+  if (matchedCity) return `/jobs/location/${matchedCity.slug}`;
+  const matchedCategory = JOB_CATEGORIES.find((cat) => cat.slug === q || cat.name.toLowerCase().includes(q));
+  if (matchedCategory) return `/jobs/category/${matchedCategory.slug}`;
+  return "/jobs";
+}
 
 interface NewsArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -249,7 +260,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
             </p>
           </div>
           <Link
-            href={`/jobs?q=${encodeURIComponent(article.relatedJobQuery || "developer")}`}
+            href={getCanonicalJobHref(article.relatedJobQuery || article.category)}
             className="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-primary-700 transition-colors shrink-0"
           >
             Explore Active Roles →

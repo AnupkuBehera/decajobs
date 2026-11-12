@@ -104,23 +104,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Category Job Hubs
     ...JOB_CATEGORIES.map((cat) => ({
       url: `${baseUrl}/jobs/category/${cat.slug}`,
-      lastModified: new Date("2026-08-28"),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
     })),
     // Location Job Hubs (India & Global Tech Capitals)
     ...CITIES.map((city) => ({
       url: `${baseUrl}/jobs/location/${city.slug}`,
-      lastModified: new Date("2026-08-28"),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
     })),
     // Company Career Hubs
     ...COMPANIES.map((company) => ({
       url: `${baseUrl}/jobs/company/${company.slug}`,
-      lastModified: new Date("2026-08-28"),
-      changeFrequency: "weekly" as const,
-      priority: 0.85,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
     })),
     // Blog Hub & RSS
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.85 },

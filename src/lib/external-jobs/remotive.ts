@@ -27,10 +27,13 @@ export async function fetchRemotiveJobs(query: string): Promise<ExternalJob[]> {
       params.append("search", query.trim());
     }
     const queryString = params.toString() ? `?${params.toString()}` : "";
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
     const response = await fetch(
       `https://remotive.com/api/remote-jobs${queryString}`,
-      { next: { revalidate: 3600 } }
+      { signal: controller.signal, next: { revalidate: 3600 } }
     );
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error(`[Remotive] API error: ${response.status}`);
@@ -52,7 +55,7 @@ export async function fetchRemotiveJobs(query: string): Promise<ExternalJob[]> {
     }
     console.log(`[Remotive] Found ${data.jobs?.length ?? 0} jobs for "${query}"`);
 
-    return (data.jobs || []).map((job) => ({
+    return (data.jobs || []).slice(0, 25).map((job) => ({
       id: `remotive_${job.id}`,
       title: job.title,
       description: job.description

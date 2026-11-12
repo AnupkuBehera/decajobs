@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StickyApplyBar } from "@/components/sticky-apply-bar";
 import {
     getPublicJobs,
+    getJobBySlugFast,
     jobSlug,
     formatPostedDate,
     daysSincePosted,
@@ -234,8 +235,7 @@ function isNextRedirect(error: unknown): boolean {
 export async function generateMetadata({ params }: JobDetailPageProps): Promise<Metadata> {
     const { slug } = await params;
     try {
-        const jobs = await getPublicJobs();
-        const job = jobs.find((j) => jobSlug(j) === slug);
+        const job = await getJobBySlugFast(slug);
 
         if (!job) {
             permanentRedirect(getExpiredJobRedirectUrl(slug));
@@ -270,8 +270,7 @@ export async function generateMetadata({ params }: JobDetailPageProps): Promise<
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
     const { slug } = await params;
     try {
-        const jobs = await getPublicJobs();
-        const job = jobs.find((j) => jobSlug(j) === slug);
+        const job = await getJobBySlugFast(slug);
 
     // Expired or missing job: Issue HTTP 301/308 Permanent Redirect to relevant category hub.
     // Per Google Search Console guidelines, redirecting rotated job listings converts them
@@ -280,6 +279,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
         permanentRedirect(getExpiredJobRedirectUrl(slug));
     }
 
+    const jobs = await getPublicJobs();
     const days = daysSincePosted(job.postedAt);
     const remote = isRemoteJob(job);
     const skills = extractSkillsFromJob(`${job.title} ${job.description}`, 8);

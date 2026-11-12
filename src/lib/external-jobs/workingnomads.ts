@@ -52,7 +52,7 @@ export async function fetchWorkingNomadsJobs(query?: string): Promise<ExternalJo
       return combined.includes(queryLower);
     });
 
-    const jobs: ExternalJob[] = filtered.slice(0, 50).map((item, idx) => {
+    const jobs: ExternalJob[] = filtered.slice(0, 15).map((item, idx) => {
       const cleanDesc = (item.description || "")
         .replace(/<[^>]*>/g, " ")
         .replace(/&nbsp;/gi, " ")
@@ -61,8 +61,9 @@ export async function fetchWorkingNomadsJobs(query?: string): Promise<ExternalJo
         .trim()
         .slice(0, 4000);
 
+      const rawId = item.url ? item.url.replace(/[^a-zA-Z0-9]/g, "").slice(-16) : String(idx);
       return {
-        id: `wn_${Buffer.from(item.url || String(idx)).toString("base64").slice(0, 16)}`,
+        id: `wn_${rawId}`,
         title: item.title,
         company: item.company_name || "Remote Employer",
         description: cleanDesc,

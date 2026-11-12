@@ -8,12 +8,17 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
       {
+        userAgent: "Google-adstxt",
+        allow: "/",
+      },
+      {
         userAgent: "*",
         allow: "/",
         disallow: [
           "/api/",
           "/auth/callback",
           "/_next/static/media/",
+          "/*opengraph-image*",
         ],
       },
     ],

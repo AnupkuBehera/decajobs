@@ -143,7 +143,7 @@ export function SiteHeader() {
                   My Daily 10
                 </Link>
                 <Link
-                  href="/resume-tools"
+                  href="/tools/resume-matcher"
                   className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
                 >
                   Resume AI
