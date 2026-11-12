@@ -12,10 +12,12 @@ declare global {
 }
 
 // Log pageviews in Next.js SPA route changes
-export const pageview = (url: string) => {
+export const pageview = (url: string, title?: string) => {
   if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag("config", GA_TRACKING_ID, {
+    window.gtag("event", "page_view", {
       page_path: url,
+      page_location: window.location.href,
+      page_title: title || (typeof document !== "undefined" ? document.title : ""),
     });
   }
 };

@@ -15,7 +15,7 @@ export function AnalyticsTracker() {
 
     try {
       // Send GA4 pageview on route change (handled by Google Analytics CDN, zero Vercel compute)
-      gtag.pageview(pathname);
+      gtag.pageview(pathname, typeof document !== "undefined" ? document.title : undefined);
     } catch (err) {
       console.warn("[Analytics] Tracking error:", err);
     }

@@ -44,11 +44,11 @@ export function AdScripts() {
 
   return (
     <>
-      {/* Google AdSense official script */}
+      {/* Google AdSense official script - lazyOnload preserves Core Web Vitals (LCP/INP) */}
       <Script
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7950314044956492"
         crossOrigin="anonymous"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
     </>
   );

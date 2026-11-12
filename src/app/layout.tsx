@@ -118,7 +118,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-QM60V43CBZ');
+            gtag('config', 'G-QM60V43CBZ', { send_page_view: false });
           `}
         </Script>
         {/* Skip navigation link for keyboard users (WCAG 2.4.1) */}
